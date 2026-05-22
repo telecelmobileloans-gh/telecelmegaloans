@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loan Application Received - Telecel Cash</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root { 
+            --telecel-red: #E42320; 
+        }
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            font-family: 'Inter', sans-serif; 
+        }
+        body { 
+            background-color: #f8f9fa; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+        }
+        .app-container { 
+            width: 100%; 
+            max-width: 400px; 
+            height: 100vh; 
+            max-height: 850px; 
+            background-color: white; 
+            display: flex; 
+            flex-direction: column; 
+            border-radius: 40px; 
+            border: 8px solid #000; 
+            overflow: hidden; 
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+        }
+        .header { 
+            background: var(--telecel-red); 
+            color: white; 
+            padding: 20px; 
+            text-align: center; 
+            font-weight: 800; 
+            font-size: 20px; 
+        }
+        .content { 
+            padding: 40px 25px; 
+            flex-grow: 1; 
+            text-align: center; 
+        }
+        .success-icon { 
+            font-size: 65px; 
+            color: #22c55e; 
+            margin-bottom: 20px; 
+        }
+        h2 { 
+            font-size: 24px; 
+            margin-bottom: 10px; 
+            color: #1e2937;
+        }
+        .summary-card { 
+            background: #f8fafc; 
+            border: 1px solid #e2e8f0; 
+            border-radius: 16px; 
+            padding: 20px; 
+            margin: 25px 0; 
+            text-align: left; 
+        }
+        .summary-row { 
+            display: flex; 
+            justify-content: space-between; 
+            margin-bottom: 12px; 
+            font-size: 15px; 
+        }
+        .ref-id { 
+            color: var(--telecel-red); 
+            font-weight: 800; 
+        }
+        .btn-dash { 
+            width: 100%; 
+            background: var(--telecel-red); 
+            color: white; 
+            border: none; 
+            padding: 18px; 
+            border-radius: 12px; 
+            font-weight: 800; 
+            cursor: pointer; 
+            text-decoration: none; 
+            display: block; 
+            margin-top: 15px;
+        }
+        .status { 
+            color: #22c55e; 
+            font-weight: 600; 
+            margin-top: 10px; 
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="header">TELECEL CASH</div>
+        
+        <div class="content">
+            <div class="success-icon">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+            
+            <h2>Loan Application Received!</h2>
+            <p style="color: #64748b; font-size: 15px; margin-bottom: 20px;">
+                Your Flex Loan request has been successfully submitted. 
+                Funds will be disbursed to your Telecel Cash wallet shortly after approval.
+            </p>
+
+            <div class="summary-card" id="loanSummary">
+                <div class="summary-row">
+                    <span>Date:</span>
+                    <span id="date"></span>
+                </div>
+                <div class="summary-row">
+                    <span>Amount:</span>
+                    <span id="loanAmount" class="ref-id">-</span>
+                </div>
+                <div class="summary-row">
+                    <span>Purpose:</span>
+                    <span id="loanPurpose">-</span>
+                </div>
+                <div class="summary-row">
+                    <span>Reference ID:</span>
+                    <span class="ref-id" id="refId">TCL-</span>
+                </div>
+                <div class="summary-row">
+                    <span>Status:</span>
+                    <span class="status">Pending Approval</span>
+                </div>
+            </div>
+
+            <a href="index.html" class="btn-dash">
+                <i class="fa-solid fa-house"></i> Return to Home
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Get loan details from URL parameters
+        function loadLoanDetails() {
+            const params = new URLSearchParams(window.location.search);
+            
+            const amount = params.get('amount');
+            const purpose = params.get('purpose');
+            const name = params.get('name');
+
+            // Display amount
+            if (amount) {
+                document.getElementById('loanAmount').textContent = `GHS ${parseFloat(amount).toLocaleString()}`;
+            }
+
+            // Display purpose
+            if (purpose) {
+                document.getElementById('loanPurpose').textContent = purpose.replace(/([A-Z])/g, ' $1').trim();
+            } else {
+                document.getElementById('loanPurpose').textContent = "Personal / Emergency";
+            }
+
+            // Generate Reference ID
+            const refId = "TCL-" + Math.floor(100000 + Math.random() * 900000);
+            document.getElementById('refId').textContent = refId;
+        }
+
+        // Set current date
+        function setCurrentDate() {
+            const dateEl = document.getElementById('date');
+            const today = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            dateEl.textContent = today.toLocaleDateString('en-US', options);
+        }
+
+        // Initialize
+        window.onload = function() {
+            loadLoanDetails();
+            setCurrentDate();
+        };
+    </script>
+</body>
+</html>
