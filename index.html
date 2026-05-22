@@ -1206,10 +1206,10 @@
             <label class="calc-label">Loan Amount</label>
             <div class="calc-input-wrap">
               <span class="calc-prefix">GHS</span>
-              <input type="number" class="calc-input" id="loanAmount" value="1000" min="1000" max="50000" step="500" oninput="updateCalc()">
+              <input type="number" class="calc-input" id="loanAmount" value="500" min="500" max="50000" step="500" oninput="updateCalc()">
             </div>
             <div class="range-track">
-              <input type="range" id="loanSlider" min="1000" max="50000" value="1000" step="500"
+              <input type="range" id="loanSlider" min="500" max="50000" value="500" step="500"
                 oninput="document.getElementById('loanAmount').value=this.value; updateCalc()">
               <div class="range-labels"><span>GHS 1,000</span><span>GHS 50,000</span></div>
             </div>
@@ -1644,8 +1644,8 @@ s0.parentNode.insertBefore(s1,s0);
 
   function updateCalc() {
     const amountInput = document.getElementById('loanAmount');
-    let amount = parseInt(amountInput.value) || 1000;
-    amount = Math.max(1000, Math.min(50000, amount));
+    let amount = parseInt(amountInput.value) || 500;
+    amount = Math.max(500, Math.min(50000, amount));
     document.getElementById('loanSlider').value = amount;
 
     const totalInterest = amount * MONTHLY_RATE * selectedMonths;
@@ -1693,7 +1693,7 @@ s0.parentNode.insertBefore(s1,s0);
     }
     document.getElementById('appPhone').value = phone;
     closeLoginModal();
-    const d = window.loanData || { amount: 1000, months: 1, total: 1091, interest: 91 };
+    const d = window.loanData || { amount: 500, months: 1, total: 1091, interest: 91 };
     const params = new URLSearchParams({
       phone,
       amount: d.amount,
