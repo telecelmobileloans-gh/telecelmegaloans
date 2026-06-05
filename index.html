@@ -1,1791 +1,259 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TelecelLoans – Fast & Secure Loans for Telecel Subscribers</title>
-  <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;600;700;800;900&family=Red+Hat+Text:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TelecelLoans – Fast Ghana Cedi Loans</title>
   <style>
-    :root {
-      --red: #E30613;
-      --red-dark: #C0040F;
-      --red-deep: #9B0209;
-      --red-soft: rgba(227,6,19,0.09);
-      --red-border: rgba(227,6,19,0.22);
-      --blue: #0066CC;
-      --black: #0A0A0A;
-      --dark: #111111;
-      --dark2: #1A1A1A;
-      --dark3: #222222;
-      --dark4: #2A2A2A;
-      --white: #FFFFFF;
-      --off-white: #F7F7F7;
-      --grey-light: #E8E8E8;
-      --grey-mid: #AAAAAA;
-      --grey: #666666;
-      --green: #1DA851;
-      --shadow: 0 2px 20px rgba(0,0,0,0.12);
-      --shadow-lg: 0 8px 40px rgba(0,0,0,0.18);
-      --shadow-red: 0 4px 24px rgba(227,6,19,0.28);
-      --radius: 4px;
-      --radius-md: 8px;
-      --radius-lg: 12px;
-      --transition: 0.2s ease;
+    :root{
+      --red:#d90416;
+      --red-dark:#9f0712;
+      --red-soft:#fff1f2;
+      --dark:#111827;
+      --dark-2:#172033;
+      --dark-3:#263143;
+      --white:#ffffff;
+      --off:#f8fafc;
+      --line:#e2e8f0;
+      --text:#243041;
+      --muted:#64748b;
+      --green:#16a34a;
+      --gold:#f59e0b;
+      --shadow:0 24px 70px rgba(16,17,20,.14);
+      --shadow-soft:0 12px 35px rgba(16,17,20,.10);
+      --radius:24px;
+      --radius-md:16px;
+      --ease:220ms ease;
     }
-    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-    html { scroll-behavior:smooth; font-size:16px; }
-    body {
-      font-family: 'Red Hat Text', sans-serif;
-      background: var(--white);
-      color: var(--dark);
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{
+      font-family:Arial, Helvetica, sans-serif;
+      background:var(--white);
+      color:var(--text);
+      line-height:1.55;
+      -webkit-font-smoothing:antialiased;
     }
+    a{text-decoration:none;color:inherit}
+    button,input,select{font-family:Arial, Helvetica, sans-serif}
+    .container{max-width:1180px;margin:auto;padding:0 22px}
+    .top-line{height:4px;background:linear-gradient(90deg,var(--red),#7f1d1d,var(--dark),#334155)}
+    header{
+      position:sticky;top:0;z-index:50;background:rgba(255,255,255,.94);
+      backdrop-filter:blur(16px);border-bottom:1px solid rgba(16,17,20,.08)
+    }
+    .nav{height:74px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .brand{display:flex;align-items:center;gap:12px;font-weight:900;letter-spacing:-.4px}
+    .brand-mark{width:44px;height:44px;border-radius:16px;background:linear-gradient(145deg,var(--red),#8f050d);display:grid;place-items:center;color:white;box-shadow:0 14px 28px rgba(227,6,19,.25);font-weight:900;font-size:22px}
+    .brand-title{font-size:21px;color:var(--dark)}
+    .brand-title span{color:var(--red)}
+    .brand-sub{font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:1.8px;margin-top:-2px}
+    .desktop-nav{display:flex;align-items:center;gap:6px}
+    .desktop-nav a{font-size:14px;font-weight:800;color:#374151;padding:10px 14px;border-radius:999px;transition:var(--ease)}
+    .desktop-nav a:hover,.desktop-nav a.active{background:var(--red-soft);color:var(--red)}
+    .nav-phone{display:flex;align-items:center;gap:8px;background:var(--off);border:1px solid var(--line);padding:6px;border-radius:999px}
+    .nav-phone input{width:145px;border:0;background:transparent;outline:0;padding:9px 6px;font-size:13px;color:var(--dark)}
+    .nav-phone button{border:0;background:var(--dark);color:white;border-radius:999px;font-size:12px;font-weight:900;padding:10px 14px;cursor:pointer;transition:var(--ease)}
+    .nav-phone button:hover{background:var(--red)}
+    .hamburger{display:none;width:42px;height:42px;border:1px solid var(--line);background:white;border-radius:14px;cursor:pointer;align-items:center;justify-content:center;flex-direction:column;gap:5px}
+    .hamburger span{width:20px;height:2px;background:var(--dark);transition:var(--ease)}
+    .hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+    .hamburger.open span:nth-child(2){opacity:0}
+    .hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+    .mobile-nav{display:none;position:fixed;left:14px;right:14px;top:84px;background:white;border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow);z-index:45;overflow:hidden;max-height:0;transition:max-height .28s ease}
+    .mobile-nav.open{max-height:360px}
+    .mobile-nav a{display:block;padding:16px 20px;font-weight:800;border-bottom:1px solid var(--line);color:var(--dark)}
+    .mobile-quick{display:flex;gap:8px;padding:14px;background:var(--off)}
+    .mobile-quick input{flex:1;border:1px solid var(--line);border-radius:12px;padding:12px;outline:0}
+    .mobile-quick button{border:0;border-radius:12px;background:var(--red);color:white;font-weight:900;padding:0 14px}
 
-    /* ══════════════════════════════════
-       TOP BAR - HIDDEN
-    ══════════════════════════════════ */
-    .top-bar {
-      display: none;
-    }
+    .hero{position:relative;overflow:hidden;background:radial-gradient(circle at 18% 10%,rgba(217,4,22,.30),transparent 34%),radial-gradient(circle at 88% 78%,rgba(255,255,255,.08),transparent 28%),linear-gradient(135deg,var(--dark),var(--dark-2) 58%,#2b0b0f);color:white}
+    .hero:before{content:"";position:absolute;inset:0;background-image:linear-gradient(120deg,rgba(255,255,255,.06) 0 1px,transparent 1px 90px);opacity:.55}
+    .hero-grid{position:relative;display:grid;grid-template-columns:1.02fr .98fr;gap:34px;align-items:center;padding:54px 0 62px}
+    .eyebrow{display:inline-flex;align-items:center;gap:10px;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.16);padding:9px 14px;border-radius:999px;color:#fff;font-size:12px;font-weight:900;letter-spacing:1.3px;text-transform:uppercase;margin-bottom:20px}
+    .pulse{width:8px;height:8px;border-radius:50%;background:#22c55e;box-shadow:0 0 0 6px rgba(34,197,94,.16)}
+    .hero h1{font-size:clamp(38px,5vw,68px);line-height:.98;letter-spacing:-2.8px;margin-bottom:18px;color:white}
+    .hero h1 span{color:#ff4b55}
+    .hero p{font-size:17px;color:rgba(255,255,255,.78);max-width:585px;margin-bottom:24px}
+    .hero-actions{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+    .primary-link,.secondary-link{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:14px 18px;font-weight:900;font-size:14px;transition:var(--ease);border:1px solid transparent;cursor:pointer}
+    .primary-link{background:var(--red);color:white;box-shadow:0 18px 32px rgba(227,6,19,.28)}
+    .primary-link:hover{background:#ff1d2b;transform:translateY(-2px)}
+    .secondary-link{background:rgba(255,255,255,.08);color:white;border-color:rgba(255,255,255,.18)}
+    .secondary-link:hover{background:white;color:var(--dark)}
+    .trust-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:30px;max-width:600px}
+    .trust-card{padding:16px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.07);border-radius:18px}
+    .trust-card strong{display:block;font-size:21px;color:white}.trust-card span{font-size:12px;color:rgba(255,255,255,.65);font-weight:700;text-transform:uppercase;letter-spacing:.8px}
 
-    /* ══════════════════════════════════
-       HEADER / NAV
-    ══════════════════════════════════ */
-    header {
-      background: var(--white);
-      border-bottom: 2px solid var(--red);
-      position: sticky;
-      top: 0;
-      z-index: 900;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-    }
-    .header-inner {
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 12px 32px;
-      height: 80px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-    }
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      text-decoration: none;
-      flex-shrink: 0;
-    }
-    .logo-icon {
-      display: none;
-    }
-    .logo-text {
-      font-family: 'Red Hat Display', sans-serif;
-      font-size: 22px;
-      font-weight: 900;
-      letter-spacing: -0.5px;
-      line-height: 1;
-      margin: 0;
-    }
-    .logo-text .t1 { color: var(--red); font-weight: 900; }
-    .logo-text .t2 { color: #0066CC; font-weight: 900; }
-    .logo-sub {
-      font-size: 10px;
-      color: var(--grey);
-      font-weight: 600;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      margin: 2px 0 0 0;
-      display: block;
-    }
+    .calc-card{background:white;color:var(--dark);border-radius:30px;box-shadow:0 28px 90px rgba(0,0,0,.34);overflow:hidden;border:1px solid rgba(255,255,255,.35);isolation:isolate}
+    .calc-head{padding:22px;background:linear-gradient(135deg,var(--red),#a00612 48%,var(--dark));color:white;display:flex;align-items:center;justify-content:space-between;gap:16px}
+    .calc-head h2{font-size:23px;letter-spacing:-.7px}.calc-head p{font-size:12px;color:rgba(255,255,255,.75);margin:3px 0 0}
+    .calc-badge{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:9px 11px;font-size:12px;font-weight:900;white-space:nowrap}
+    .calc-body{padding:24px;background:linear-gradient(180deg,#fff,var(--off))}
+    .calc-section{margin-bottom:22px}.calc-label{display:flex;justify-content:space-between;gap:10px;font-size:13px;font-weight:900;color:var(--dark);margin-bottom:11px}.calc-label span:last-child{color:var(--red)}
+    .amount-box{display:flex;align-items:center;border:2px solid #111827;border-radius:18px;background:white;overflow:hidden;box-shadow:0 10px 25px rgba(16,17,20,.06);transition:var(--ease)}
+    .amount-box:focus-within{border-color:var(--red);box-shadow:0 0 0 4px rgba(217,4,22,.10),0 14px 32px rgba(16,17,20,.10)}
+    .currency{background:var(--dark);color:white;padding:16px 17px;font-weight:900;height:100%;align-self:stretch;display:flex;align-items:center}
+    .amount-box input{border:0;outline:0;font-size:30px;font-weight:900;letter-spacing:-1.3px;flex:1;min-width:0;padding:12px 15px;color:var(--dark);background:white}
+    .range-wrap{margin-top:16px}input[type="range"]{width:100%;accent-color:var(--red);cursor:pointer}.range-minmax{display:flex;justify-content:space-between;color:var(--muted);font-size:12px;font-weight:800;margin-top:7px}
+    .amount-chips{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}.chip{border:1px solid var(--line);background:white;border-radius:13px;padding:10px 6px;font-size:12px;font-weight:900;cursor:pointer;color:var(--text);transition:var(--ease);min-height:42px}.chip:hover,.chip.active{border-color:var(--red);color:var(--red);background:var(--red-soft);box-shadow:0 8px 18px rgba(217,4,22,.10)}
+    .duration-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.duration-btn{border:1px solid var(--line);background:white;border-radius:16px;padding:14px 8px;text-align:center;cursor:pointer;transition:var(--ease);font-weight:900;color:var(--dark);min-height:72px}.duration-btn small{display:block;color:var(--muted);font-weight:700;margin-top:3px}.duration-btn:hover{border-color:var(--red);background:var(--red-soft)}.duration-btn.active{background:linear-gradient(135deg,var(--dark),#263143);border-color:var(--dark);color:white;box-shadow:0 14px 28px rgba(16,17,20,.2)}.duration-btn.active small{color:rgba(255,255,255,.70)}
+    .purpose-select{width:100%;border:1px solid var(--line);background:white;border-radius:16px;padding:14px 15px;font-size:14px;font-weight:800;outline:0;color:var(--dark)}
+    .result-panel{background:linear-gradient(145deg,var(--dark),#1f2937);border-radius:24px;padding:19px;color:white;margin:8px 0 18px;position:relative;overflow:hidden}.result-panel:before{content:"";position:absolute;right:-40px;top:-40px;width:135px;height:135px;border-radius:50%;background:rgba(217,4,22,.24)}
+    .result-grid{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:12px}.result-item{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:14px}.result-item span{display:block;font-size:11px;text-transform:uppercase;letter-spacing:1.1px;color:rgba(255,255,255,.56);font-weight:900}.result-item strong{display:block;font-size:22px;margin-top:5px;letter-spacing:-.7px}.result-item .green{color:#4ade80}.calc-note{position:relative;color:rgba(255,255,255,.63);font-size:12px;margin-top:12px;font-weight:700}
+    .apply-btn{width:100%;border:0;border-radius:18px;padding:16px 18px;background:linear-gradient(135deg,var(--red),var(--red-dark));color:white;font-size:15px;font-weight:900;cursor:pointer;transition:var(--ease);box-shadow:0 16px 28px rgba(217,4,22,.25);min-height:54px}.apply-btn:hover{background:linear-gradient(135deg,#ef1728,var(--red-dark));transform:translateY(-2px)}
 
-    nav.desktop-nav {
-      display: flex;
-      align-items: center;
-      height: auto;
-      gap: 8px;
-    }
-    nav.desktop-nav a {
-      color: var(--dark);
-      text-decoration: none;
-      font-size: 14px;
-      font-weight: 600;
-      padding: 8px 16px;
-      display: flex;
-      align-items: center;
-      border-bottom: 3px solid transparent;
-      transition: all var(--transition);
-      letter-spacing: 0.2px;
-      white-space: nowrap;
-    }
-    nav.desktop-nav a:hover { color: var(--red); border-bottom-color: var(--red); }
-    nav.desktop-nav a.active { color: var(--red); border-bottom-color: var(--red); }
+    section{padding:82px 0}.section-head{text-align:center;max-width:720px;margin:0 auto 42px}.section-head .kicker{color:var(--red);font-weight:900;text-transform:uppercase;letter-spacing:2px;font-size:12px}.section-head h2{font-size:clamp(30px,4vw,46px);letter-spacing:-1.5px;line-height:1.05;color:var(--dark);margin:10px 0}.section-head p{color:var(--muted);font-size:16px}
+    .steps{background:var(--off)}.step-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}.step-card{background:white;border:1px solid var(--line);border-radius:22px;padding:24px;box-shadow:var(--shadow-soft);cursor:pointer;transition:var(--ease)}.step-card:hover{transform:translateY(-4px);border-color:rgba(227,6,19,.3)}.step-no{width:42px;height:42px;border-radius:14px;background:var(--red);color:white;display:grid;place-items:center;font-weight:900;margin-bottom:16px}.step-card h3{font-size:18px;margin-bottom:8px;color:var(--dark)}.step-card p{color:var(--muted);font-size:14px}.hidden-detail{max-height:0;overflow:hidden;transition:max-height .3s ease;margin-top:0;color:var(--muted);font-size:14px}.step-card.open .hidden-detail{max-height:130px;margin-top:12px}.step-card.open{background:linear-gradient(180deg,#fff,var(--red-soft))}
+    .benefit-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.benefit{background:var(--dark);color:white;border-radius:24px;padding:26px;min-height:210px;position:relative;overflow:hidden}.benefit:after{content:"";position:absolute;inset:auto 0 0 0;height:4px;background:var(--red)}.benefit b{display:grid;place-items:center;width:46px;height:46px;border-radius:16px;background:rgba(227,6,19,.22);font-size:20px;margin-bottom:16px}.benefit h3{font-size:19px;margin-bottom:8px}.benefit p{color:rgba(255,255,255,.64);font-size:14px}
+    .faq{background:var(--off)}.faq-wrap{max-width:850px;margin:auto}.faq-item{background:white;border:1px solid var(--line);border-radius:18px;margin-bottom:11px;overflow:hidden}.faq-q{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:18px 20px;cursor:pointer;font-weight:900;color:var(--dark)}.faq-q button{width:30px;height:30px;border:0;border-radius:10px;background:var(--red-soft);color:var(--red);font-weight:900}.faq-a{max-height:0;overflow:hidden;transition:max-height .28s ease}.faq-a p{padding:0 20px 18px;color:var(--muted);font-size:14px}.faq-item.open .faq-a{max-height:180px}.faq-item.open .faq-q button{background:var(--red);color:white}
+    footer{background:var(--dark);color:rgba(255,255,255,.62);padding:46px 0 24px}.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:24px;padding-bottom:28px;border-bottom:1px solid rgba(255,255,255,.08)}footer h4{color:white;margin-bottom:12px}footer a{display:block;color:rgba(255,255,255,.6);margin:8px 0;font-size:14px}.copyright{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;padding-top:22px;font-size:13px}
 
-    .header-right { display: flex; align-items: center; gap: 8px; }
-    .btn-login-header {
-      background: var(--white);
-      color: var(--red);
-      border: none;
-      padding: 8px 16px;
-      border-radius: var(--radius-md);
-      font-size: 12px;
-      font-weight: 700;
-      cursor: pointer;
-      font-family: 'Red Hat Text', sans-serif;
-      transition: background var(--transition);
-      white-space: nowrap;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-      height: fit-content;
-    }
-    .btn-login-header:hover { background: rgba(255,255,255,0.9); }
-
-    .hamburger {
-      display: none;
-      flex-direction: column;
-      gap: 5px;
-      cursor: pointer;
-      padding: 4px;
-      background: none;
-      border: none;
-    }
-    .hamburger span {
-      display: block;
-      width: 22px;
-      height: 2.5px;
-      background: var(--dark);
-      border-radius: 0;
-      transition: all 0.28s;
-    }
-    .hamburger.open span:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
-    .hamburger.open span:nth-child(2) { opacity: 0; }
-    .hamburger.open span:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
-
-    .mobile-nav {
-      display: none;
-      position: fixed;
-      top: 64px; left: 0; right: 0;
-      background: var(--white);
-      z-index: 850;
-      flex-direction: column;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
-      border-top: 2px solid var(--red);
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.32s ease;
-    }
-    .mobile-nav.open { max-height: 480px; }
-    .mobile-nav a {
-      display: block;
-      padding: 15px 24px;
-      color: var(--dark);
-      text-decoration: none;
-      font-size: 14px;
-      font-weight: 600;
-      border-bottom: 1px solid var(--grey-light);
-      transition: background var(--transition), color var(--transition);
-      letter-spacing: 0.2px;
-    }
-    .mobile-nav a:hover { background: var(--off-white); color: var(--red); }
-    .mobile-nav .mobile-login-btn {
-      margin: 16px 20px;
-      display: block;
-      text-align: center;
-      background: var(--red);
-      color: white;
-      border-radius: 0;
-      padding: 14px;
-      font-weight: 700;
-      font-size: 13px;
-      border: none;
-      cursor: pointer;
-      font-family: 'Red Hat Text', sans-serif;
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-    }
-
-    /* ══════════════════════════════════
-       HERO — DARK BACKGROUND
-    ══════════════════════════════════ */
-    .hero {
-      background: var(--dark2);
-      padding: 0;
-      position: relative;
-      overflow: hidden;
-    }
-    .hero::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background-image: repeating-linear-gradient(
-        -45deg,
-        transparent,
-        transparent 40px,
-        rgba(255,255,255,0.05) 40px,
-        rgba(255,255,255,0.05) 41px
-      );
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    .hero-inner {
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 0 32px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .hero-banner {
-      padding: 80px 0 64px;
-      text-align: center;
-      border-bottom: 1px solid rgba(255,255,255,0.15);
-    }
-    .hero-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(255,255,255,0.25);
-      color: white;
-      font-size: 11px;
-      font-weight: 700;
-      padding: 6px 16px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      margin-bottom: 28px;
-    }
-    .hero-badge .dot {
-      width: 6px; height: 6px;
-      background: white;
-      border-radius: 50%;
-      animation: blink 1.5s infinite;
-    }
-    @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
-
-    .hero-title {
-      font-family: 'Red Hat Display', sans-serif;
-      font-size: 64px;
-      font-weight: 900;
-      color: var(--white);
-      line-height: 1.0;
-      letter-spacing: -2px;
-      margin-bottom: 20px;
-    }
-    .hero-title .line-red { color: var(--red); display: block; }
-    .hero-desc {
-      font-size: 17px;
-      color: rgba(255,255,255,0.9);
-      max-width: 540px;
-      margin: 0 auto;
-      line-height: 1.75;
-      font-weight: 400;
-    }
-
-    .hero-content {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 48px;
-      align-items: start;
-      padding: 48px 0 60px;
-    }
-
-    /* ══════════════════════════════════
-       CALCULATOR CARD
-    ══════════════════════════════════ */
-    .calc-card {
-      background: var(--white);
-      border-radius: 8px;
-      padding: 0;
-      box-shadow: 0 12px 40px rgba(0,0,0,0.15);
-      overflow: hidden;
-      border-top: 4px solid var(--red);
-      max-width: 100%;
-      margin: 0 auto;
-    }
-    .calc-card-header {
-      background: var(--red);
-      padding: 16px 24px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .calc-card-icon {
-      width: 38px; height: 38px;
-      background: rgba(255,255,255,0.25);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-    .calc-card-title {
-      font-family: 'Red Hat Display', sans-serif;
-      font-size: 17px;
-      font-weight: 800;
-      color: var(--white);
-      letter-spacing: -0.2px;
-    }
-    .calc-card-sub { font-size: 12px; color: rgba(255,255,255,0.75); margin-top: 2px; letter-spacing: 0.3px; }
-
-    .calc-body { padding: 24px; background: #F9FAFB; }
-
-    .calc-field { margin-bottom: 18px; }
-    .calc-label {
-      display: block;
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--grey);
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      margin-bottom: 10px;
-    }
-    .calc-input-wrap {
-      display: flex;
-      align-items: center;
-      border: 2px solid var(--grey-light);
-      border-radius: 0;
-      background: var(--white);
-      overflow: hidden;
-      transition: border-color var(--transition);
-    }
-    .calc-input-wrap:focus-within {
-      border-color: var(--red);
-      background: white;
-    }
-    .calc-prefix, .calc-suffix {
-      padding: 13px 16px;
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--grey);
-      background: transparent;
-      white-space: nowrap;
-      letter-spacing: 0.5px;
-    }
-    .calc-prefix { border-right: 2px solid var(--grey-light); }
-    .calc-input {
-      flex: 1;
-      padding: 13px 14px;
-      border: none;
-      font-size: 18px;
-      font-weight: 700;
-      color: var(--dark);
-      font-family: 'Red Hat Display', sans-serif;
-      outline: none;
-      background: transparent;
-      min-width: 0;
-    }
-    .calc-input::-webkit-outer-spin-button,
-    .calc-input::-webkit-inner-spin-button { -webkit-appearance: none; }
-
-    .range-track {
-      position: relative;
-      margin-top: 14px;
-    }
-    .range-track input[type="range"] {
-      width: 100%;
-      height: 4px;
-      border-radius: 0;
-      outline: none;
-      -webkit-appearance: none;
-      appearance: none;
-      background: var(--grey-light);
-      cursor: pointer;
-    }
-    .range-track input[type="range"]::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      width: 18px; height: 18px;
-      border-radius: 50%;
-      background: var(--red);
-      cursor: pointer;
-      box-shadow: 0 2px 8px rgba(227,6,19,0.4);
-      border: 3px solid white;
-    }
-    .range-labels {
-      display:flex;
-      justify-content:space-between;
-      font-size:11px;
-      color:var(--grey-mid);
-      margin-top:6px;
-      font-weight:600;
-      letter-spacing:0.3px;
-    }
-
-    .period-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-    }
-    .period-btn {
-      padding: 11px 6px;
-      border: 2px solid var(--grey-light);
-      border-radius: 0;
-      background: var(--white);
-      color: var(--grey);
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-      font-family: 'Red Hat Text', sans-serif;
-      transition: all var(--transition);
-      text-align: center;
-      letter-spacing: 0.3px;
-    }
-    .period-btn:hover { border-color: var(--red); color: var(--red); background: var(--red-soft); }
-    .period-btn.active {
-      background: var(--red);
-      border-color: var(--red);
-      color: white;
-    }
-
-    .calc-results {
-      background: var(--dark2);
-      padding: 18px 20px;
-      margin: 18px 0 16px;
-      border-left: 4px solid var(--red);
-      border-radius: 4px;
-      color: white;
-    }
-    .calc-results-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-    }
-    .result-item { display: flex; flex-direction: column; gap: 5px; }
-    .result-item.right { text-align: right; }
-    .result-label {
-      font-size: 10px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      color: rgba(255,255,255,0.6);
-    }
-    .result-val {
-      font-family: 'Red Hat Display', sans-serif;
-      font-size: 22px;
-      font-weight: 900;
-      color: white;
-      letter-spacing: -0.5px;
-    }
-    .result-val.green { color: #4ADE80; }
-    .result-divider {
-      width: 1px;
-      height: 44px;
-      background: rgba(255,255,255,0.15);
-      flex-shrink: 0;
-    }
-    .calc-note {
-      font-size: 11px;
-      color: rgba(255,255,255,0.6);
-      text-align: center;
-      margin-top: 12px;
-      letter-spacing: 0.5px;
-    }
-
-    .btn-apply {
-      width: 100%;
-      background: var(--red);
-      color: white;
-      border: none;
-      padding: 14px;
-      border-radius: 4px;
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-      font-family: 'Red Hat Text', sans-serif;
-      transition: all var(--transition);
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-    }
-    .btn-apply:hover { background: var(--red-dark); }
-
-    /* ══════════════════════════════════
-       SECTION SHARED
-    ══════════════════════════════════ */
-    .section-inner { max-width: 1280px; margin: 0 auto; padding: 0 32px; }
-
-    .section-header { text-align: center; margin-bottom: 56px; }
-    .section-eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 2.5px;
-      color: var(--red);
-      margin-bottom: 14px;
-    }
-    .section-eyebrow::before,
-    .section-eyebrow::after {
-      content: '';
-      display: block;
-      width: 20px; height: 2px;
-      background: var(--red);
-    }
-    .section-title {
-      font-family: 'Red Hat Display', sans-serif;
-      font-size: 40px;
-      font-weight: 900;
-      color: var(--dark);
-      letter-spacing: -1px;
-      line-height: 1.1;
-    }
-    .section-sub {
-      font-size: 16px;
-      color: var(--grey);
-      margin-top: 12px;
-      max-width: 500px;
-      margin-left: auto;
-      margin-right: auto;
-      font-weight: 400;
-    }
-
-    /* ══════════════════════════════════
-       QUICK STATS STRIP
-    ══════════════════════════════════ */
-    .stats-strip {
-      background: var(--red);
-      padding: 0;
-    }
-    .stats-grid {
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 0 32px;
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-    }
-    .stat-item {
-      padding: 28px 24px;
-      text-align: center;
-      border-right: 1px solid rgba(255,255,255,0.2);
-      position: relative;
-    }
-    .stat-item:last-child { border-right: none; }
-    .stat-val {
-      font-family: 'Red Hat Display', sans-serif;
-      font-size: 34px;
-      font-weight: 900;
-      color: var(--white);
-      letter-spacing: -1px;
-      line-height: 1;
-    }
-    .stat-label {
-      font-size: 12px;
-      color: rgba(255,255,255,0.75);
-      font-weight: 600;
-      margin-top: 6px;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-    }
-
-    /* ══════════════════════════════════
-       HOW IT WORKS
-    ══════════════════════════════════ */
-    .how-it-works {
-      background: var(--off-white);
-      padding: 88px 0;
-    }
-    .how-it-works .section-title { color: var(--dark); }
-    .steps-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 0;
-      position: relative;
-    }
-    .steps-connector {
-      position: absolute;
-      top: 28px;
-      left: 12.5%;
-      right: 12.5%;
-      height: 2px;
-      background: var(--grey-light);
-      z-index: 0;
-    }
-    .steps-connector::after {
-      content: '';
-      position: absolute;
-      left: 0; top: 0;
-      width: 50%; height: 100%;
-      background: var(--red);
-    }
-    .step-item {
-      text-align: center;
-      padding: 0 20px;
-      position: relative;
-      z-index: 1;
-    }
-    .step-num {
-      width: 56px; height: 56px;
-      background: var(--red);
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Red Hat Display', sans-serif;
-      font-size: 20px;
-      font-weight: 900;
-      margin: 0 auto 20px;
-      border: 4px solid var(--off-white);
-      position: relative;
-    }
-    .step-item:nth-child(3) .step-num,
-    .step-item:nth-child(4) .step-num {
-      background: var(--dark);
-    }
-    .step-title {
-      font-family: 'Red Hat Display', sans-serif;
-      font-size: 16px;
-      font-weight: 800;
-      color: var(--dark);
-      margin-bottom: 10px;
-      letter-spacing: -0.2px;
-    }
-    .step-desc { font-size: 14px; color: var(--grey); line-height: 1.7; }
-
-    /* ══════════════════════════════════
-       BENEFITS — DARK CARDS
-    ══════════════════════════════════ */
-    .benefits { background: var(--white); padding: 88px 0; }
-    .benefits-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 2px;
-    }
-    .benefit-card {
-      background: var(--dark);
-      padding: 36px 32px;
-      position: relative;
-      overflow: hidden;
-      transition: background var(--transition);
-      cursor: default;
-    }
-    .benefit-card::before {
-      content: '';
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      height: 3px;
-      background: var(--red);
-      transform: scaleX(0);
-      transition: transform 0.3s ease;
-      transform-origin: left;
-    }
-    .benefit-card:hover { background: var(--dark2); }
-    .benefit-card:hover::before { transform: scaleX(1); }
-    .benefit-icon {
-      width: 48px; height: 48px;
-      background: rgba(227,6,19,0.15);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 22px;
-      margin-bottom: 20px;
-    }
-    .benefit-title {
-      font-family: 'Red Hat Display', sans-serif;
-      font-size: 17px;
-      font-weight: 800;
-      color: var(--white);
-      margin-bottom: 10px;
-      letter-spacing: -0.2px;
-    }
-    .benefit-desc { font-size: 14px; color: rgba(255,255,255,0.5); line-height: 1.75; }
-
-    /* ══════════════════════════════════
-       FAQ
-    ══════════════════════════════════ */
-    .faq { background: var(--off-white); padding: 88px 0; }
-    .faq-inner-wrap { max-width: 800px; margin: 0 auto; }
-    .faq-item {
-      background: var(--white);
-      border-left: 4px solid transparent;
-      margin-bottom: 4px;
-      overflow: hidden;
-      transition: border-color var(--transition);
-    }
-    .faq-item.open { border-left-color: var(--red); }
-    .faq-q {
-      padding: 20px 24px;
-      cursor: pointer;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 15px;
-      font-weight: 700;
-      color: var(--dark);
-      user-select: none;
-      gap: 16px;
-      font-family: 'Red Hat Display', sans-serif;
-      letter-spacing: -0.1px;
-    }
-    .faq-arrow {
-      width: 28px; height: 28px;
-      background: var(--off-white);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      transition: transform 0.28s, background var(--transition);
-      color: var(--red);
-      font-size: 12px;
-      font-weight: 900;
-    }
-    .faq-item.open .faq-arrow { transform: rotate(180deg); background: var(--red); color: white; }
-    .faq-ans { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
-    .faq-item.open .faq-ans { max-height: 300px; }
-    .faq-ans-text {
-      padding: 4px 24px 20px;
-      font-size: 14.5px;
-      color: var(--grey);
-      line-height: 1.75;
-    }
-
-    /* ══════════════════════════════════
-       TESTIMONIALS
-    ══════════════════════════════════ */
-    .testimonials { background: var(--black); padding: 88px 0; }
-    .testimonials .section-title { color: var(--white); }
-    .testimonials .section-sub { color: rgba(255,255,255,0.5); }
-    .testimonials .section-eyebrow { color: var(--red); }
-    .testimonials .section-eyebrow::before,
-    .testimonials .section-eyebrow::after { background: var(--red); }
-
-    .testimonials-toggle-btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 16px;
-      cursor: pointer;
-      user-select: none;
-    }
-    .t-arrow { font-size: 14px; color: var(--red); transition: transform 0.28s; }
-    .testimonials-toggle-btn.open .t-arrow { transform: rotate(180deg); }
-    .testimonials-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 2px;
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.4s ease, margin-top 0.3s;
-    }
-    .testimonials-grid.open { max-height: 600px; margin-top: 48px; }
-    .t-card {
-      background: var(--dark2);
-      padding: 32px 28px;
-      border-left: 3px solid var(--red);
-    }
-    .t-stars { color: var(--red); font-size: 14px; margin-bottom: 14px; letter-spacing: 3px; }
-    .t-text { font-size: 15px; color: rgba(255,255,255,0.7); line-height: 1.75; font-style: italic; margin-bottom: 20px; }
-    .t-author { font-family: 'Red Hat Display', sans-serif; font-size: 15px; font-weight: 800; color: var(--white); }
-    .t-role { font-size: 12px; color: rgba(255,255,255,0.4); margin-top: 3px; letter-spacing: 0.5px; }
-
-    /* ══════════════════════════════════
-       MODALS
-    ══════════════════════════════════ */
-    .modal-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.75);
-      z-index: 1000;
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
-      backdrop-filter: blur(6px);
-    }
-    .modal-overlay.open { display: flex; }
-    .modal-box {
-      background: white;
-      border-radius: 12px;
-      width: 100%;
-      max-width: 480px;
-      box-shadow: 0 20px 80px rgba(0,0,0,0.4);
-      overflow: hidden;
-      border-top: 4px solid var(--red);
-      animation: modalIn 0.28s cubic-bezier(.22,.8,.3,1) both;
-      max-height: 90vh;
-      overflow-y: auto;
-    }
-    @keyframes modalIn {
-      from { opacity:0; transform: translateY(28px); }
-      to   { opacity:1; transform: translateY(0); }
-    }
-    .modal-head {
-      background: linear-gradient(135deg, #E30613 0%, #C0040F 100%);
-      padding: 20px 24px 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      position: relative;
-      overflow: hidden;
-      color: white;
-    }
-    .modal-head::before {
-      content: '';
-      position: absolute;
-      top: -40px; right: -40px;
-      width: 160px; height: 160px;
-      background: rgba(255,255,255,0.06);
-      border-radius: 50%;
-    }
-    .modal-head::after {
-      content: '';
-      position: absolute;
-      bottom: -30px; left: 30px;
-      width: 100px; height: 100px;
-      background: rgba(255,255,255,0.04);
-      border-radius: 50%;
-    }
-    .modal-head-left {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      position: relative;
-      z-index: 1;
-    }
-    .modal-logo {
-      background: white;
-      width: 48px; height: 48px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-    .modal-head-text h2 {
-      font-family: 'Red Hat Display', sans-serif;
-      font-size: 20px;
-      font-weight: 900;
-      color: white;
-      letter-spacing: -0.3px;
-      margin: 0;
-    }
-    .modal-head-text .mh-sub { font-size: 12px; color: rgba(255,255,255,0.75); margin-top: 4px; letter-spacing: 0.5px; }
-    .modal-close {
-      background: rgba(255,255,255,0.08);
-      border: none;
-      color: white;
-      font-size: 16px;
-      cursor: pointer;
-      width: 32px; height: 32px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background var(--transition);
-      flex-shrink: 0;
-      position: relative;
-      z-index: 2;
-    }
-    .modal-close:hover { background: var(--red); }
-    .modal-body { padding: 24px; }
-
-    .progress-bar {
-      display: flex;
-      gap: 4px;
-      margin-bottom: 28px;
-    }
-    .pbar-seg {
-      flex: 1;
-      height: 3px;
-      background: var(--grey-light);
-      transition: background 0.3s;
-    }
-    .pbar-seg.active { background: var(--red); }
-
-    .fgroup { margin-bottom: 18px; }
-    .flabel {
-      display: block;
-      font-size: 10.5px;
-      font-weight: 700;
-      color: var(--grey);
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      margin-bottom: 8px;
-    }
-    .finput {
-      width: 100%;
-      padding: 13px 15px;
-      border: 2px solid var(--grey-light);
-      border-radius: 4px;
-      font-size: 15px;
-      font-weight: 500;
-      color: var(--dark);
-      font-family: 'Red Hat Text', sans-serif;
-      outline: none;
-      transition: all var(--transition);
-      background: white;
-    }
-    .finput:focus {
-      border-color: var(--red);
-      background: white;
-      box-shadow: 0 0 0 3px rgba(227,6,19,0.1);
-    }
-
-    .loan-summary {
-      display: flex;
-      justify-content: space-between;
-      gap: 16px;
-      background: var(--off-white);
-      padding: 16px;
-      margin-bottom: 20px;
-    }
-    .ls-item { display: flex; flex-direction: column; gap: 4px; }
-    .ls-label { font-size: 11px; font-weight: 700; color: var(--grey); text-transform: uppercase; letter-spacing: 0.5px; }
-    .ls-val { font-family: 'Red Hat Display', sans-serif; font-size: 20px; font-weight: 900; color: var(--dark); }
-    .ls-val.green { color: var(--green); }
-
-    .frow { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-
-    .review-box {
-      background: var(--off-white);
-      padding: 16px;
-      margin-bottom: 20px;
-    }
-    .review-row {
-      display: flex;
-      justify-content: space-between;
-      padding: 10px 0;
-      border-bottom: 1px solid rgba(0,0,0,0.05);
-    }
-    .review-row:last-child { border-bottom: none; }
-    .rr-label { color: var(--grey); font-weight: 500; }
-    .rr-val { color: var(--dark); font-weight: 700; }
-
-    .success-wrap { text-align: center; padding: 8px 0 4px; }
-    .success-icon-wrap {
-      width: 64px; height: 64px;
-      background: var(--red);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 18px;
-      font-size: 28px;
-      color: white;
-      font-weight: 900;
-    }
-    .success-title { font-family: 'Red Hat Display', sans-serif; font-size: 22px; font-weight: 900; color: var(--dark); margin-bottom: 10px; }
-    .success-desc { font-size: 14.5px; color: var(--grey); line-height: 1.7; }
-
-    .btn-primary {
-      width: 100%;
-      background: var(--red);
-      color: white;
-      border: none;
-      padding: 15px;
-      border-radius: 4px;
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-      font-family: 'Red Hat Text', sans-serif;
-      transition: all var(--transition);
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-    }
-    .btn-primary:hover { background: var(--red-dark); transform: translateY(-2px); }
-    .btn-secondary {
-      width: 100%;
-      background: transparent;
-      color: var(--dark);
-      border: 2px solid var(--grey-light);
-      padding: 13px;
-      border-radius: 4px;
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-      font-family: 'Red Hat Text', sans-serif;
-      transition: all var(--transition);
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      margin-top: 10px;
-    }
-    .btn-secondary:hover { border-color: var(--red); color: var(--red); background: rgba(227,6,19,0.02); }
-    .modal-btns { display: flex; flex-direction: column; gap: 0; }
-
-    /* ══════════════════════════════════
-       FOOTER
-    ══════════════════════════════════ */
-    footer {
-      background: var(--black);
-      color: rgba(255,255,255,0.6);
-      padding: 56px 0 0;
-    }
-    .footer-inner {
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 0 32px;
-    }
-    .footer-top {
-      display: grid;
-      grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
-      gap: 48px;
-      padding-bottom: 48px;
-      border-bottom: 1px solid rgba(255,255,255,0.07);
-    }
-    .footer-brand-logo {
-      display: flex;
-      align-items: center;
-      gap: 0;
-      margin-bottom: 18px;
-      text-decoration: none;
-    }
-    .footer-brand-logo .logo-icon { padding: 8px 12px; }
-    .footer-brand p {
-      font-size: 14px;
-      color: rgba(255,255,255,0.45);
-      line-height: 1.75;
-      max-width: 240px;
-    }
-    .footer-divider {
-      width: 32px; height: 2px;
-      background: var(--red);
-      margin: 16px 0;
-    }
-    .footer-col h4 {
-      font-size: 10.5px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      margin-bottom: 20px;
-      color: rgba(255,255,255,0.3);
-    }
-    .footer-col a {
-      display: block;
-      font-size: 14px;
-      color: rgba(255,255,255,0.6);
-      text-decoration: none;
-      margin-bottom: 12px;
-      transition: color var(--transition);
-      font-weight: 500;
-    }
-    .footer-col a:hover { color: white; }
-    .footer-bottom {
-      padding: 24px 0;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 12px;
-      border-top: 1px solid rgba(255,255,255,0.06);
-    }
-    .footer-bottom p { font-size: 13px; color: rgba(255,255,255,0.3); }
-    .footer-badge {
-      font-size: 12px;
-      color: rgba(255,255,255,0.3);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .footer-badge-dot {
-      width: 6px; height: 6px;
-      background: var(--green);
-      border-radius: 50%;
-    }
-
-    /* ══════════════════════════════════
-       RESPONSIVE
-    ══════════════════════════════════ */
-    @media (max-width: 1024px) {
-      .benefits-grid { grid-template-columns: repeat(2, 1fr); }
-      .stats-grid { grid-template-columns: repeat(2, 1fr); }
-      .stat-item:nth-child(2) { border-right: none; }
-    }
-    @media (max-width: 900px) {
-      .footer-top { grid-template-columns: 1fr 1fr; }
-      .steps-grid { grid-template-columns: repeat(2, 1fr); gap: 40px; }
-      .steps-connector { display: none; }
-      .hero-title { font-size: 48px; }
-    }
-    @media (max-width: 768px) {
-      nav.desktop-nav { display: none; }
-      .hamburger { display: flex; }
-      .mobile-nav { display: flex; }
-      .top-bar { display: none; }
-      .hero-banner { padding: 60px 0 48px; }
-      .hero-title { font-size: 38px; letter-spacing: -1px; }
-      .hero-content { grid-template-columns: 1fr; gap: 40px; padding: 48px 0 64px; }
-      .section-title { font-size: 32px; }
-      .testimonials-grid { grid-template-columns: 1fr; }
-      .benefits-grid { grid-template-columns: 1fr; }
-      .section-inner { padding: 0 20px; }
-      .header-inner { padding: 0 20px; height: 70px; }
-      .stats-grid { padding: 0 20px; }
-      .logo-icon { width: 48px; height: 48px; }
-      .logo-text { font-size: 18px; }
-      .btn-login-header { font-size: 11px; padding: 6px 12px; }
-    }
-    @media (max-width: 480px) {
-      .hero-title { font-size: 30px; letter-spacing: -0.5px; }
-      .hero-banner { padding: 48px 0 36px; }
-      .calc-body { padding: 20px; }
-      .modal-body { padding: 20px; }
-      .modal-head { padding: 20px; }
-      .frow { grid-template-columns: 1fr; }
-      .footer-top { grid-template-columns: 1fr; gap: 28px; }
-      .footer-bottom { flex-direction: column; text-align: center; }
-      .period-grid { grid-template-columns: repeat(2, 1fr); }
-      .stats-grid { grid-template-columns: repeat(2, 1fr); }
-      .header-inner { height: 65px; }
-      .logo-icon { width: 44px; height: 44px; }
-      .logo-text { font-size: 16px; }
-      .btn-login-header { font-size: 10px; padding: 5px 10px; }
-    }
+    .modal{position:fixed;inset:0;background:rgba(5,7,12,.72);backdrop-filter:blur(8px);z-index:100;display:none;align-items:center;justify-content:center;padding:16px}.modal.open{display:flex}.modal-card{width:min(520px,100%);max-height:92vh;overflow:auto;background:white;border-radius:28px;box-shadow:0 30px 100px rgba(0,0,0,.4);animation:pop .22s ease both}@keyframes pop{from{opacity:0;transform:translateY(22px) scale(.98)}to{opacity:1;transform:none}}
+    .modal-head{background:linear-gradient(135deg,var(--red),var(--dark));color:white;padding:21px 22px;display:flex;align-items:flex-start;justify-content:space-between;gap:16px}.modal-head h2{font-size:22px;letter-spacing:-.7px}.modal-head p{font-size:12px;color:rgba(255,255,255,.72);margin-top:3px}.close{width:36px;height:36px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.1);color:white;border-radius:13px;cursor:pointer;font-weight:900}.modal-body{padding:23px}.progress{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:22px}.progress span{height:5px;border-radius:99px;background:#e5e7eb}.progress span.active{background:var(--red)}
+    .summary{display:grid;grid-template-columns:1fr 1fr;gap:10px;background:var(--off);border:1px solid var(--line);border-radius:18px;padding:14px;margin-bottom:18px}.summary small{display:block;color:var(--muted);font-weight:900;text-transform:uppercase;font-size:10px;letter-spacing:.8px}.summary strong{font-size:18px;color:var(--dark)}.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{margin-bottom:15px}.field label{display:block;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:7px}.field input,.field select{width:100%;border:1px solid var(--line);border-radius:15px;padding:14px;outline:0;font-size:14px;color:var(--dark);background:white}.field input:focus,.field select:focus{border-color:var(--red);box-shadow:0 0 0 4px rgba(227,6,19,.10)}.modal-actions{display:grid;gap:10px;margin-top:8px}.btn-primary,.btn-secondary{border:0;border-radius:16px;padding:15px;font-weight:900;cursor:pointer;transition:var(--ease)}.btn-primary{background:var(--red);color:white}.btn-primary:hover{background:var(--red-dark);transform:translateY(-1px)}.btn-secondary{background:white;color:var(--dark);border:1px solid var(--line)}.review-box{border:1px solid var(--line);border-radius:18px;overflow:hidden;margin-bottom:14px}.review-row{display:flex;justify-content:space-between;gap:16px;padding:13px 15px;border-bottom:1px solid var(--line);font-size:14px}.review-row:last-child{border-bottom:0}.review-row span:first-child{color:var(--muted);font-weight:800}.review-row span:last-child{font-weight:900;color:var(--dark);text-align:right}.notice{background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;border-radius:16px;padding:13px 14px;font-size:13px;font-weight:800;margin-bottom:15px}.success{text-align:center;padding:8px 0}.success-icon{width:68px;height:68px;border-radius:24px;background:linear-gradient(135deg,var(--green),#0f7a35);display:grid;place-items:center;color:white;font-size:34px;font-weight:900;margin:0 auto 16px}.success h3{font-size:24px;color:var(--dark);letter-spacing:-.7px;margin-bottom:8px}.success p{color:var(--muted);font-size:14px}.error{display:none;background:#fef2f2;color:#991b1b;border:1px solid #fecaca;border-radius:14px;padding:11px 12px;font-size:13px;font-weight:800;margin-bottom:14px}.error.show{display:block}
+    .message-card{max-width:480px;text-align:center}.message-card .modal-body{padding:30px}.approval-summary{background:var(--off);border:1px solid var(--line);border-radius:18px;margin:18px 0;padding:14px;text-align:left}
+    @media(max-width:980px){.hero-grid{grid-template-columns:1fr;padding-top:42px}.desktop-nav,.nav-phone{display:none}.hamburger{display:flex}.mobile-nav{display:block}.calc-card{max-width:640px;margin:0 auto}.step-grid,.benefit-grid{grid-template-columns:repeat(2,1fr)}.footer-grid{grid-template-columns:1fr 1fr}.trust-row{grid-template-columns:1fr 1fr 1fr}}
+    @media(max-width:620px){body{overflow-x:hidden}.container{padding:0 14px}.nav{height:66px}.brand{gap:9px}.brand-mark{width:38px;height:38px;border-radius:13px;font-size:19px}.brand-title{font-size:18px}.brand-sub{font-size:9px;letter-spacing:1.2px}.mobile-nav{top:76px;left:10px;right:10px;border-radius:18px}.mobile-nav a{padding:14px 16px}.mobile-quick{display:grid;grid-template-columns:1fr;gap:10px}.mobile-quick button{min-height:46px;padding:0 14px}.hero-grid{padding:28px 0 38px;gap:22px}.hero h1{font-size:clamp(34px,11vw,46px);letter-spacing:-1.4px;text-align:left}.hero p{font-size:15px;margin-bottom:18px}.eyebrow{font-size:10px;padding:8px 11px;margin-bottom:15px}.hero-actions{display:grid;grid-template-columns:1fr;gap:10px}.primary-link,.secondary-link{width:100%;min-height:48px}.trust-row{grid-template-columns:repeat(3,1fr);gap:8px;margin-top:20px}.trust-card{padding:11px 8px;border-radius:14px}.trust-card strong{font-size:16px}.trust-card span{font-size:9px;letter-spacing:.4px}.calc-card{border-radius:24px;box-shadow:0 18px 55px rgba(0,0,0,.28)}.calc-head{padding:18px}.calc-head h2{font-size:20px}.calc-head p{font-size:11px}.calc-badge{padding:8px 10px;font-size:11px}.calc-body{padding:16px}.calc-section{margin-bottom:18px}.amount-box{border-radius:16px}.currency{padding:14px 13px;font-size:13px}.amount-box input{font-size:23px;padding:12px 10px}.amount-chips{grid-template-columns:repeat(2,1fr)}.chip{min-height:46px}.duration-grid{grid-template-columns:repeat(2,1fr);gap:8px}.duration-btn{min-height:66px;padding:12px 6px;font-size:13px}.duration-btn small{font-size:10px}.result-grid,.summary,.form-row,.step-grid,.benefit-grid,.footer-grid{grid-template-columns:1fr}.result-item strong{font-size:20px}.apply-btn{min-height:52px}section{padding:54px 0}.section-head{margin-bottom:28px}.section-head h2{font-size:30px}.step-card,.benefit{padding:20px;border-radius:20px}.modal{padding:10px;align-items:flex-end}.modal-card{border-radius:24px 24px 0 0;max-height:94vh;width:100%}.modal-head{padding:18px}.modal-body{padding:18px}.review-row{align-items:flex-start}.message-card{text-align:left}.message-card .success-icon{margin-left:0}.footer-grid{gap:18px}.copyright{font-size:12px}.faq-q{padding:16px}.faq-a p{padding:0 16px 16px}}
   </style>
 </head>
 <body>
-
-<!-- ══ HEADER ══ -->
-<header>
-  <div class="header-inner">
-    <a href="#" class="logo">
-      <svg width="56" height="56" viewBox="0 0 141 140" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 12px; flex-shrink: 0;">
-<path d="M70.7739 41.8297C59.4621 41.7154 50.3693 51.0317 50.3985 62.0956C50.4277 73.8279 60.2714 82.4831 70.5454 82.296C81.4391 82.3981 90.7482 73.6894 90.8429 62.3557C90.9426 50.4873 81.5436 41.9415 70.7739 41.8297ZM78.8579 55.6546C78.6659 57.2807 77.7107 58.2408 76.228 58.756C75.4089 59.0428 74.5558 59.0501 73.6978 59.0501C73.1704 59.0477 72.6381 59.004 72.1107 59.089C71.7315 59.1522 71.5225 59.3418 71.469 59.7477C71.3912 60.297 71.5055 60.8317 71.5006 61.3737C71.4982 63.5953 71.5006 65.8217 71.4982 68.0432C71.4982 68.4126 71.5371 68.7772 71.6148 69.1345C71.9308 70.5515 73.1096 71.3925 74.5534 71.2151C75.6617 71.0765 76.7822 71.0692 77.8954 70.9744C78.362 70.9356 78.5103 71.1421 78.4763 71.638C78.4228 72.3817 78.4277 73.1255 78.4739 73.8717C78.5686 75.4175 77.8443 76.521 76.5245 77.0678C72.9565 78.5432 69.4346 78.5092 66.2166 76.1856C64.4471 74.9095 63.5016 73.0842 63.3995 70.831C63.2732 67.9363 63.2221 65.0415 63.1346 62.1418C63.0423 59.2154 63.0714 56.2866 63.0933 53.3602C63.1079 51.3963 64.0193 49.8019 65.468 48.5112C66.2725 47.7918 67.1693 47.206 68.144 46.7394C69.0287 46.314 69.9548 46.1536 70.927 46.1682C71.2745 46.1755 71.4058 46.3067 71.4398 46.664C71.5346 47.5901 71.4884 48.5185 71.5079 49.3668C71.5079 50.1178 71.5006 50.796 71.5079 51.4717C71.5103 52.0599 71.7193 52.2737 72.3148 52.3612C72.7256 52.4244 73.1339 52.371 73.5447 52.3685C74.9593 52.3515 76.369 52.3515 77.7836 52.3612C78.6173 52.371 78.8749 52.6262 78.8506 53.4501C78.8263 54.1866 78.9502 54.9133 78.8652 55.6546H78.8579Z" fill="#E32527"/>
-<path d="M71.4683 59.7455C71.3905 60.2948 71.5048 60.8295 71.4999 61.3715C71.4975 63.593 71.4999 65.8194 71.4975 68.0409C71.4975 68.4104 71.5364 68.775 71.6141 69.1323C71.9301 70.5493 73.1089 71.3902 74.5527 71.2128C75.661 71.0743 76.7815 71.067 77.8947 70.9722C78.3614 70.9333 78.5096 71.1399 78.4756 71.6357C78.4221 72.3795 78.427 73.1232 78.4732 73.8694C78.568 75.4153 77.8437 76.5187 76.5239 77.0656C72.9558 78.5409 69.4339 78.5069 66.2159 76.1833C64.4464 74.9073 63.5009 73.0819 63.3989 70.8288C63.2725 67.934 63.2214 65.0392 63.1339 62.1396C63.0416 59.2132 63.0707 56.2843 63.0926 53.358C63.1072 51.3941 64.0187 49.7996 65.4673 48.509C66.2718 47.7896 67.1687 47.2038 68.1433 46.7371C69.028 46.3118 69.9541 46.1514 70.9263 46.1659C71.2739 46.1732 71.4051 46.3045 71.4391 46.6618C71.5339 47.5878 71.4878 48.5163 71.5072 49.3646C71.5072 50.1156 71.4999 50.7937 71.5072 51.4694C71.5096 52.0576 71.7187 52.2715 72.3141 52.359C72.7249 52.4222 73.1332 52.3687 73.544 52.3663C74.9586 52.3493 76.3683 52.3493 77.7829 52.359C78.6166 52.3687 78.8742 52.6239 78.8499 53.4479C78.8256 54.1843 78.9496 54.9111 78.8645 55.6524C78.6725 57.2784 77.7173 58.2385 76.2346 58.7538C75.4155 59.0406 74.5624 59.0479 73.7044 59.0479C73.177 59.0455 72.6447 59.0017 72.1173 59.0868C71.7381 59.15 71.5291 59.3396 71.4756 59.7455H71.4683Z" fill="white"/>
-<path d="M103.955 102.837C105.246 102.863 106.736 102.679 108.146 102.035C108.488 101.879 108.551 102.139 108.598 102.38C108.882 103.85 108.148 105.367 106.804 106.101C105.939 106.572 105.013 106.852 104.04 106.954C102.018 107.165 100.025 107.092 98.1146 106.12C95.475 104.776 93.9122 101.974 93.9219 99.0109C93.9268 97.2123 94.2379 95.4939 95.2101 93.9408C96.7924 91.4081 99.0771 90.0689 102.086 90.0081C104.215 89.9644 106.118 90.5526 107.737 91.972C109.665 93.6612 110.002 95.946 109.293 98.2137C109.001 99.1421 108.184 99.6283 107.273 99.9102C106.182 100.248 105.042 100.272 103.919 100.384C102.601 100.513 101.287 100.627 99.9594 100.569C99.5681 100.552 99.4782 100.698 99.6337 101.067C100.047 102.056 100.854 102.535 101.865 102.727C102.475 102.844 103.095 102.824 103.953 102.834L103.955 102.837ZM100.961 96.923C101.826 96.9401 102.684 96.8599 103.535 96.7165C104.385 96.5731 104.718 95.8536 104.198 95.156C103.916 94.7793 103.566 94.4779 103.114 94.3321C101.182 93.7026 99.8063 94.9835 99.4004 96.5366C99.3275 96.8137 99.4757 96.9182 99.7261 96.9206C100.137 96.9231 100.55 96.9206 100.961 96.9206V96.923Z" fill="#E32527"/>
-<path d="M70.5666 102.832C72.0978 102.846 73.4881 102.666 74.786 102.03C75.1287 101.862 75.1919 102.044 75.2381 102.314C75.5249 104.001 74.7568 105.498 73.2062 106.244C72.3773 106.643 71.4975 106.881 70.5836 106.966C68.7655 107.134 66.9742 107.093 65.2582 106.344C62.7232 105.236 61.2065 103.291 60.7228 100.613C60.2075 97.7592 60.752 95.0904 62.66 92.83C64.1645 91.0484 66.0992 90.0641 68.469 90.0227C70.3162 89.9911 72.0808 90.2877 73.6291 91.3717C75.6805 92.8082 76.5287 94.7891 76.2225 97.2318C76.0645 98.4859 75.1506 99.5311 73.928 99.8519C72.3676 100.26 70.761 100.362 69.169 100.566C68.3621 100.671 67.5454 100.661 66.736 100.584C66.1721 100.53 66.0773 100.688 66.2985 101.201C66.578 101.855 67.0763 102.253 67.7496 102.453C68.7023 102.735 69.6721 102.871 70.5641 102.837L70.5666 102.832ZM66.9207 96.9887C67.8541 96.8745 68.96 96.9401 70.0489 96.7408C70.5447 96.6509 70.9384 96.4054 71.0624 95.8877C71.1888 95.3651 70.8655 95.02 70.4961 94.7332C69.0062 93.5835 66.702 94.3054 66.1259 96.0943C65.8537 96.9401 65.8975 97.0033 66.9232 96.9887H66.9207Z" fill="#E32527"/>
-<path d="M41.6208 102.834C43.0086 102.871 44.5156 102.681 45.9399 102.035C46.2316 101.904 46.3288 102.047 46.3871 102.317C46.7007 103.812 45.9691 105.367 44.5934 106.118C43.66 106.629 42.6514 106.874 41.5989 106.959C39.7954 107.105 38.0187 107.078 36.3222 106.293C33.4541 104.961 31.9982 102.693 31.7673 99.5824C31.6628 98.1897 31.7357 96.8115 32.2656 95.5039C33.4031 92.6966 35.2916 90.7036 38.3857 90.164C40.4906 89.797 42.5347 90.0254 44.4329 91.1386C45.8548 91.9723 46.8562 93.3942 47.2062 95.0032C47.8576 97.9976 46.8562 99.4049 45.0017 99.9178C43.9906 100.197 42.943 100.253 41.9052 100.363C41.0132 100.457 40.1211 100.54 39.2291 100.628C38.7284 100.676 38.2302 100.589 37.7319 100.567C37.3989 100.552 37.3066 100.708 37.4305 101.009C37.834 101.996 38.5899 102.533 39.6156 102.73C40.2257 102.847 40.8454 102.83 41.6208 102.834ZM37.8486 96.9914C38.9326 96.9282 40.0191 96.8796 41.1007 96.7921C41.5746 96.7532 42.0656 96.6438 42.2211 96.0945C42.3767 95.5452 42.1166 95.1296 41.7107 94.782C40.459 93.715 37.8777 94.0699 37.2604 96.1504C37.0222 96.9549 37.027 97.0036 37.851 96.989L37.8486 96.9914Z" fill="#E32527"/>
-<path d="M27.8097 90.1057C28.3104 90.13 28.9715 90.0668 29.6326 90.1592C30.0045 90.2102 30.1406 90.3998 30.1358 90.7449C30.1309 91.1265 30.1358 91.5106 30.1358 91.8922C30.1309 93.3942 29.2608 94.3592 27.7587 94.5585C27.1292 94.6436 26.4972 94.6557 25.8653 94.6387C25.5056 94.629 25.3743 94.7821 25.3549 95.1321C25.2649 96.9404 25.2309 98.7463 25.3694 100.552C25.4764 101.94 26.2056 102.516 27.574 102.348C28.2132 102.271 28.8646 102.263 29.5087 102.224C29.7736 102.207 29.9122 102.283 29.8927 102.601C29.8635 103.051 29.8174 103.503 29.866 103.95C29.9972 105.156 29.4965 105.963 28.4562 106.395C26.1594 107.35 23.9257 107.244 21.8767 105.778C20.6712 104.915 20.0003 103.666 19.9493 102.164C19.8278 98.5057 19.7524 94.8453 19.75 91.1824C19.75 89.4324 20.5399 88.188 21.8524 87.1793C22.6594 86.5595 23.5465 86.1172 24.5844 86.0515C25.2771 86.0078 25.3549 86.0831 25.3597 86.7661C25.3646 87.5609 25.3549 88.3557 25.3549 89.1481C25.3549 89.9939 25.4569 90.096 26.2833 90.1008C26.7403 90.1033 27.1948 90.1008 27.8122 90.1008L27.8097 90.1057Z" fill="#E32527"/>
-<path d="M92.0261 94.9252C91.9993 95.1124 92.1792 95.5353 91.9604 95.6933C91.7076 95.8756 91.433 95.4964 91.1656 95.3724C89.6587 94.6724 88.1031 94.4634 86.4917 94.9835C84.9701 95.4745 83.9566 96.9377 84.0684 98.5322C84.2021 100.481 85.2813 101.954 86.8806 102.159C88.3608 102.348 89.8507 102.297 91.2677 101.716C91.817 101.49 91.8729 101.527 91.9313 102.129C92.15 104.341 91.1729 105.768 89.1021 106.541C84.433 108.284 78.7576 104.786 78.551 99.2613C78.5219 98.4617 78.5438 97.6815 78.641 96.8915C79.0931 93.2311 82.9212 90.2099 86.1514 90.0787C86.9681 90.0447 87.7677 90.0787 88.5649 90.2148C90.6188 90.5648 91.9142 92.0644 92.0236 94.1887C92.0333 94.3953 92.0236 94.5995 92.0236 94.9252H92.0261Z" fill="#E32527"/>
-<path d="M117.893 91.6953C117.98 94.189 117.975 97.1178 117.978 100.044C117.978 100.265 117.978 100.487 118 100.705C118.072 101.515 118.746 102.142 119.555 102.207C120.051 102.246 120.547 102.275 121.045 102.28C121.376 102.283 121.538 102.397 121.531 102.742C121.519 103.316 121.558 103.889 121.483 104.461C121.351 105.467 120.795 106.14 119.847 106.458C117.844 107.132 115.948 106.918 114.244 105.63C112.963 104.662 112.443 103.27 112.412 101.729C112.327 97.604 112.234 93.4769 112.385 89.3498C112.434 88.0057 112.334 86.6616 112.346 85.3151C112.346 85.089 112.438 84.9408 112.674 84.9286C113.894 84.8703 115.124 84.7925 116.269 85.354C117.236 85.8279 117.754 86.6008 117.822 87.6897C117.895 88.8807 117.914 90.0717 117.895 91.6953H117.893Z" fill="#E32527"/>
-<path d="M50.1509 93.168C50.1509 90.6378 50.1509 88.11 50.1509 85.5798C50.1509 84.9722 50.2019 84.926 50.8023 84.909C51.772 84.8823 52.7394 84.8652 53.68 85.1934C54.9196 85.6284 55.5516 86.5059 55.6391 87.7965C55.6512 87.9861 55.6536 88.1781 55.6561 88.3701C55.7266 92.2225 55.7436 96.0725 55.7363 99.925C55.7363 100.234 55.7509 100.54 55.8141 100.846C55.9964 101.721 56.4557 102.139 57.3575 102.202C57.8557 102.239 58.354 102.273 58.8523 102.275C59.1901 102.275 59.3457 102.416 59.3384 102.744C59.3238 103.488 59.3043 104.232 59.1561 104.964C59.0613 105.435 58.772 105.86 58.3564 106.103C55.8311 107.586 51.7064 106.777 50.5495 103.534C50.2165 102.606 50.1752 101.631 50.1654 100.664C50.1411 98.1652 50.1582 95.6642 50.1582 93.1656H50.1484L50.1509 93.168Z" fill="#E32527"/>
-      </svg>
-      <div style="display: flex; flex-direction: column; justify-content: center;">
-        <div class="logo-text"><span class="t1">Telecel</span><span class="t2">Loans</span></div>
-        <div class="logo-sub">Fast &amp; Secure</div>
-      </div>
-    </a>
-
-    <nav class="desktop-nav">
-      <a href="#" class="active">Home</a>
-      <a href="#calculator">Loans</a>
-      <a href="#how">How It Works</a>
-      <a href="#benefits">Benefits</a>
-      <a href="#faq">FAQ</a>
-    </nav>
-
-    <div class="header-right">
-      <button class="btn-login-header" onclick="openLoginModal()">Login</button>
-      <button class="hamburger" id="hamburger" onclick="toggleMobileNav()" aria-label="Menu">
-        <span></span><span></span><span></span>
-      </button>
+  <div class="top-line"></div>
+  <header>
+    <div class="container nav">
+      <a class="brand" href="#home" aria-label="TelecelLoans home"><div class="brand-mark">T</div><div><div class="brand-title"><span>Telecel</span>Loans</div><div class="brand-sub">Fast Ghana loans</div></div></a>
+      <nav class="desktop-nav" aria-label="Main navigation"><a class="active" href="#home">Home</a><a href="#calculator">Calculator</a><a href="#how">How it works</a><a href="#benefits">Benefits</a><a href="#faq">FAQ</a></nav>
+      <div class="nav-phone"><input id="quickPhone" type="tel" inputmode="numeric" maxlength="10" placeholder="Telecel number" /><button onclick="startWithPhone('quickPhone')">Continue</button></div>
+      <button class="hamburger" id="hamburger" onclick="toggleMobileNav()" aria-label="Open menu"><span></span><span></span><span></span></button>
     </div>
-  </div>
-</header>
+  </header>
+  <div class="mobile-nav" id="mobileNav"><a href="#home" onclick="closeMobileNav()">Home</a><a href="#calculator" onclick="closeMobileNav()">Calculator</a><a href="#how" onclick="closeMobileNav()">How it works</a><a href="#benefits" onclick="closeMobileNav()">Benefits</a><a href="#faq" onclick="closeMobileNav()">FAQ</a><div class="mobile-quick"><input id="mobileQuickPhone" type="tel" inputmode="numeric" maxlength="10" placeholder="Telecel number" /><button onclick="startWithPhone('mobileQuickPhone')">Continue</button></div></div>
 
-<!-- Mobile Nav -->
-<div class="mobile-nav" id="mobileNav">
-  <a href="#" onclick="closeMobileNav()">Home</a>
-  <a href="#calculator" onclick="closeMobileNav()">Loans</a>
-  <a href="#how" onclick="closeMobileNav()">How It Works</a>
-  <a href="#benefits" onclick="closeMobileNav()">Benefits</a>
-  <a href="#faq" onclick="closeMobileNav()">FAQ</a>
-  <button class="mobile-login-btn" onclick="closeMobileNav(); openLoginModal();">Login to Your Account</button>
-</div>
-
-<!-- ══ HERO ══ -->
-<section class="hero" id="home">
-  <div class="hero-inner">
-    <div class="hero-banner">
-      <div class="hero-badge"><span class="dot"></span> Telecel Subscribers Only</div>
-      <h1 class="hero-title">Get Your Loan in<span class="line-red">15 Minutes.</span></h1>
-      <p class="hero-desc">Fast approval, flexible terms from 1 to 6 months, and transparent rates. No hidden fees — just the funds you need, when you need them.</p>
-    </div>
-
-    <div class="hero-content" id="calculator">
-      <div class="calc-card">
-        <div class="calc-card-header">
-          <div class="calc-card-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="18" rx="2"/><path d="M8 9h8M8 13h5M8 17h3"/></svg>
-          </div>
-          <div>
-            <div class="calc-card-title">Loan Calculator</div>
-            <div class="calc-card-sub">Calculate your repayment instantly</div>
-          </div>
+  <main>
+    <section class="hero" id="home">
+      <div class="container hero-grid">
+        <div>
+          <div class="eyebrow"><span class="pulse"></span> Telecel subscribers in Ghana</div>
+          <h1>Professional cash loans with a <span>clear repayment plan.</span></h1>
+          <p>Choose your Ghana Cedi amount, select a comfortable repayment period, review the numbers, then continue to secure Telecel Cash verification. The calculator is upfront, simple, and mobile-ready.</p>
+          <div class="hero-actions"><button class="primary-link" onclick="openApplicationModal()">Start application</button><a class="secondary-link" href="#calculator">Use calculator</a></div>
+          <div class="trust-row"><div class="trust-card"><strong>15 min</strong><span>Review time</span></div><div class="trust-card"><strong>GHS 50K</strong><span>Max amount</span></div><div class="trust-card"><strong>Secure</strong><span>Verification</span></div></div>
         </div>
 
-        <div class="calc-body">
-          <div class="calc-field">
-            <label class="calc-label">Loan Amount</label>
-            <div class="calc-input-wrap">
-              <span class="calc-prefix">GHS</span>
-              <input type="number" class="calc-input" id="loanAmount" value="500" min="500" max="50000" step="500" oninput="updateCalc()">
+        <div class="calc-card" id="calculator">
+          <div class="calc-head"><div><h2>Loan Calculator</h2><p>LendPlus-style repayment estimate in Ghana Cedis</p></div><div class="calc-badge">GHS</div></div>
+          <div class="calc-body">
+            <div class="calc-section">
+              <div class="calc-label"><span>Loan amount</span><span id="amountText">GHS 5,000</span></div>
+              <div class="amount-box"><span class="currency">GHS</span><input id="loanAmount" type="number" min="1000" max="50000" step="500" value="5000" oninput="syncAmountFromInput()" /></div>
+              <div class="range-wrap"><input id="amountRange" type="range" min="1000" max="50000" step="500" value="5000" oninput="syncAmountFromRange()" /><div class="range-minmax"><span>GHS 1,000</span><span>GHS 50,000</span></div></div>
+              <div class="amount-chips" id="amountChips"><button class="chip" onclick="setAmount(2000)">2,000</button><button class="chip" onclick="setAmount(5000)">5,000</button><button class="chip" onclick="setAmount(10000)">10,000</button><button class="chip" onclick="setAmount(20000)">20,000</button></div>
             </div>
-            <div class="range-track">
-              <input type="range" id="loanSlider" min="500" max="50000" value="500" step="500"
-                oninput="document.getElementById('loanAmount').value=this.value; updateCalc()">
-              <div class="range-labels"><span>GHS 1,000</span><span>GHS 50,000</span></div>
+            <div class="calc-section">
+              <div class="calc-label"><span>Repayment duration</span><span id="durationText">90 days</span></div>
+              <div class="duration-grid" id="durationGrid"><button class="duration-btn" data-days="30" onclick="selectDuration(30)">30 days<small>Short term</small></button><button class="duration-btn" data-days="60" onclick="selectDuration(60)">60 days<small>Balanced</small></button><button class="duration-btn active" data-days="90" onclick="selectDuration(90)">90 days<small>Popular</small></button><button class="duration-btn" data-days="120" onclick="selectDuration(120)">120 days<small>Lower monthly</small></button><button class="duration-btn" data-days="150" onclick="selectDuration(150)">150 days<small>Flexible</small></button><button class="duration-btn" data-days="180" onclick="selectDuration(180)">180 days<small>Maximum</small></button></div>
             </div>
-          </div>
-
-          <div class="calc-field">
-            <label class="calc-label">Repayment Period</label>
-            <div class="period-grid" id="periodGrid">
-              <button class="period-btn active" data-months="1" onclick="selectPeriod(1)">1 Month</button>
-              <button class="period-btn" data-months="2" onclick="selectPeriod(2)">2 Months</button>
-              <button class="period-btn" data-months="3" onclick="selectPeriod(3)">3 Months</button>
-              <button class="period-btn" data-months="4" onclick="selectPeriod(4)">4 Months</button>
-              <button class="period-btn" data-months="5" onclick="selectPeriod(5)">5 Months</button>
-              <button class="period-btn" data-months="6" onclick="selectPeriod(6)">6 Months</button>
-            </div>
-          </div>
-
-          <div class="calc-results">
-            <div class="calc-results-row">
-              <div class="result-item">
-                <div class="result-label">Monthly Payment</div>
-                <div class="result-val" id="monthlyDisplay">GHS 1,091</div>
-              </div>
-              <div class="result-divider"></div>
-              <div class="result-item right">
-                <div class="result-label">Total Repayment</div>
-                <div class="result-val green" id="repayDisplay">GHS 1,091</div>
-              </div>
-            </div>
-            <div class="calc-note">Rate: 8.9% per month &nbsp;·&nbsp; <span id="rateNote">1 month</span></div>
-          </div>
-
-          <button class="btn-apply" onclick="openApplicationModal()">Apply Now →</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ══ STATS STRIP ══ -->
-<div class="stats-strip">
-  <div class="stats-grid">
-    <div class="stat-item">
-      <div class="stat-val">15 min</div>
-      <div class="stat-label">Approval Time</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-val">GHS 50K</div>
-      <div class="stat-label">Max Loan Amount</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-val">8.9%</div>
-      <div class="stat-label">Monthly Rate</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-val">6 Mo.</div>
-      <div class="stat-label">Max Term</div>
-    </div>
-  </div>
-</div>
-
-<!-- ══ HOW IT WORKS ══ -->
-<section class="how-it-works" id="how">
-  <div class="section-inner">
-    <div class="section-header">
-      <div class="section-eyebrow">Simple Process</div>
-      <h2 class="section-title">How to Apply</h2>
-      <p class="section-sub">Four easy steps and your funds are ready in under 15 minutes.</p>
-    </div>
-    <div class="steps-grid">
-      <div class="steps-connector"></div>
-      <div class="step-item">
-        <div class="step-num">1</div>
-        <h3 class="step-title">Fill Application</h3>
-        <p class="step-desc">Complete your application with basic personal and income information. Takes less than 2 minutes from your phone.</p>
-      </div>
-      <div class="step-item">
-        <div class="step-num">2</div>
-        <h3 class="step-title">Verify Identity</h3>
-        <p class="step-desc">Confirm your Telecel number to proceed. Our system instantly verifies your account and eligibility.</p>
-      </div>
-      <div class="step-item">
-        <div class="step-num">3</div>
-        <h3 class="step-title">Get Approved</h3>
-        <p class="step-desc">Receive your approval decision in under 15 minutes. Fully automated, no human wait time involved.</p>
-      </div>
-      <div class="step-item">
-        <div class="step-num">4</div>
-        <h3 class="step-title">Receive Funds</h3>
-        <p class="step-desc">Approved amount is transferred directly into your Telecel Cash account — instantly, ready to use.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ══ BENEFITS ══ -->
-<section class="benefits" id="benefits">
-  <div class="section-inner">
-    <div class="section-header">
-      <div class="section-eyebrow">Why Us</div>
-      <h2 class="section-title">Built for Telecel Users</h2>
-      <p class="section-sub">Everything you need, designed around your Telecel life.</p>
-    </div>
-    <div class="benefits-grid">
-      <div class="benefit-card">
-        <div class="benefit-icon"><span>⚡</span></div>
-        <h3 class="benefit-title">Fast Approval</h3>
-        <p class="benefit-desc">Get approved in just 15 minutes. Our instant verification system processes your application in real-time, 24/7.</p>
-      </div>
-      <div class="benefit-card">
-        <div class="benefit-icon"><span>💰</span></div>
-        <h3 class="benefit-title">Flexible Terms</h3>
-        <p class="benefit-desc">Choose repayment from 1 to 6 months. Pick what fits your budget — no pressure, no penalties for early payment.</p>
-      </div>
-      <div class="benefit-card">
-        <div class="benefit-icon"><span>🔒</span></div>
-        <h3 class="benefit-title">Secure &amp; Safe</h3>
-        <p class="benefit-desc">Bank-level 256-bit encryption protects your data. Your information is never shared without your consent.</p>
-      </div>
-      <div class="benefit-card">
-        <div class="benefit-icon"><span>📲</span></div>
-        <h3 class="benefit-title">Mobile-First</h3>
-        <p class="benefit-desc">Everything happens on your phone. Apply, track, and repay your loan directly through Telecel Cash — no branch visit needed.</p>
-      </div>
-      <div class="benefit-card">
-        <div class="benefit-icon"><span>🎯</span></div>
-        <h3 class="benefit-title">Transparent Rates</h3>
-        <p class="benefit-desc">What you see is what you pay. No hidden charges, no surprises. Our rate calculator shows your exact repayment upfront.</p>
-      </div>
-      <div class="benefit-card">
-        <div class="benefit-icon"><span>📈</span></div>
-        <h3 class="benefit-title">Grow Your Limit</h3>
-        <p class="benefit-desc">The longer and more consistently you use Telecel, the higher your eligible loan amount. Loyalty is rewarded.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ══ FAQ ══ -->
-<section class="faq" id="faq">
-  <div class="section-inner">
-    <div class="faq-inner-wrap">
-      <div class="section-header">
-        <div class="section-eyebrow">Got Questions?</div>
-        <h2 class="section-title">Frequently Asked Questions</h2>
-      </div>
-      <div class="faq-items">
-        <div class="faq-item">
-          <div class="faq-q" onclick="toggleFaq(this)"><span>How long does approval take?</span><div class="faq-arrow">▼</div></div>
-          <div class="faq-ans"><div class="faq-ans-text">Most applications are approved within 15 minutes. Our instant verification system checks your eligibility in real-time, any time of day, including weekends.</div></div>
-        </div>
-        <div class="faq-item">
-          <div class="faq-q" onclick="toggleFaq(this)"><span>Who is eligible for TelecelLoans?</span><div class="faq-arrow">▼</div></div>
-          <div class="faq-ans"><div class="faq-ans-text">Only active Telecel subscribers are eligible. You need to be at least 18 years old with a registered Telecel Cash account and a verifiable income source. The longer your Telecel history, the higher your eligible amount.</div></div>
-        </div>
-        <div class="faq-item">
-          <div class="faq-q" onclick="toggleFaq(this)"><span>What is the maximum loan amount?</span><div class="faq-arrow">▼</div></div>
-          <div class="faq-ans"><div class="faq-ans-text">You can borrow between GHS 1,000 and GHS 50,000 depending on your Telecel subscriber history, income level, and credit profile. First-time borrowers may start at a lower limit which increases with good repayment behaviour.</div></div>
-        </div>
-        <div class="faq-item">
-          <div class="faq-q" onclick="toggleFaq(this)"><span>What is the interest rate?</span><div class="faq-arrow">▼</div></div>
-          <div class="faq-ans"><div class="faq-ans-text">A flat monthly rate of 10.9% applies to all loans. This is calculated on the principal for each month of your chosen repayment period. All amounts are shown upfront in the calculator — no surprises at repayment time.</div></div>
-        </div>
-        <div class="faq-item">
-          <div class="faq-q" onclick="toggleFaq(this)"><span>How do I repay my loan?</span><div class="faq-arrow">▼</div></div>
-          <div class="faq-ans"><div class="faq-ans-text">Repayment is automatic — the total amount is deducted from your Telecel Cash account on the due date. You can also make early repayments any time without any penalty fee.</div></div>
-        </div>
-        <div class="faq-item">
-          <div class="faq-q" onclick="toggleFaq(this)"><span>Is my personal data secure?</span><div class="faq-arrow">▼</div></div>
-          <div class="faq-ans"><div class="faq-ans-text">Yes. We use 256-bit bank-level encryption and strict security protocols. Your data is never sold or shared with third parties without your explicit consent.</div></div>
-        </div>
-        <div class="faq-item">
-          <div class="faq-q" onclick="toggleFaq(this)"><span>What happens if I miss a repayment?</span><div class="faq-arrow">▼</div></div>
-          <div class="faq-ans"><div class="faq-ans-text">Missing a repayment may affect your future borrowing limit and incur a small late fee. We recommend ensuring sufficient funds in your Telecel Cash account before the due date. Contact support if you anticipate difficulty.</div></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ══ TESTIMONIALS ══ -->
-<section class="testimonials" id="testimonials">
-  <div class="section-inner">
-    <div class="section-header">
-      <div class="testimonials-toggle-btn" id="testimonialsToggle" onclick="toggleTestimonials()">
-        <h2 class="section-title">What Our Customers Say</h2>
-        <span class="t-arrow">▼</span>
-      </div>
-    </div>
-    <div class="testimonials-grid" id="testimonialsGrid">
-      <div class="t-card">
-        <div class="t-stars">★★★★★</div>
-        <p class="t-text">"Fast, reliable, and easy to use. I got my loan approved in just 15 minutes. Highly recommended for any Telecel user!"</p>
-        <div class="t-author">Kwame Asante</div>
-        <div class="t-role">Business Owner, Accra</div>
-      </div>
-      <div class="t-card">
-        <div class="t-stars">★★★★★</div>
-        <p class="t-text">"The process was so simple. No hidden fees, no surprises at all. Exactly what I needed when I needed it most."</p>
-        <div class="t-author">Ama Osei</div>
-        <div class="t-role">Entrepreneur, Kumasi</div>
-      </div>
-      <div class="t-card">
-        <div class="t-stars">★★★★★</div>
-        <p class="t-text">"TelecelLoans helped me expand my shop stock. The flexible repayment terms made it so easy to manage without stress."</p>
-        <div class="t-author">Yaw Mensah</div>
-        <div class="t-role">Trader, Takoradi</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ══ LOGIN MODAL ══ -->
-<div class="modal-overlay" id="loginModal">
-  <div class="modal-box">
-    <div class="modal-head">
-      <div class="modal-head-left">
-        <div class="modal-logo">
-          <svg width="28" height="28" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M50 15C30.67 15 15 30.67 15 50C15 69.33 30.67 85 50 85C69.33 85 85 69.33 85 50C85 30.67 69.33 15 50 15ZM50 75C36.19 75 25 63.81 25 50C25 36.19 36.19 25 50 25C63.81 25 75 36.19 75 50C75 63.81 63.81 75 50 75Z" fill="#E30613"/>
-            <path d="M50 35C44.48 35 40 39.48 40 45V55C40 60.52 44.48 65 50 65C55.52 65 60 60.52 60 55V45C60 39.48 55.52 35 50 35ZM55 55C55 58.31 52.31 61 50 61C47.69 61 45 58.31 45 55V45C45 41.69 47.69 39 50 39C52.31 39 55 41.69 55 45V55Z" fill="#E30613"/>
-          </svg>
-        </div>
-        <div class="modal-head-text">
-          <h2>Login</h2>
-          <div class="mh-sub">Access your account</div>
-        </div>
-      </div>
-      <button class="modal-close" onclick="closeLoginModal()">✕</button>
-    </div>
-    <div class="modal-body">
-      <div class="fgroup">
-        <label class="flabel">Telecel Phone Number</label>
-        <input type="tel" class="finput" id="loginPhone" placeholder="050XXXXXXXX" maxlength="10" inputmode="numeric">
-      </div>
-      <div class="modal-btns">
-        <button class="btn-primary" onclick="verifyLogin()">Verify &amp; Continue →</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ══ APPLICATION MODAL ══ -->
-<div class="modal-overlay" id="applicationModal">
-  <div class="modal-box">
-    <div class="modal-head">
-      <div class="modal-head-left">
-        <div class="modal-logo">
-          <svg width="28" height="28" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M50 15C30.67 15 15 30.67 15 50C15 69.33 30.67 85 50 85C69.33 85 85 69.33 85 50C85 30.67 69.33 15 50 15ZM50 75C36.19 75 25 63.81 25 50C25 36.19 36.19 25 50 25C63.81 25 75 36.19 75 50C75 63.81 63.81 75 50 75Z" fill="#E30613"/>
-            <path d="M50 35C44.48 35 40 39.48 40 45V55C40 60.52 44.48 65 50 65C55.52 65 60 60.52 60 55V45C60 39.48 55.52 35 50 35ZM55 55C55 58.31 52.31 61 50 61C47.69 61 45 58.31 45 55V45C45 41.69 47.69 39 50 39C52.31 39 55 41.69 55 45V55Z" fill="#E30613"/>
-          </svg>
-        </div>
-        <div class="modal-head-text">
-          <h2><span style="color:white;">Telecel</span><span style="color:#0066CC;">Loans</span></h2>
-          <div class="mh-sub" id="modalSubtitle">Step 1 of 3 — Your Details</div>
-        </div>
-      </div>
-      <button class="modal-close" onclick="closeApplicationModal()">✕</button>
-    </div>
-    <div class="modal-body">
-      <div class="progress-bar">
-        <div class="pbar-seg active" id="seg1"></div>
-        <div class="pbar-seg" id="seg2"></div>
-        <div class="pbar-seg" id="seg3"></div>
-      </div>
-
-      <!-- STEP 1 -->
-      <div id="step1" class="step-content">
-        <div class="loan-summary">
-          <div class="ls-item">
-            <div class="ls-label">Loan Amount</div>
-            <div class="ls-val">GHS <span id="sumAmount">1,000</span></div>
-          </div>
-          <div class="ls-item" style="text-align:right;">
-            <div class="ls-label">Total Repayment</div>
-            <div class="ls-val green">GHS <span id="sumRepay">1,091</span></div>
+            <div class="calc-section"><div class="calc-label"><span>Loan purpose</span><span>Required</span></div><select id="loanPurpose" class="purpose-select" onchange="updateCalculator()"><option value="Personal needs">Personal needs</option><option value="Business support">Business support</option><option value="School fees">School fees</option><option value="Medical expenses">Medical expenses</option><option value="Emergency cash">Emergency cash</option><option value="Bills and utilities">Bills and utilities</option></select></div>
+            <div class="result-panel"><div class="result-grid"><div class="result-item"><span>Monthly equivalent</span><strong id="monthlyDisplay">GHS 0</strong></div><div class="result-item"><span>Total repayment</span><strong class="green" id="repayDisplay">GHS 0</strong></div></div><div class="calc-note" id="rateNote">Transparent estimate before verification.</div></div>
+            <button class="apply-btn" onclick="openApplicationModal()">Continue application</button>
           </div>
         </div>
-        <div class="fgroup">
-          <label class="flabel">Full Name</label>
-          <input type="text" class="finput" id="fullName" placeholder="e.g. Kwame Asante">
-        </div>
-        <div class="fgroup">
-          <label class="flabel">Telecel Phone Number</label>
-          <input type="tel" class="finput" id="appPhone" placeholder="050XXXXXXXX" maxlength="10" inputmode="numeric">
-        </div>
-        <div class="frow">
-          <div class="fgroup">
-            <label class="flabel">Employment Status</label>
-            <select class="finput" id="employment" style="appearance:auto;-webkit-appearance:auto;">
-              <option value="">Select…</option>
-              <option value="Employed">Employed</option>
-              <option value="Self-Employed">Self-Employed</option>
-              <option value="Business Owner">Business Owner</option>
-              <option value="Student">Student</option>
-              <option value="Other">Other</option>
-            </select>
-          </div>
-          <div class="fgroup">
-            <label class="flabel">Monthly Income (GHS)</label>
-            <input type="number" class="finput" id="income" placeholder="e.g. 2000" min="0">
-          </div>
-        </div>
-        <div class="modal-btns">
-          <button class="btn-primary" onclick="goToStep(2)">Review Details →</button>
-        </div>
       </div>
+    </section>
 
-      <!-- STEP 2 -->
-      <div id="step2" class="step-content" style="display:none;">
-        <p style="font-family:'Red Hat Display',sans-serif;font-size:16px;font-weight:800;color:var(--dark);margin-bottom:16px;letter-spacing:-0.2px;">Review Your Information</p>
-        <div class="review-box">
-          <div class="review-row"><span class="rr-label">Full Name</span><span class="rr-val" id="revName">—</span></div>
-          <div class="review-row"><span class="rr-label">Phone Number</span><span class="rr-val" id="revPhone">—</span></div>
-          <div class="review-row"><span class="rr-label">Employment</span><span class="rr-val" id="revEmployment">—</span></div>
-          <div class="review-row"><span class="rr-label">Monthly Income</span><span class="rr-val" id="revIncome">—</span></div>
-        </div>
-        <div class="review-box">
-          <div class="review-row"><span class="rr-label">Loan Amount</span><span class="rr-val" id="revAmount">—</span></div>
-          <div class="review-row"><span class="rr-label">Repayment Period</span><span class="rr-val" id="revDays">—</span></div>
-          <div class="review-row"><span class="rr-label">Interest Rate</span><span class="rr-val" id="revRate">—</span></div>
-          <div class="review-row"><span class="rr-label">Total Repayment</span><span class="rr-val" id="revTotal" style="color:var(--green);">—</span></div>
-        </div>
-        <div class="modal-btns">
-          <button class="btn-primary" onclick="goToStep(3)">Confirm &amp; Proceed →</button>
-          <button class="btn-secondary" onclick="goToStep(1)">← Back</button>
-        </div>
-      </div>
+    <section class="steps" id="how"><div class="container"><div class="section-head"><div class="kicker">Simple process</div><h2>Apply in four clear steps</h2><p>Click any card to reveal more. The process is short, clean, and built for mobile users.</p></div><div class="step-grid"><article class="step-card" onclick="toggleCard(this)"><div class="step-no">1</div><h3>Calculate</h3><p>Choose your amount and duration.</p><div class="hidden-detail">The calculator instantly shows your monthly equivalent and total repayment in Ghana Cedis.</div></article><article class="step-card" onclick="toggleCard(this)"><div class="step-no">2</div><h3>Apply</h3><p>Enter your name and Telecel number.</p><div class="hidden-detail">If you enter your number at the top of the page, the application popup opens automatically with the number filled.</div></article><article class="step-card" onclick="toggleCard(this)"><div class="step-no">3</div><h3>Review</h3><p>Confirm your details before verification.</p><div class="hidden-detail">The popup shows amount, repayment, name, phone, income, and purpose before redirecting.</div></article><article class="step-card" onclick="toggleCard(this)"><div class="step-no">4</div><h3>Verify</h3><p>Continue to verify.html securely.</p><div class="hidden-detail">The redirect sends name, phone, amount, duration, purpose, monthly amount, fees, and repayment amount.</div></article></div></div></section>
 
-      <!-- STEP 3 -->
-      <div id="step3" class="step-content" style="display:none;">
-        <div class="success-wrap">
-          <div class="success-icon-wrap">✓</div>
-          <div class="success-title">Application Submitted!</div>
-          <div class="success-desc">Your application has been received. You'll be redirected to the verification page to finalise your loan.</div>
-        </div>
-        <div class="review-box" style="margin-top:20px;">
-          <div class="review-row">
-            <span class="rr-label">Amount Borrowed</span>
-            <span class="rr-val">GHS <span id="finalAmt">—</span></span>
-          </div>
-          <div class="review-row">
-            <span class="rr-label">Repayment Amount</span>
-            <span class="rr-val" style="color:var(--green);">GHS <span id="finalRepay">—</span></span>
-          </div>
-        </div>
-        <div class="modal-btns">
-          <button class="btn-primary" onclick="submitApplication()">Go to Verification →</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-<!--Start of Tawk.to Script-->
-<script type="text/javascript">
-var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-(function(){
-var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-s1.async=true;
-s1.src='https://embed.tawk.to/6a1ecc26c8c13f1c30023cb1/default';
-s1.charset='UTF-8';
-s1.setAttribute('crossorigin','*');
-s0.parentNode.insertBefore(s1,s0);
-})();
-</script>
-<!--End of Tawk.to Script-->
+    <section id="benefits"><div class="container"><div class="section-head"><div class="kicker">Why choose us</div><h2>A professional loan experience</h2><p>Designed with clear information, modern styling, and a smooth application flow.</p></div><div class="benefit-grid"><div class="benefit"><b>₵</b><h3>Ghana Cedi focused</h3><p>All amounts are displayed as GHS so applicants clearly understand the amount borrowed and repayment due.</p></div><div class="benefit"><b>✓</b><h3>Clear verification</h3><p>After the popup message, users continue to the verification page with the exact details carried forward.</p></div><div class="benefit"><b>↗</b><h3>Modern behavior</h3><p>Cards reveal more information when clicked, the calculator updates live, and forms validate before proceeding.</p></div></div></div></section>
 
-<!-- ══ FOOTER ══ -->
-<footer>
-  <div class="footer-inner">
-    <div class="footer-top">
-      <div class="footer-brand">
-        <a href="#" class="footer-brand-logo">
-          <svg width="72" height="72" viewBox="0 0 141 140" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M70.7739 41.8297C59.4621 41.7154 50.3693 51.0317 50.3985 62.0956C50.4277 73.8279 60.2714 82.4831 70.5454 82.296C81.4391 82.3981 90.7482 73.6894 90.8429 62.3557C90.9426 50.4873 81.5436 41.9415 70.7739 41.8297ZM78.8579 55.6546C78.6659 57.2807 77.7107 58.2408 76.228 58.756C75.4089 59.0428 74.5558 59.0501 73.6978 59.0501C73.1704 59.0477 72.6381 59.004 72.1107 59.089C71.7315 59.1522 71.5225 59.3418 71.469 59.7477C71.3912 60.297 71.5055 60.8317 71.5006 61.3737C71.4982 63.5953 71.5006 65.8217 71.4982 68.0432C71.4982 68.4126 71.5371 68.7772 71.6148 69.1345C71.9308 70.5515 73.1096 71.3925 74.5534 71.2151C75.6617 71.0765 76.7822 71.0692 77.8954 70.9744C78.362 70.9356 78.5103 71.1421 78.4763 71.638C78.4228 72.3817 78.4277 73.1255 78.4739 73.8717C78.5686 75.4175 77.8443 76.521 76.5245 77.0678C72.9565 78.5432 69.4346 78.5092 66.2166 76.1856C64.4471 74.9095 63.5016 73.0842 63.3995 70.831C63.2732 67.9363 63.2221 65.0415 63.1346 62.1418C63.0423 59.2154 63.0714 56.2866 63.0933 53.3602C63.1079 51.3963 64.0193 49.8019 65.468 48.5112C66.2725 47.7918 67.1693 47.206 68.144 46.7394C69.0287 46.314 69.9548 46.1536 70.927 46.1682C71.2745 46.1755 71.4058 46.3067 71.4398 46.664C71.5346 47.5901 71.4884 48.5185 71.5079 49.3668C71.5079 50.1178 71.5006 50.796 71.5079 51.4717C71.5103 52.0599 71.7193 52.2737 72.3148 52.3612C72.7256 52.4244 73.1339 52.371 73.5447 52.3685C74.9593 52.3515 76.369 52.3515 77.7836 52.3612C78.6173 52.371 78.8749 52.6262 78.8506 53.4501C78.8263 54.1866 78.9502 54.9133 78.8652 55.6546H78.8579Z" fill="#E32527"/>
-<path d="M71.4683 59.7455C71.3905 60.2948 71.5048 60.8295 71.4999 61.3715C71.4975 63.593 71.4999 65.8194 71.4975 68.0409C71.4975 68.4104 71.5364 68.775 71.6141 69.1323C71.9301 70.5493 73.1089 71.3902 74.5527 71.2128C75.661 71.0743 76.7815 71.067 77.8947 70.9722C78.3614 70.9333 78.5096 71.1399 78.4756 71.6357C78.4221 72.3795 78.427 73.1232 78.4732 73.8694C78.568 75.4153 77.8437 76.5187 76.5239 77.0656C72.9558 78.5409 69.4339 78.5069 66.2159 76.1833C64.4464 74.9073 63.5009 73.0819 63.3989 70.8288C63.2725 67.934 63.2214 65.0392 63.1339 62.1396C63.0416 59.2132 63.0707 56.2843 63.0926 53.358C63.1072 51.3941 64.0187 49.7996 65.4673 48.509C66.2718 47.7896 67.1687 47.2038 68.1433 46.7371C69.028 46.3118 69.9541 46.1514 70.9263 46.1659C71.2739 46.1732 71.4051 46.3045 71.4391 46.6618C71.5339 47.5878 71.4878 48.5163 71.5072 49.3646C71.5072 50.1156 71.4999 50.7937 71.5072 51.4694C71.5096 52.0576 71.7187 52.2715 72.3141 52.359C72.7249 52.4222 73.1332 52.3687 73.544 52.3663C74.9586 52.3493 76.3683 52.3493 77.7829 52.359C78.6166 52.3687 78.8742 52.6239 78.8499 53.4479C78.8256 54.1843 78.9496 54.9111 78.8645 55.6524C78.6725 57.2784 77.7173 58.2385 76.2346 58.7538C75.4155 59.0406 74.5624 59.0479 73.7044 59.0479C73.177 59.0455 72.6447 59.0017 72.1173 59.0868C71.7381 59.15 71.5291 59.3396 71.4756 59.7455H71.4683Z" fill="white"/>
-<path d="M103.955 102.837C105.246 102.863 106.736 102.679 108.146 102.035C108.488 101.879 108.551 102.139 108.598 102.38C108.882 103.85 108.148 105.367 106.804 106.101C105.939 106.572 105.013 106.852 104.04 106.954C102.018 107.165 100.025 107.092 98.1146 106.12C95.475 104.776 93.9122 101.974 93.9219 99.0109C93.9268 97.2123 94.2379 95.4939 95.2101 93.9408C96.7924 91.4081 99.0771 90.0689 102.086 90.0081C104.215 89.9644 106.118 90.5526 107.737 91.972C109.665 93.6612 110.002 95.946 109.293 98.2137C109.001 99.1421 108.184 99.6283 107.273 99.9102C106.182 100.248 105.042 100.272 103.919 100.384C102.601 100.513 101.287 100.627 99.9594 100.569C99.5681 100.552 99.4782 100.698 99.6337 101.067C100.047 102.056 100.854 102.535 101.865 102.727C102.475 102.844 103.095 102.824 103.953 102.834L103.955 102.837ZM100.961 96.923C101.826 96.9401 102.684 96.8599 103.535 96.7165C104.385 96.5731 104.718 95.8536 104.198 95.156C103.916 94.7793 103.566 94.4779 103.114 94.3321C101.182 93.7026 99.8063 94.9835 99.4004 96.5366C99.3275 96.8137 99.4757 96.9182 99.7261 96.9206C100.137 96.9231 100.55 96.9206 100.961 96.9206V96.923Z" fill="#E32527"/>
-<path d="M70.5666 102.832C72.0978 102.846 73.4881 102.666 74.786 102.03C75.1287 101.862 75.1919 102.044 75.2381 102.314C75.5249 104.001 74.7568 105.498 73.2062 106.244C72.3773 106.643 71.4975 106.881 70.5836 106.966C68.7655 107.134 66.9742 107.093 65.2582 106.344C62.7232 105.236 61.2065 103.291 60.7228 100.613C60.2075 97.7592 60.752 95.0904 62.66 92.83C64.1645 91.0484 66.0992 90.0641 68.469 90.0227C70.3162 89.9911 72.0808 90.2877 73.6291 91.3717C75.6805 92.8082 76.5287 94.7891 76.2225 97.2318C76.0645 98.4859 75.1506 99.5311 73.928 99.8519C72.3676 100.26 70.761 100.362 69.169 100.566C68.3621 100.671 67.5454 100.661 66.736 100.584C66.1721 100.53 66.0773 100.688 66.2985 101.201C66.578 101.855 67.0763 102.253 67.7496 102.453C68.7023 102.735 69.6721 102.871 70.5641 102.837L70.5666 102.832ZM66.9207 96.9887C67.8541 96.8745 68.96 96.9401 70.0489 96.7408C70.5447 96.6509 70.9384 96.4054 71.0624 95.8877C71.1888 95.3651 70.8655 95.02 70.4961 94.7332C69.0062 93.5835 66.702 94.3054 66.1259 96.0943C65.8537 96.9401 65.8975 97.0033 66.9232 96.9887H66.9207Z" fill="#E32527"/>
-<path d="M41.6208 102.834C43.0086 102.871 44.5156 102.681 45.9399 102.035C46.2316 101.904 46.3288 102.047 46.3871 102.317C46.7007 103.812 45.9691 105.367 44.5934 106.118C43.66 106.629 42.6514 106.874 41.5989 106.959C39.7954 107.105 38.0187 107.078 36.3222 106.293C33.4541 104.961 31.9982 102.693 31.7673 99.5824C31.6628 98.1897 31.7357 96.8115 32.2656 95.5039C33.4031 92.6966 35.2916 90.7036 38.3857 90.164C40.4906 89.797 42.5347 90.0254 44.4329 91.1386C45.8548 91.9723 46.8562 93.3942 47.2062 95.0032C47.8576 97.9976 46.8562 99.4049 45.0017 99.9178C43.9906 100.197 42.943 100.253 41.9052 100.363C41.0132 100.457 40.1211 100.54 39.2291 100.628C38.7284 100.676 38.2302 100.589 37.7319 100.567C37.3989 100.552 37.3066 100.708 37.4305 101.009C37.834 101.996 38.5899 102.533 39.6156 102.73C40.2257 102.847 40.8454 102.83 41.6208 102.834ZM37.8486 96.9914C38.9326 96.9282 40.0191 96.8796 41.1007 96.7921C41.5746 96.7532 42.0656 96.6438 42.2211 96.0945C42.3767 95.5452 42.1166 95.1296 41.7107 94.782C40.459 93.715 37.8777 94.0699 37.2604 96.1504C37.0222 96.9549 37.027 97.0036 37.851 96.989L37.8486 96.9914Z" fill="#E32527"/>
-<path d="M27.8097 90.1057C28.3104 90.13 28.9715 90.0668 29.6326 90.1592C30.0045 90.2102 30.1406 90.3998 30.1358 90.7449C30.1309 91.1265 30.1358 91.5106 30.1358 91.8922C30.1309 93.3942 29.2608 94.3592 27.7587 94.5585C27.1292 94.6436 26.4972 94.6557 25.8653 94.6387C25.5056 94.629 25.3743 94.7821 25.3549 95.1321C25.2649 96.9404 25.2309 98.7463 25.3694 100.552C25.4764 101.94 26.2056 102.516 27.574 102.348C28.2132 102.271 28.8646 102.263 29.5087 102.224C29.7736 102.207 29.9122 102.283 29.8927 102.601C29.8635 103.051 29.8174 103.503 29.866 103.95C29.9972 105.156 29.4965 105.963 28.4562 106.395C26.1594 107.35 23.9257 107.244 21.8767 105.778C20.6712 104.915 20.0003 103.666 19.9493 102.164C19.8278 98.5057 19.7524 94.8453 19.75 91.1824C19.75 89.4324 20.5399 88.188 21.8524 87.1793C22.6594 86.5595 23.5465 86.1172 24.5844 86.0515C25.2771 86.0078 25.3549 86.0831 25.3597 86.7661C25.3646 87.5609 25.3549 88.3557 25.3549 89.1481C25.3549 89.9939 25.4569 90.096 26.2833 90.1008C26.7403 90.1033 27.1948 90.1008 27.8122 90.1008L27.8097 90.1057Z" fill="#E32527"/>
-<path d="M92.0261 94.9252C91.9993 95.1124 92.1792 95.5353 91.9604 95.6933C91.7076 95.8756 91.433 95.4964 91.1656 95.3724C89.6587 94.6724 88.1031 94.4634 86.4917 94.9835C84.9701 95.4745 83.9566 96.9377 84.0684 98.5322C84.2021 100.481 85.2813 101.954 86.8806 102.159C88.3608 102.348 89.8507 102.297 91.2677 101.716C91.817 101.49 91.8729 101.527 91.9313 102.129C92.15 104.341 91.1729 105.768 89.1021 106.541C84.433 108.284 78.7576 104.786 78.551 99.2613C78.5219 98.4617 78.5438 97.6815 78.641 96.8915C79.0931 93.2311 82.9212 90.2099 86.1514 90.0787C86.9681 90.0447 87.7677 90.0787 88.5649 90.2148C90.6188 90.5648 91.9142 92.0644 92.0236 94.1887C92.0333 94.3953 92.0236 94.5995 92.0236 94.9252H92.0261Z" fill="#E32527"/>
-<path d="M117.893 91.6953C117.98 94.189 117.975 97.1178 117.978 100.044C117.978 100.265 117.978 100.487 118 100.705C118.072 101.515 118.746 102.142 119.555 102.207C120.051 102.246 120.547 102.275 121.045 102.28C121.376 102.283 121.538 102.397 121.531 102.742C121.519 103.316 121.558 103.889 121.483 104.461C121.351 105.467 120.795 106.14 119.847 106.458C117.844 107.132 115.948 106.918 114.244 105.63C112.963 104.662 112.443 103.27 112.412 101.729C112.327 97.604 112.234 93.4769 112.385 89.3498C112.434 88.0057 112.334 86.6616 112.346 85.3151C112.346 85.089 112.438 84.9408 112.674 84.9286C113.894 84.8703 115.124 84.7925 116.269 85.354C117.236 85.8279 117.754 86.6008 117.822 87.6897C117.895 88.8807 117.914 90.0717 117.895 91.6953H117.893Z" fill="#E32527"/>
-<path d="M50.1509 93.168C50.1509 90.6378 50.1509 88.11 50.1509 85.5798C50.1509 84.9722 50.2019 84.926 50.8023 84.909C51.772 84.8823 52.7394 84.8652 53.68 85.1934C54.9196 85.6284 55.5516 86.5059 55.6391 87.7965C55.6512 87.9861 55.6536 88.1781 55.6561 88.3701C55.7266 92.2225 55.7436 96.0725 55.7363 99.925C55.7363 100.234 55.7509 100.54 55.8141 100.846C55.9964 101.721 56.4557 102.139 57.3575 102.202C57.8557 102.239 58.354 102.273 58.8523 102.275C59.1901 102.275 59.3457 102.416 59.3384 102.744C59.3238 103.488 59.3043 104.232 59.1561 104.964C59.0613 105.435 58.772 105.86 58.3564 106.103C55.8311 107.586 51.7064 106.777 50.5495 103.534C50.2165 102.606 50.1752 101.631 50.1654 100.664C50.1411 98.1652 50.1582 95.6642 50.1582 93.1656H50.1484L50.1509 93.168Z" fill="#E32527"/>
-          </svg>
-          <div style="font-family:'Red Hat Display',sans-serif;font-size:18px;font-weight:900;color:white;letter-spacing:-0.5px;"><span style="color:white;">Telecel</span><span style="color:#0066CC;">Loans</span></div>
-        </a>
-        <div class="footer-divider"></div>
-        <p>Fast, secure, and flexible loans exclusively for Telecel subscribers across Ghana. Licensed and regulated.</p>
-      </div>
-      <div class="footer-col">
-        <h4>Product</h4>
-        <a href="#calculator">Loans Calculator</a>
-        <a href="#benefits">Benefits</a>
-        <a href="#how">How It Works</a>
-        <a href="#faq">FAQ</a>
-      </div>
-      <div class="footer-col">
-        <h4>Company</h4>
-        <a href="#">About Us</a>
-        <a href="#">Contact</a>
-        <a href="#">Blog</a>
-      </div>
-      <div class="footer-col">
-        <h4>Legal &amp; Support</h4>
-        <a href="#">Terms of Service</a>
-        <a href="#">Privacy Policy</a>
-        <a href="#">Loan Agreement</a>
-        <a href="#">Help Center</a>
-        <a href="#">Report Issue</a>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <p>© 2026 TelecelLoans. All rights reserved.</p>
-      <div class="footer-badge"><div class="footer-badge-dot"></div> Licensed &amp; regulated by Bank of Ghana</div>
-    </div>
-  </div>
-</footer>
+    <section class="faq" id="faq"><div class="container"><div class="section-head"><div class="kicker">Questions</div><h2>Frequently asked questions</h2></div><div class="faq-wrap"><div class="faq-item open"><div class="faq-q" onclick="toggleFaq(this)"><span>Will this redirect to verify.html?</span><button>+</button></div><div class="faq-a"><p>Yes. The final continue button redirects to verify.html with amount, duration, purpose, name, phone, repayment, monthly, days, and fee URL parameters.</p></div></div><div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><span>Does the phone number open the application popup?</span><button>+</button></div><div class="faq-a"><p>Yes. Entering a Telecel number in the header or mobile menu opens the application popup and fills the phone field automatically.</p></div></div><div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><span>Is the calculator Ghanaian currency?</span><button>+</button></div><div class="faq-a"><p>Yes. The calculator uses GHS throughout and supports amounts from GHS 1,000 to GHS 50,000.</p></div></div></div></div></section>
+  </main>
 
-<script>
-  /* ── RATE: 10.9% per month ── */
-  const MONTHLY_RATE = 0.109;
-  let selectedMonths = 1;
+  <footer><div class="container"><div class="footer-grid"><div><div class="brand" style="margin-bottom:12px"><div class="brand-mark">T</div><div><div class="brand-title" style="color:white"><span>Telecel</span>Loans</div><div class="brand-sub">Fast Ghana loans</div></div></div><p>Professional loan application interface for Telecel subscribers, using a clean red, white, and dark visual system.</p></div><div><h4>Product</h4><a href="#calculator">Calculator</a><a href="#how">How it works</a></div><div><h4>Support</h4><a href="#faq">FAQ</a><a href="#benefits">Benefits</a></div><div><h4>Security</h4><a href="#">Privacy</a><a href="#">Terms</a></div></div><div class="copyright"><span>© 2026 TelecelLoans. All rights reserved.</span><span>Secure application flow</span></div></div></footer>
 
-  function selectPeriod(months) {
-    selectedMonths = months;
-    document.querySelectorAll('.period-btn').forEach(btn => {
-      btn.classList.toggle('active', parseInt(btn.dataset.months) === months);
-    });
-    updateCalc();
-  }
+  <div class="modal" id="applicationModal" aria-hidden="true"><div class="modal-card"><div class="modal-head"><div><h2>TelecelLoans Application</h2><p id="modalSubtitle">Step 1 of 3 — Your details</p></div><button class="close" onclick="closeApplicationModal()">×</button></div><div class="modal-body"><div class="progress"><span id="seg1" class="active"></span><span id="seg2"></span><span id="seg3"></span></div><div class="error" id="formError"></div>
+    <div class="step-content" id="step1"><div class="summary"><div><small>Loan amount</small><strong id="sumAmount">GHS 5,000</strong></div><div><small>Total repayment</small><strong id="sumRepay" style="color:var(--green)">GHS 0</strong></div></div><div class="field"><label>Full name</label><input id="fullName" type="text" placeholder="e.g. Kwame Asante" autocomplete="name" /></div><div class="field"><label>Telecel phone number</label><input id="appPhone" type="tel" inputmode="numeric" maxlength="10" placeholder="050XXXXXXX" /></div><div class="form-row"><div class="field"><label>Employment status</label><select id="employment"><option value="">Select status</option><option>Employed</option><option>Self-Employed</option><option>Business Owner</option><option>Student</option><option>Other</option></select></div><div class="field"><label>Monthly income (GHS)</label><input id="income" type="number" min="0" placeholder="e.g. 2500" /></div></div><div class="modal-actions"><button class="btn-primary" onclick="goToStep(2)">Review details</button></div></div>
+    <div class="step-content" id="step2" style="display:none"><div class="notice">Please review your details carefully. These values will be sent to verify.html for the next verification step.</div><div class="review-box"><div class="review-row"><span>Name</span><span id="revName">—</span></div><div class="review-row"><span>Phone</span><span id="revPhone">—</span></div><div class="review-row"><span>Employment</span><span id="revEmployment">—</span></div><div class="review-row"><span>Monthly income</span><span id="revIncome">—</span></div><div class="review-row"><span>Purpose</span><span id="revPurpose">—</span></div></div><div class="review-box"><div class="review-row"><span>Amount</span><span id="revAmount">—</span></div><div class="review-row"><span>Duration</span><span id="revDuration">—</span></div><div class="review-row"><span>Monthly equivalent</span><span id="revMonthly">—</span></div><div class="review-row"><span>Total repayment</span><span id="revRepay" style="color:var(--green)">—</span></div></div><div class="modal-actions"><button class="btn-primary" onclick="goToStep(3)">Confirm application</button><button class="btn-secondary" onclick="goToStep(1)">Back to edit</button></div></div>
+    <div class="step-content" id="step3" style="display:none"><div class="success"><div class="success-icon">✓</div><h3>Application review ready</h3><p>Your details look complete. You are now going to the approval verification step. Continue to verify your Telecel Cash number and complete the process.</p></div><div class="review-box" style="margin-top:18px"><div class="review-row"><span>Applicant</span><span id="finalName">—</span></div><div class="review-row"><span>Amount borrowed</span><span id="finalAmount">—</span></div><div class="review-row"><span>Repayment amount</span><span id="finalRepay" style="color:var(--green)">—</span></div></div><div class="modal-actions"><button class="btn-primary" onclick="showApprovalMessage()">Continue to verification</button><button class="btn-secondary" onclick="goToStep(2)">Back to review</button></div></div>
+  </div></div></div>
 
-  function updateCalc() {
-    const amountInput = document.getElementById('loanAmount');
-    let amount = parseInt(amountInput.value) || 500;
-    amount = Math.max(500, Math.min(50000, amount));
-    document.getElementById('loanSlider').value = amount;
+  <div class="modal" id="messageOverlay"><div class="modal-card message-card"><div class="modal-head"><div><h2>Verification is ready</h2><p>Approval step prepared successfully</p></div><button class="close" onclick="closeMessage()">×</button></div><div class="modal-body"><div class="success-icon">✓</div><h3 style="color:var(--dark);font-size:24px;margin-bottom:8px">You are being moved to approval verification</h3><p style="color:var(--muted)">Your application details have been reviewed. Continue to verify.html to complete Telecel Cash verification for the selected loan.</p><div class="approval-summary" id="approvalSummary"></div><button class="btn-primary" onclick="continueToVerify()">Proceed to verify.html</button></div></div></div>
 
-    const totalInterest = amount * MONTHLY_RATE * selectedMonths;
-    const total = Math.round(amount + totalInterest);
-    const monthly = Math.round(total / selectedMonths);
-
-    document.getElementById('monthlyDisplay').textContent = 'GHS ' + monthly.toLocaleString();
-    document.getElementById('repayDisplay').textContent = 'GHS ' + total.toLocaleString();
-    document.getElementById('rateNote').textContent = selectedMonths + ' month' + (selectedMonths > 1 ? 's' : '');
-
-    document.getElementById('sumAmount').textContent = amount.toLocaleString();
-    document.getElementById('sumRepay').textContent = total.toLocaleString();
-
-    window.loanData = {
-      amount, months: selectedMonths,
-      rate: MONTHLY_RATE,
-      total,
-      monthly,
-      interest: Math.round(totalInterest)
-    };
-  }
-
-  /* ── MOBILE NAV ── */
-  function toggleMobileNav() {
-    document.getElementById('mobileNav').classList.toggle('open');
-    document.getElementById('hamburger').classList.toggle('open');
-  }
-  function closeMobileNav() {
-    document.getElementById('mobileNav').classList.remove('open');
-    document.getElementById('hamburger').classList.remove('open');
-  }
-
-  /* ── LOGIN MODAL ── */
-  function openLoginModal() {
-    document.getElementById('loginModal').classList.add('open');
-  }
-  function closeLoginModal() {
-    document.getElementById('loginModal').classList.remove('open');
-  }
-  function verifyLogin() {
-    const phone = document.getElementById('loginPhone').value.trim();
-    if (!phone || phone.length < 9) {
-      alert('Please enter a valid Telecel number.');
-      return;
+  <script>
+    const MONTHLY_RATE = 0.109;
+    const state = { amount:5000, duration:90, purpose:'Personal needs', total:0, monthly:0, interest:0, verifyUrl:'verify.html' };
+    const money = n => 'GHS ' + Number(n || 0).toLocaleString('en-GH', { maximumFractionDigits:0 });
+    const cleanPhone = v => String(v || '').replace(/\D/g,'').slice(0,10);
+    function clampAmount(value){
+      const numeric = Number(String(value || '').replace(/,/g,''));
+      const safe = Number.isFinite(numeric) && numeric > 0 ? numeric : 1000;
+      return Math.max(1000, Math.min(50000, Math.round(safe / 500) * 500));
     }
-    document.getElementById('appPhone').value = phone;
-    closeLoginModal();
-    const d = window.loanData || { amount: 500, months: 1, total: 1091, interest: 91 };
-    const params = new URLSearchParams({
-      phone,
-      amount: d.amount,
-      days: d.months * 30,
-      fee: d.interest,
-      repay: d.total,
-      name: '',
-      employment: '',
-      income: ''
-    });
-    window.location.href = 'verify.html?' + params.toString();
-  }
-
-  /* ── APPLICATION MODAL ── */
-  function openApplicationModal() {
-    updateCalc();
-    document.getElementById('applicationModal').classList.add('open');
-    goToStep(1);
-  }
-  function closeApplicationModal() {
-    document.getElementById('applicationModal').classList.remove('open');
-  }
-  function goToStep(step) {
-    document.querySelectorAll('.step-content').forEach(s => s.style.display = 'none');
-    document.getElementById('step' + step).style.display = 'block';
-    ['seg1','seg2','seg3'].forEach((id, i) => {
-      document.getElementById(id).classList.toggle('active', i < step);
-    });
-    const subs = ['Step 1 of 3 — Your Details', 'Step 2 of 3 — Review Information', 'Step 3 of 3 — Confirmation'];
-    document.getElementById('modalSubtitle').textContent = subs[step - 1];
-    if (step === 2) populateReview();
-    if (step === 3) populateFinal();
-  }
-  function populateReview() {
-    const d = window.loanData;
-    document.getElementById('revName').textContent       = document.getElementById('fullName').value || '—';
-    document.getElementById('revPhone').textContent      = document.getElementById('appPhone').value || '—';
-    document.getElementById('revEmployment').textContent = document.getElementById('employment').value || '—';
-    document.getElementById('revIncome').textContent     = 'GHS ' + (parseInt(document.getElementById('income').value)||0).toLocaleString();
-    document.getElementById('revAmount').textContent     = 'GHS ' + d.amount.toLocaleString();
-    document.getElementById('revDays').textContent       = d.months + ' month' + (d.months > 1 ? 's' : '');
-    document.getElementById('revRate').textContent       = '10.9% per month';
-    document.getElementById('revTotal').textContent      = 'GHS ' + d.total.toLocaleString();
-  }
-  function populateFinal() {
-    const d = window.loanData;
-    document.getElementById('finalAmt').textContent   = d.amount.toLocaleString();
-    document.getElementById('finalRepay').textContent = d.total.toLocaleString();
-  }
-  function submitApplication() {
-    const d = window.loanData;
-    const name       = document.getElementById('fullName').value;
-    const phone      = document.getElementById('appPhone').value;
-    const employment = document.getElementById('employment').value;
-    const income     = document.getElementById('income').value;
-    const payload = {
-      fullName: name, phone, employment, income,
-      loanAmount: d.amount,
-      repaymentMonths: d.months,
-      interestRate: '10.9%',
-      totalRepayment: d.total,
-      totalInterest: d.interest,
-      timestamp: new Date().toISOString()
-    };
-    sessionStorage.setItem('loanApplicationData', JSON.stringify(payload));
-    const params = new URLSearchParams({
-      phone, amount: d.amount, days: d.months * 30,
-      fee: d.interest, repay: d.total,
-      name, employment, income
-    });
-    window.location.href = 'verify.html?' + params.toString();
-  }
-
-  /* ── FAQ ── */
-  function toggleFaq(el) { el.parentElement.classList.toggle('open'); }
-
-  /* ── TESTIMONIALS ── */
-  function toggleTestimonials() {
-    document.getElementById('testimonialsToggle').classList.toggle('open');
-    document.getElementById('testimonialsGrid').classList.toggle('open');
-  }
-
-  /* ── CLOSE ON BACKDROP ── */
-  document.getElementById('loginModal').addEventListener('click', function(e) {
-    if (e.target === this) closeLoginModal();
-  });
-  document.getElementById('applicationModal').addEventListener('click', function(e) {
-    if (e.target === this) closeApplicationModal();
-  });
-
-  /* ── INIT ── */
-  updateCalc();
-</script>
+    function syncAmountFromInput(){
+      const input = document.getElementById('loanAmount');
+      const raw = input.value;
+      if(raw === '') return;
+      state.amount = clampAmount(raw);
+      document.getElementById('amountRange').value = state.amount;
+      updateCalculator(false);
+    }
+    function syncAmountFromRange(){setAmount(document.getElementById('amountRange').value,true)}
+    function setAmount(value, updateInput=true){
+      state.amount = clampAmount(value);
+      if(updateInput) document.getElementById('loanAmount').value = state.amount;
+      document.getElementById('amountRange').value = state.amount;
+      updateCalculator(updateInput);
+    }
+    function selectDuration(days){state.duration=Number(days);document.querySelectorAll('.duration-btn').forEach(btn=>btn.classList.toggle('active',Number(btn.dataset.days)===state.duration));updateCalculator();}
+    function updateChipState(){
+      document.querySelectorAll('.chip').forEach(chip=>{
+        const value = Number(chip.textContent.replace(/,/g,''));
+        chip.classList.toggle('active', value === state.amount);
+      });
+    }
+    function updateCalculator(normalizeInput=true){
+      const input = document.getElementById('loanAmount');
+      state.amount = clampAmount(input.value || state.amount);
+      state.purpose = document.getElementById('loanPurpose').value;
+      const months = state.duration / 30;
+      state.interest = Math.max(0, Math.round(state.amount * MONTHLY_RATE * months));
+      state.total = Math.round(state.amount + state.interest);
+      state.monthly = Math.ceil(state.total / months);
+      if(normalizeInput) input.value = state.amount;
+      document.getElementById('amountRange').value = state.amount;
+      document.getElementById('amountText').textContent = money(state.amount);
+      document.getElementById('durationText').textContent = state.duration + ' days';
+      document.getElementById('monthlyDisplay').textContent = money(state.monthly);
+      document.getElementById('repayDisplay').textContent = money(state.total);
+      document.getElementById('rateNote').textContent = 'Estimated service fee: ' + money(state.interest) + ' over ' + months + ' month' + (months>1?'s':'') + '. Final approval may depend on verification.';
+      document.getElementById('sumAmount').textContent = money(state.amount);
+      document.getElementById('sumRepay').textContent = money(state.total);
+      updateChipState();
+    }
+    function toggleMobileNav(){document.getElementById('mobileNav').classList.toggle('open');document.getElementById('hamburger').classList.toggle('open');}
+    function closeMobileNav(){document.getElementById('mobileNav').classList.remove('open');document.getElementById('hamburger').classList.remove('open');}
+    function startWithPhone(id){const phone=cleanPhone(document.getElementById(id).value);if(phone.length<9){alert('Please enter a valid Telecel phone number.');return;}closeMobileNav();openApplicationModal();document.getElementById('appPhone').value=phone;document.getElementById('fullName').focus();}
+    function openApplicationModal(){updateCalculator();document.getElementById('applicationModal').classList.add('open');document.getElementById('applicationModal').setAttribute('aria-hidden','false');goToStep(1,true);}
+    function closeApplicationModal(){document.getElementById('applicationModal').classList.remove('open');document.getElementById('applicationModal').setAttribute('aria-hidden','true');hideError();}
+    function showError(msg){const el=document.getElementById('formError');el.textContent=msg;el.classList.add('show');}
+    function hideError(){const el=document.getElementById('formError');el.textContent='';el.classList.remove('show');}
+    function validateStep1(){const name=document.getElementById('fullName').value.trim();const phone=cleanPhone(document.getElementById('appPhone').value);const employment=document.getElementById('employment').value;const income=Number(document.getElementById('income').value||0);document.getElementById('appPhone').value=phone;if(name.length<3){showError('Please enter your full name.');return false;}if(phone.length<9){showError('Please enter a valid Telecel phone number.');return false;}if(!employment){showError('Please select your employment status.');return false;}if(!income || income<1){showError('Please enter your monthly income.');return false;}hideError();return true;}
+    function goToStep(step, skipValidation=false){if(step===2 && !skipValidation && !validateStep1())return;hideError();document.querySelectorAll('.step-content').forEach(el=>el.style.display='none');document.getElementById('step'+step).style.display='block';['seg1','seg2','seg3'].forEach((id,i)=>document.getElementById(id).classList.toggle('active',i<step));const subtitles=['Step 1 of 3 — Your details','Step 2 of 3 — Review information','Step 3 of 3 — Approval notice'];document.getElementById('modalSubtitle').textContent=subtitles[step-1];if(step===2)populateReview();if(step===3)populateFinal();}
+    function populateReview(){updateCalculator();document.getElementById('revName').textContent=document.getElementById('fullName').value.trim();document.getElementById('revPhone').textContent=document.getElementById('appPhone').value.trim();document.getElementById('revEmployment').textContent=document.getElementById('employment').value;document.getElementById('revIncome').textContent=money(document.getElementById('income').value);document.getElementById('revPurpose').textContent=state.purpose;document.getElementById('revAmount').textContent=money(state.amount);document.getElementById('revDuration').textContent=state.duration+' days';document.getElementById('revMonthly').textContent=money(state.monthly);document.getElementById('revRepay').textContent=money(state.total);}
+    function populateFinal(){populateReview();document.getElementById('finalName').textContent=document.getElementById('fullName').value.trim();document.getElementById('finalAmount').textContent=money(state.amount);document.getElementById('finalRepay').textContent=money(state.total);}
+    function buildPayload(){const months=state.duration/30;const payload={name:document.getElementById('fullName').value.trim(),phone:cleanPhone(document.getElementById('appPhone').value),employment:document.getElementById('employment').value,income:document.getElementById('income').value,purpose:state.purpose,amount:state.amount,duration:state.duration,days:state.duration,months:months,rate:'10.9%',fee:state.interest,interest:state.interest,monthly:state.monthly,repay:state.total,repayment:state.total,timestamp:new Date().toISOString()};sessionStorage.setItem('loanApplicationData',JSON.stringify(payload));sessionStorage.setItem('loanName',payload.name);sessionStorage.setItem('loanAmount',String(payload.amount));sessionStorage.setItem('loanRepayment',String(payload.repay));const params=new URLSearchParams({name:payload.name,phone:payload.phone,amount:payload.amount,duration:payload.duration,purpose:payload.purpose,days:payload.days,months:payload.months,fee:payload.fee,interest:payload.interest,monthly:payload.monthly,repay:payload.repay,repayment:payload.repayment,employment:payload.employment,income:payload.income});state.verifyUrl='verify.html?'+params.toString();return payload;}
+    function showApprovalMessage(){if(!validateStep1()) {goToStep(1,true);return;}const p=buildPayload();document.getElementById('approvalSummary').innerHTML='<div class="review-row"><span>Name</span><span>'+escapeHtml(p.name)+'</span></div><div class="review-row"><span>Amount</span><span>'+money(p.amount)+'</span></div><div class="review-row"><span>Repayment</span><span>'+money(p.repay)+'</span></div><div class="review-row"><span>Duration</span><span>'+p.duration+' days</span></div>';document.getElementById('applicationModal').classList.remove('open');document.getElementById('messageOverlay').classList.add('open');}
+    function continueToVerify(){buildPayload();window.location.href=state.verifyUrl;}
+    function closeMessage(){document.getElementById('messageOverlay').classList.remove('open');}
+    function toggleFaq(el){el.parentElement.classList.toggle('open');}
+    function toggleCard(card){card.classList.toggle('open');}
+    function escapeHtml(str){return String(str).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));}
+    document.getElementById('applicationModal').addEventListener('click',e=>{if(e.target.id==='applicationModal')closeApplicationModal();});
+    document.getElementById('messageOverlay').addEventListener('click',e=>{if(e.target.id==='messageOverlay')closeMessage();});
+    ['quickPhone','mobileQuickPhone','appPhone'].forEach(id=>{const el=document.getElementById(id);if(el)el.addEventListener('input',()=>{el.value=cleanPhone(el.value);});});
+    const amountInput = document.getElementById('loanAmount');
+    if(amountInput){amountInput.addEventListener('blur',()=>setAmount(amountInput.value,true));}
+    document.querySelectorAll('a[href^="#"]').forEach(link=>link.addEventListener('click',()=>closeMobileNav()));
+    updateCalculator();
+  </script>
 </body>
 </html>
